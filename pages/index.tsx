@@ -3,7 +3,6 @@ import { GetStaticProps } from 'next'
 import Container from '../components/container'
 import MoreStories from '../components/more-stories'
 import HeroPost from '../components/hero-post'
-import Intro from '../components/intro'
 import Layout from '../components/layout'
 import { getAllPostsForHome } from '../lib/api'
 
@@ -18,8 +17,8 @@ export default function Index({ allPosts: { edges }, preview }) {
         <meta name="description" content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."></meta>
       </Head>
       <Container>
-        <Intro />
-        {heroPost && (
+
+        {/* {heroPost && (
           <HeroPost
             title={heroPost.title}
             coverImage={heroPost.featuredImage}
@@ -28,8 +27,8 @@ export default function Index({ allPosts: { edges }, preview }) {
             slug={heroPost.slug}
             excerpt={heroPost.excerpt}
           />
-        )}
-        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+        )} */}
+        {/* {morePosts.length > 0 && <MoreStories posts={morePosts} />} */}
       </Container>
     </Layout>
   )
