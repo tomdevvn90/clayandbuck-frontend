@@ -1,7 +1,10 @@
 import { AppProps } from 'next/app'
 import { Barlow } from 'next/font/google'
-import '../styles/global.css'
-import '../styles/index.css'
+import "@fortawesome/fontawesome-svg-core/styles.css"
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false; 
+
+import '../styles/global.scss'
 import '../styles/header.css'
 import Header from '../components/header'
 import Footer from '../components/footer'

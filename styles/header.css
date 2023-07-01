@@ -9,15 +9,15 @@
     max-width: 1440px;
 }
 .site-header .site-branding {
-    width: 220px;
+    width: 190px;
     text-align: left;
 }
 .site-header .main-menu {
-    width: calc(100% - 400px);
+    width: calc(100% - 350px);
     text-align: center;
 }
 .site-header .secs-menu {
-    width: 180px;
+    width: 160px;
     display: flex;
     justify-content: flex-end;
 }
@@ -45,6 +45,10 @@
 }
 .site-header .social-lst a.youtube svg {
     width: 32px;
+}
+.site-header .social-lst a:hover svg, 
+.site-header .social-lst a:hover img {
+    transform: scale(1.4);
 }
 .site-header .menu-list ul{
     display: flex;
@@ -86,6 +90,10 @@
     text-transform: uppercase;
     font-weight: 500;
     font-family: inherit;
+    cursor: pointer;
+}
+.site-header .login-btn:hover {
+    background: #b28e2a;
 }
 .site-header .login-btn img {
     margin-right: 8px;
