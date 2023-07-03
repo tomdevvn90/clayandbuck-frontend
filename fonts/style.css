@@ -1,0 +1,1434 @@
+
+
+/* Subscribe page css  */
+
+@font-face {
+  font-family: 'helveticabold';
+  src: url('../fonts/helvetica-bold-webfont.woff2') format('woff2'),
+       url('../fonts/helvetica-bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+@font-face {
+  font-family: 'helveticaregular';
+  src: url('../fonts/helvetica-webfont.woff2') format('woff2'),
+       url('../fonts/helvetica-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+@font-face {
+  font-family: 'helveticalight';
+  src: url('../fonts/helvetica-light-webfont.woff2') format('woff2'),
+       url('../fonts/helvetica-light-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+body.page-id-99999999 .container {
+   max-width: 1200px;
+}
+body ul, body ol {
+   margin: 0;
+   padding-left: 20px;
+   font-family: 'helveticaregular';
+}
+body .grecaptcha-badge{
+   display: none !important;
+}
+body input[type="text"], body input[type="email"], body input[type="url"],
+body input[type="password"], body input[type="search"], body input[type="number"],
+body input[type="tel"], body input[type="range"], body input[type="date"],
+body input[type="month"], body input[type="week"], body input[type="time"],
+body input[type="datetime"], body input[type="datetime-local"],
+body input[type="color"], body textarea, body select {
+  color: #666;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 12px;
+  max-width: 100%;
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 16px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+body select {
+  background-image: url(../images/expand-down-icon.svg);
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+body input[type="text"]::placeholder, body input[type="email"]::placeholder,
+body input[type="url"]::placeholder, body input[type="password"]::placeholder,
+body input[type="search"]::placeholder, body input[type="number"]::placeholder,
+body input[type="tel"]::placeholder, body input[type="range"]::placeholder,
+body input[type="date"]::placeholder, body input[type="month"]::placeholder,
+body input[type="week"]::placeholder, body input[type="time"]::placeholder,
+body input[type="datetime"]::placeholder, body input[type="datetime-local"]::placeholder,
+body input[type="color"]::placeholder, body textarea::placeholder {
+  color: #ccc;
+}
+body input[type="button"]:hover, body .btn:hover,
+body input[type="reset"]:hover, body input[type="submit"]:hover,
+body .btn.focus, body .btn:focus {
+  border-color: #b28e2a;
+  color: #fff;
+  background: #b28e2a;
+  box-shadow: none;
+}
+body .btn.btn-cancel-confirmation:focus,
+body .btn.btn-cancel-confirmation:hover,
+body .btn.btn-previous:focus,
+body .btn.btn-previous:hover {
+  color: initial;
+  background: initial;
+}
+body p {
+  font-family: 'helveticaregular';
+}
+body hr {
+    border: 0;
+    margin: 30px 0;
+    height: 2px;
+    background: #E6EAED;
+}
+.subscribe-page, .reset-password-page,
+.update-email-page {
+  min-height: 100vh;
+  font-family: 'helveticaregular';
+  margin: 60px 0;
+  background-color: #232323;
+}
+.subscribe-left {
+  background-color: #000;
+  background-image: url(../images/overlay.png);
+  position: relative;
+  padding: 40px 48px 40px 40px;
+}
+.cb247-subscribe h2 {
+  font-family: 'helveticabold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 105.47%;
+  color: #FFFFFF;
+  max-width: 325px;
+  margin: 0;
+}
+.cb-247-img {
+  position: absolute;
+  top: 20px;
+  right: 36px;
+  width: 110px;
+  height: auto;
+}
+.subscribe-left p {
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #FFFFFF;
+  margin: 34px 0;
+}
+.benefits {
+  margin: 26px 0 20px 0;
+}
+.benefits h3 {
+  font-family: 'helveticabold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 105.47%;
+  color: #FFFFFF;
+  padding-bottom: 10px;
+}
+.benefits ul {
+  padding-left: 16px;
+}
+.benefits ul li {
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 32px;
+  color: #FFFFFF;
+}
+.two-friend-img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  max-height: 100%;
+}
+.two-friend {
+  position: relative;
+  height: 374px;
+  overflow: hidden;
+  margin-bottom: -40px;
+}
+.subscribe-right {
+  background-color: #fff;
+}
+.create-account {
+  padding: 40px 32px;
+}
+.step-count {
+  font-family: 'helveticabold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: #95979F;
+  margin: 0 0 8px;
+}
+.create-account h4 {
+  font-family: 'helveticabold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+  color: #000000;
+  max-width: 380px;
+  margin: 0 0 16px;
+}
+.steper-form {
+  margin-top: 32px;
+}
+.steper-form .form-control {
+  border: 2px solid #A9AFB2;
+  height: 48px;
+  border-radius: 6px;
+  padding: 12px;
+}
+body .form-group {
+  margin-bottom: 16px;
+}
+.country-select {
+  background-color: #FFFFFF;
+  border: 2px solid #A9AFB2;
+  box-sizing: border-box;
+  border-radius: 6px;
+  height: 48px;
+  font-size: 14px;
+}
+.create-account .form-group label,
+.create-account .form-group-label {
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: #27292D;
+  position: relative;
+  width: 100%;
+}
+.create-account .form-group-label {
+  margin-top: 8px;
+}
+.btn-set-inline .btn.btn-submit,
+.btn-set-inline .btn.btn-continue {
+  background: #B2922C;
+  color: #fff;
+}
+.btn-set-inline .btn.btn-submit:hover,
+.btn-set-inline .btn.btn-continue:hover {
+  background: #b28e2a;
+}
+.btn-set-inline .btn {
+  height: 48px;
+  border: 2px solid #B2922C;
+  font-family: 'helveticabold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 44px;
+  text-align: center;
+  color: #B2922C;
+  padding: 0;
+}
+.btn-half {
+  width: calc(50% - 6px);
+}
+.btn-set-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+}
+.btn-set-inline .btn.disabled,
+.btn-editable.disabled {
+  background-color: #DADFE3 !important;
+  border-color: #DADFE3 !important;
+  color: #A9AFB2 !important;
+  pointer-events: none !important;
+}
+.btn-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  margin: 10px auto;
+  font-family: 'helveticabold';
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 10px;
+  color: #000000;
+}
+.your-plan-text {
+  margin: 0;
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000000;
+  text-align: center;
+  padding-top: 35px;
+}
+.mail-verify-text {
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #000000;
+  margin: 20px 0 0;
+}
+.mail-verify-text a {
+  color: #000;
+  font-weight: 700;
+}
+.plan-radio input[type=radio] {
+  position: absolute;
+  opacity: 0;
+}
+.plan-radio input[type=radio] .label {
+  cursor: pointer;
+}
+.plan-radio .label {
+  background: #FFFFFF;
+  border: 2px solid #A9AFB2;
+  box-sizing: border-box;
+  border-radius: 6px;
+  height: 64px;
+  font-size: 14px;
+  margin-bottom: 14px;
+  display: block;
+  width: 100%;
+  padding-top: 12px;
+  cursor: pointer;
+}
+.plan-radio input[type=radio]:checked + .label {
+  border: 2px solid #B2922C;
+}
+/* .plan-radio input[type=radio] + .label:before { */
+.plan-radio .label:before {
+  content: "";
+  background: #fff;
+  border: 2px solid #DADADA;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  left: 14px;
+  top: 18px;
+  margin-right: 10px;
+  vertical-align: top;
+  text-align: center;
+  transition: all 250ms ease;
+  border-radius: 100%;
+}
+.plan-radio input[type=radio]:checked + .label:before,
+.plan-radio .label.checked:before {
+  background-color: #B2922C;
+  box-shadow: inset 0 0 0 3px #f4f4f4;
+  border: 2px solid #B2922C;
+}
+.plan-radio input[type=radio]:disabled + .label:before {
+  box-shadow: inset 0 0 0 4px #f4f4f4;
+  border-color: #3197EE;
+  background-color: #8E8E8E;
+}
+.plan-radio label {
+  position: relative;
+}
+.plan-radio label strong{
+  display: block;
+  font-family: 'helveticabold';
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 16px;
+  color: #000000;
+  padding-left: 44px;
+}
+.plan-radio label span {
+  padding-left: 44px;
+  display: block;
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: #3F4447;
+  padding-top: 4px;
+}
+
+#cnb-plan-card-step div[data-recurly="card"] {
+    border: 2px solid #A9AFB2;
+    border-radius: 6px;
+    margin-bottom: 24px;
+}
+#cnb-plan-card-step .recurly-hosted-field {
+  border: none;
+  border-radius: 6px;
+  padding-left: 10px;
+  height: 44px;
+  margin: 0;
+}
+.credit-card-area {
+  border: 2px solid #A9AFB2;
+  border-radius: 6px;
+  padding-left: 10px;
+}
+.credit-card-area.new-error,
+#cnb-plan-card-step div[data-recurly="card"].new-error {
+  border-color: #FC5205 !important;
+}
+.credit-card-area input:focus {
+  outline: none;
+}
+.create-account .form-group label span{
+  position: absolute;
+  right: 0;
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: right;
+  color: #A9AFB2;
+}
+.renewal-amount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #E6EAED;
+  padding-bottom: 10px;
+}
+
+.renewal-amount p {
+  margin: 0;
+  padding: 0;
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.02em;
+  color: #000000;
+}
+.total-bill {
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.total-bill p {
+  font-weight: 700;
+  font-family: 'helveticabold';
+  margin-bottom: 0;
+}
+.auto-renewal-description{
+   margin-bottom: 32px;
+}
+.auto-renewal-description .automatic-title {
+  font-weight: 700;
+  font-family: 'helveticabold';
+  font-size: 12px;
+  margin: 0;
+}
+.auto-renewal-description p {
+  font-weight: 400;
+  font-family: 'helveticaregular';
+  font-size: 12px;
+  line-height: 16px;
+  margin: 0;
+}
+.custom-checkbox input {
+  opacity: 0;
+}
+.custom-checkbox {
+  padding-left: 30px;
+}
+.custom-control-input:checked~.custom-control-label::before {
+  background: #B2922C;
+  border-color: #B2922C;
+}
+.custom-checkbox label {
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  color: #27292D;
+  cursor: pointer;
+}
+.not-sell-personal-info {
+  font-family: 'helveticabold';
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  color: #B2922C;
+  padding-left: 7px;
+  margin: 0 0 16px;
+  display: inline-block;
+}
+.btn-full {
+  width: 100% !important;
+}
+
+/* Login page  */
+.login-page {
+  background: #E5E5E5;
+  min-height: 100vh;
+  padding-top: 20px;
+}
+.login-box {
+  width: 420px;
+  min-height: 640px;
+  background-color: #fff;
+  margin: auto;
+  padding: 32px;
+  text-align: center;
+  position: relative;
+}
+.close-icon {
+  width: 14px;
+  height: auto;
+  position: absolute;
+  top: 21px;
+  right: 21px;
+}
+.black-logo {
+  width: 93px;
+  margin: auto;
+}
+.login-box h1 {
+  font-family: 'helveticabold';
+  font-size: 20px;
+  line-height: 23px;
+  color: #000;
+  margin: 20px 0 12px;
+}
+.login-box p {
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000;
+}
+.login-box p a {
+  color: #B2922C;
+}
+.login-box p.pw-hint-note {
+  max-width: 290px;
+  margin: 0 auto 24px;
+}
+/* .login-form .form-group label a:hover,
+.login-box p a:hover {
+  text-decoration: none;
+} */
+.login-form {
+  text-align: left;
+}
+.login-form .form-group label {
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: #27292D;
+}
+.login-form .form-group label  a {
+  color: #B2922C;
+}
+
+body input.form-control.new-error,
+body input.form-new-control.new-error {
+  border-color: #FC5205 !important;
+}
+p.error-msg {
+  margin: 0 0 16px;
+  letter-spacing: -0.35px;
+  color: #FC5205;
+  background: #F6F8F9;
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'helveticabold';
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  display: none;
+}
+p.error-msg.actived {
+  display: block;
+}
+body input.form-new-control {
+  font-family: 'helveticaregular';
+  width: 100%;
+  height: 48px;
+  background: #FFFFFF;
+  border: 2px solid #A9AFB2;
+  box-sizing: border-box;
+  border-radius: 6px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000000;
+}
+
+body .btn-login, body .btn-reset-pass {
+  height: 48px;
+  border: 2px solid #B2922C;
+  font-family: 'helveticabold';
+  font-size: 16px;
+  line-height: 44px;
+  text-align: center;
+  color: #fff;
+  padding: 0;
+  background: #B2922C;
+  width: 100%;
+  margin-top: 8px;
+  letter-spacing: 0.02em;
+}
+body .btn-login.disabled,
+body .btn-reset-pass.disabled {
+  background-color: #DADFE3;
+  color: #A9AFB2;
+  opacity: 1;
+  border: 2px solid #DADFE3;
+  pointer-events: none;
+}
+.cnb-login-form {
+  border-bottom: 2px solid #E6EAED;
+}
+.forgot-userpass {
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  text-align: center;
+  color: #B2922C;
+  padding: 18px 0 28px;
+  display: inline-block;
+}
+.back-to-login {
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  text-align: center;
+  color: #B2922C;
+  padding: 16px 0 30px;
+  display: block;
+}
+.need-help {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #000000;
+  padding-bottom: 32px;
+  margin: 0;
+  border-bottom: 2px solid #E6EAED;
+}
+.need-help a {
+  color: #B2922C;
+}
+.login-footer {
+  padding: 24px 0 0;
+}
+.login-footer a {
+  display: block;
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  text-align: center;
+  padding: 5px 0;
+  color: #B2922C !important;
+  margin: 0;
+}
+/* .forgot-userpass:hover {
+  color: #987a1c;
+  text-decoration: none;
+} */
+p.login-success,
+p.login-error,
+p.hint-accepted,
+p.hint-error,
+p.change-email-success,
+p.change-email-error,
+p.change-password-success,
+p.change-password-error,
+p.change-billing-success,
+p.change-billing-error {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #46815A;
+  background: #F6F8F9;
+  border-radius: 6px;
+  min-height: 48px;
+  padding: 12px;
+  display: none;
+}
+p.login-success,
+p.reset-password-success {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+p.login-error,
+p.hint-error,
+p.change-email-error,
+p.change-password-error,
+p.change-billing-error {
+  color: #FC5205;
+}
+p.login-success.actived,
+p.login-error.actived,
+p.hint-accepted.actived,
+p.hint-error.actived,
+p.change-email-success.actived,
+p.change-email-error.actived,
+p.change-password-success.actived,
+p.change-password-error.actived,
+p.change-billing-success.actived,
+p.change-billing-error.actived {
+  display: block;
+}
+
+p.forgot-pass-success,
+p.forgot-pass-error,
+p.reset-password-success,
+p.reset-password-error,
+p.update-email-success,
+p.update-email-error {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #46815A;
+  background: #F6F8F9;
+  border-radius: 6px;
+  min-height: 48px;
+  padding: 12px;
+  display: none;
+}
+p.forgot-pass-error,
+p.reset-password-error,
+p.update-email-error {
+  color: #FC5205;
+}
+p.forgot-pass-success.actived,
+p.forgot-pass-error.actived,
+p.reset-password-success.actived,
+p.reset-password-error.actived {
+  display: block;
+}
+p.update-email-success,
+p.update-email-error {
+    display: block;
+    margin-top: 80px;
+}
+
+/* My Account Page  */
+.myaccount-page {
+  background-color: #000;
+  min-height: 100vh;
+  font-family: 'helveticaregular';
+}
+.account-box {
+  width: 640px;
+  min-height: 700px;
+  margin: 0px auto;
+  background: #fff;
+}
+.header-part {
+  position: relative;
+  padding: 5px 0;
+  text-align: center;
+  background: #232323;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
+}
+.header-part .header-logo {
+  max-width: 157px;
+  margin: auto;
+}
+.close-white {
+  position: absolute;
+  top: 23px;
+  right: 23px;
+  width: 15px;
+  height: auto;
+}
+
+.account-row {
+  background: #fff;
+  padding: 25px 0px;
+  border-bottom: 2px solid #E6EAED;
+  margin: 0 40px;
+}
+.account-row h2 {
+  font-family: 'helveticabold';
+  font-size: 32px;
+  line-height: 32px;
+  color: #000000;
+}
+.account-row p {
+  font-family: 'helveticaregular';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #000000;
+  margin: 0;
+}
+.account-row p strong {
+  font-family: 'helveticabold';
+}
+.account-row p a {
+  color: #B2922C;
+}
+.login-billing {
+  background: #fff;
+  padding: 25px 0px;
+  margin: 0px 40px;
+  position: relative;
+  border-bottom: 2px solid #E6EAED;
+}
+.login-billing.gift-cnb {
+  padding-bottom: 48px;
+}
+.login-billing:last-child {
+  border-bottom: 0px solid;
+}
+.login-billing h2 {
+  font-family: 'helveticabold';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+  color: #000000;
+}
+.login-billing p {
+  font-size: 16px;
+  line-height: 24px;
+  color: #000;
+  margin: 0;
+}
+.login-billing p strong {
+  font-family: 'helveticabold';
+}
+.btn-editable {
+  position: absolute;
+  top: 25px;
+  right: 0px;
+  font-family: 'Helveticaregular';
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1px solid #27292D;
+  padding: 5px 20px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+.btn-editable:hover {
+  background: #b28e2a;
+  color: #fff;
+}
+
+/* Change email change  */
+.modal-wrapper {
+  padding-bottom: 30px;
+  margin: 0 40px;
+}
+.back-to-acc-setting {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: 'helveticaregular';
+  color: #B2922C;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 24px 0 16px;
+}
+.back-to-acc-setting:visited {
+  color: #B2922C;
+}
+.back-to-acc-setting svg {
+  margin-right: 8px;
+}
+.change-email-row {
+  background: #fff;
+  padding: 0 0 24px;
+}
+.change-email-row h2 {
+  font-family: 'helveticaregular';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+.change-email-row p,
+.change-plan-row p {
+  font-family: 'helveticaregular';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #000000;
+  margin: 0;
+}
+.change-form label {
+  font-family: 'helveticaregular';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: #27292D;
+}
+.change-form .form-control {
+  font-family: 'helveticaregular';
+  height: 48px;
+  border: 2px solid #A9AFB2;
+  border-radius: 6px;
+}
+
+/* Change email  */
+.change-text {
+  background: #F6F8F9;
+  text-align: center;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+}
+.change-text p {
+  font-family: 'helveticabold';
+  font-size: 14px;
+  line-height: 20px;
+  color: #46815A;
+  margin: 0;
+}
+.mb-25 {
+  margin-bottom: 25px;
+}
+
+.plan-change-form {
+  font-family: 'helveticaregular';
+}
+.help-text a {
+  text-decoration: none;
+  font-family: 'helveticaregular';
+  color: #B2922C;
+}
+.select-plan-lebel {
+  font-size: 14px;
+}
+.login-billing.update-subs {
+  font-family: 'helveticaregular';
+  margin: 0;
+}
+.change-plan-row {
+  padding-bottom: 20px;
+}
+.change-plan-row.location,
+.change-plan-row.plan-confirm {
+  border-bottom: 2px solid #E6EAED;
+  padding-bottom: 10px;
+}
+.change-plan-row h2 {
+  font-family: 'helveticabold';
+  font-size: 24px;
+  line-height: 32px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+.login-billing.update-subs ul {
+  padding-left: 15px;
+  margin-bottom: 0;
+}
+.changeplan-desclaimer {
+  margin-top: 25px;
+}
+.changeplan-desclaimer p {
+  font-family: 'helveticaregular';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+}
+.account-success-text {
+  margin: 20px 40px 0;
+  border-radius: 6px;
+  display: none;
+}
+.account-success-text.actived {
+  display: block;
+}
+.account-error-text p {
+  color: #FC5205;
+}
+.change-text.account-error-text {
+  margin-top: 25px;
+  border-radius: 6px;
+}
+.changeplan-desclaimer h6 {
+  font-family: 'helveticabold';
+}
+.billing-form .form-control {
+  height: 48px;
+  border-radius: 6px;
+  border: 2px solid #A9AFB2;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+.cnb-update-credit-card {
+  margin-top: 25px;
+  padding-bottom: 25px;
+  border-bottom: 2px solid #E6EAED;
+  display: none;
+}
+.account-box.cancel-box {
+  min-height: inherit;
+}
+.plan-radio.disabled {
+  position: relative;
+}
+.plan-radio.disabled:after {
+  position: absolute;
+  content: "";
+  top: -2px;
+  left: -2px;
+  background: rgb(255 255 255 / 79%);
+  z-index: 99999999999999;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+}
+.login-billing:last-of-type {
+  border-bottom: 0px solid;
+}
+
+/* New style in site */
+.cnb-verify-success {
+    display: none;
+}
+body #cnb-login-modal a:visited {
+    color: #B2922C;
+}
+body .mfp-inline-holder .mfp-content {
+    width: auto;
+    margin: 40px auto 120px;
+}
+.login-box .cnb-password-hint-form,
+.login-box .cnb-lost-password-form {
+    display: none;
+}
+body #cnb-login-modal .mfp-close,
+body #cnb-account-modal .mfp-close,
+body .update-email-page .mfp-close,
+body .reset-password-page .mfp-close,
+body #confirmation-cancel-modal .mfp-close,
+body #cnb-subs-require-modal .mfp-close,
+body #cnb-subs-reactivate-modal .mfp-close {
+    color: #000;
+    opacity: 1;
+    width: 56px;
+    height: 56px;
+    line-height: 56px;
+    font-size: 32px;
+}
+body #cnb-account-modal .mfp-close {
+    color: #FFF;
+    width: 80px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 40px;
+    font-weight: normal;
+}
+body .update-email-page .mfp-close,
+body .reset-password-page .mfp-close {
+    padding: 0;
+    text-decoration: none;
+}
+body #cnb-login-modal .mfp-close:hover,
+body #cnb-account-modal .mfp-close:hover,
+body .update-email-page .mfp-close:hover,
+body .reset-password-page .mfp-close:hover,
+body #confirmation-cancel-modal .mfp-close:hover,
+body #cnb-subs-require-modal .mfp-close:hover,
+body #cnb-subs-reactivate-modal .mfp-close:hover {
+   font-size: 40px;
+}
+.cnb-create-subs-form {
+    color: #000000;
+}
+.cnb-create-subs-form .rc-hide {
+    position: absolute;
+    left: 0;
+    top: 0;
+    visibility: hidden;
+    opacity: 0;
+}
+.cnb-create-subs-form .create-account-step {
+    display: none;
+}
+.cnb-create-subs-form .create-account-step.actived {
+    display: block;
+}
+.cnb-create-subs-form .form-control-plain-text,
+.cnb-update-credit-card .form-control-plain-text {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0;
+    margin-bottom: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #212529;
+    background-color: transparent;
+    border: solid transparent;
+    border-width: 1px 0;
+}
+/* Chrome, Safari, Edge, Opera */
+.cnb-create-subs-form input::-webkit-outer-spin-button,
+.cnb-create-subs-form input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+.cnb-create-subs-form input[type=number] {
+  -moz-appearance: textfield;
+}
+.cnb-loading-sp {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999999;
+}
+.cnb-loading-sp.active {
+  display: flex;
+}
+
+@keyframes sploading {to{transform: rotate(1turn)}}
+.cnb-spinner-loading {
+     width:50px;
+     height:50px;
+     border-radius:50%;
+     background:conic-gradient(#0000 10%, #FFFFFF);
+     -webkit-mask:radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+     animation:sploading 1s infinite linear;
+}
+#cnb-account-info-box .cnb-spinner-loading,
+#cnb-edit-billing-form .cnb-spinner-loading,
+#cnb-edit-plan-form .cnb-spinner-loading {
+     background: conic-gradient(#0000 10%, #ffc107);
+     margin: 220px auto 0;
+}
+.btn .cnb-spinner-loading {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto !important;
+    background: conic-gradient(#0000 10%, #FFFFFF) !important;
+}
+#cnb-reactive-subs {
+    min-width: 120px;
+}
+#cnb-reactive-subs .cnb-spinner-loading {
+    width: 20px;
+    height: 20px;
+}
+
+#cnb-account-info-box .billing-not-found-msg {
+    font-family: 'helveticabold';
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    color: #FC5205;
+    background: #F6F8F9;
+    border-radius: 6px;
+    padding: 14px 10px;
+}
+#cnb-acc-content-container {
+    width: 100%;
+}
+#cnb-edit-login-form .change-email-success,
+#cnb-edit-login-form .change-password-success,
+#cnb-edit-billing-form .change-billing-success,
+#cnb-update-plan-form .cancel-plan-error,
+#cnb-update-plan-form .change-plan-error,
+#cnb-update-plan-form .change-plan-success {
+    display: none;
+}
+#cnb-edit-login-form .change-email-success.actived,
+#cnb-edit-login-form .change-password-success.actived,
+#cnb-edit-billing-form .change-billing-success.actived,
+#cnb-update-plan-form .cancel-plan-error.actived,
+#cnb-update-plan-form .change-plan-error.actived,
+#cnb-update-plan-form .change-plan-success.actived {
+    display: block;
+}
+#cnb-edit-plan-form .change-email-row h2,
+#cnb-edit-plan-form .change-plan-row h2 {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+#cnb-edit-plan-form .change-plan-row h2 {
+    margin-bottom: 12px;
+}
+#cnb-edit-plan-form .login-billing {
+    margin: 0;
+}
+#cnb-edit-plan-form hr {
+    margin-bottom: 0;
+}
+#confirmation-cancel-modal,
+#cnb-subs-require-modal,
+#cnb-subs-reactivate-modal {
+    background: #fff;
+    padding: 40px;
+    max-width: 360px;
+    margin: 0 auto;
+    text-align: center;
+}
+#cnb-subs-require-modal,
+#cnb-subs-reactivate-modal {
+    max-width: 450px;
+}
+#confirmation-cancel-modal .heading-title,
+#cnb-subs-require-modal .heading-title,
+#cnb-subs-reactivate-modal .heading-title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+}
+#confirmation-cancel-modal p,
+#cnb-subs-require-modal p,
+#cnb-subs-reactivate-modal p {
+    margin-bottom: 12px;
+}
+body .mfp-wrap {
+    z-index: 9999999;
+    overflow: auto;
+}
+body .mfp-wrap .mfp-container {
+    padding: 0;
+}
+.cnb-logout-link.disable {
+    text-decoration: none;
+    pointer-events: none;
+}
+@media (max-width: 991px) {
+   .subscribe-left {
+       padding: 40px 28px 40px 32px;
+   }
+   .cb-247-img {
+       right: 18px;
+       width: 90px;
+   }
+   .cb247-subscribe h2 {
+       max-width: 242px;
+   }
+   .create-account {
+       padding: 40px 24px;
+   }
+   .two-friend {
+       height: 250px;
+   }
+   .create-account .form-group.pr-0,
+   .account-box .form-group.pr-0 {
+     padding-right: 15px !important;
+   }
+   .create-account .form-group.pl-1,
+   .account-box .form-group.pl-1 {
+     padding-left: 15px !important;
+   }
+   .create-account .form-group.pr-1,
+   .account-box .form-group.pr-1 {
+     padding-right: 15px !important;
+   }
+}
+@media (max-width: 767px) {
+  .subscribe-page,
+  .reset-password-page,
+  .update-email-page {
+    padding: 0 24px;
+    background-color: #fff;
+    max-width: 500px;
+    margin: 40px auto;
+    min-height: 60vh;
+  }
+  .subscribe-left {
+    background-color: #fff;
+    background-image: none;
+    padding: 0;
+  }
+  .subscribe-left .cb247-subscribe {
+     display: none;
+  }
+  .subscribe-left .cb247-subscribe.actived {
+     display: block;
+  }
+  .logo-time {
+    width: calc(100% + 48px);
+    margin-left: -24px;
+    background-color: #000;
+    text-align: center;
+    padding: 10px 0;
+  }
+  .logo-time img {
+    width: 157px;
+    height: auto;
+  }
+  .cb-247-img {
+    display: none;
+  }
+  .cb247-subscribe h2 {
+    font-size: 32px;
+    color: #000;
+    max-width: 220px;
+    margin: 30px 0 0px 0;
+  }
+  .subscribe-left p {
+    color: #000;
+    font-size: 16px;
+    margin: 16px 0;
+  }
+  .benefits {
+    margin: 35px 0 0;
+  }
+  .benefits h3 {
+    color: #000;
+  }
+  .benefits ul {
+    border-bottom: 2px solid #E6EAED;
+    padding-bottom: 16px;
+  }
+  .benefits ul li {
+    color: #000;
+    line-height: 22px;
+    margin-bottom: 4px;
+  }
+  .two-friend {
+    display: none;
+  }
+  .subscribe-right {
+    padding: 0;
+    margin: 0;
+  }
+  .create-account {
+    padding: 24px 5px 40px;
+  }
+  .btn-set-inline {
+    flex-direction: column-reverse;
+    padding: 0;
+  }
+  .btn-set-inline .btn {
+    margin-bottom: 5px;
+  }
+  .btn-half {
+    width: 100%;
+  }
+  .account-box {
+    width: 100%;
+    min-height: 100vh;
+  }
+  body .mfp-inline-holder .mfp-content {
+    margin-top: 0;
+    margin-bottom: 96px;
+    width: 100%;
+  }
+}
+@media (max-width: 480px) {
+  body.page-id-99999999 .homecontainer > .container {
+     padding: 0;
+  }
+  body.page-id-99999999 .entry-content {
+     margin: 0;
+  }
+  .login-box {
+     width: 100%;
+     min-height: 100vh;
+  }
+  .steper-form {
+    margin-top: 16px;
+  }
+  .account-row, .login-billing {
+     margin: 0 24px;
+  }
+  .account-row h2 {
+     font-size: 24px;
+  }
+  .login-billing h2 {
+     font-size: 18px;
+  }
+  .subscribe-page,
+  .reset-password-page,
+  .update-email-page {
+      margin: 24px auto 0;
+  }
+  #confirmation-cancel-modal,
+  #cnb-subs-require-modal,
+  #cnb-subs-reactivate-modal {
+      padding: 40px 24px 24px;
+  }
+  body .form-group {
+    margin-bottom: 12px;
+  }
+  body .modal-wrapper {
+    margin: 0 32px;
+  }
+  .change-email-row {
+    padding: 0 0 16px;
+  }
+  .account-success-text {
+    margin: 20px 24px 0;
+  }
+  .update-email-page .login-box,
+  .reset-password-page .login-box {
+     min-height: 50vh;
+     padding: 32px 0;
+  }
+  p.update-email-success, p.update-email-error {
+     margin-top: 48px;
+  }
+}
+@media (max-width: 359px) {
+  body .modal-wrapper {
+    margin: 0 24px;
+  }
+}
+
+p.highlight {
+  font-family: 'Helvetica';
+  font-weight: 700;
+  color: #B2922C;
+}
+a.highlight {
+  letter-spacing: -0.02em;
+  color: #B2922C !important;
+  font-weight: 700;
+  text-decoration: none;
+}
+a.highlight:hover {
+  text-decoration: underline;
+}
+.plan-radio.gift .label {
+   height: 60px;
+}
+.plan-radio.gift label strong {
+    margin-top: 7px;
+}

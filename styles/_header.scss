@@ -1,0 +1,104 @@
+.site-header {
+    background: #000;
+    padding: 16px 0;
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1440px;
+    }
+    .site-branding {
+        width: 190px;
+        text-align: left;
+    }
+    .main-menu {
+        width: calc(100% - 350px);
+        text-align: center;
+    }
+    .secs-menu {
+        width: 160px;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .notice-and-social {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 12px;
+        color: #FFF;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        font-size: 15px;
+        padding: 0 0 10px;
+        border-bottom: 1px solid #f8da49;
+    }
+    .social-lst a{
+        margin-left: 16px;
+        display: inline-block;
+
+        svg, img {
+            width: 24px;
+            height: 24px;
+            transition: ease .25s all;
+        }
+        &.youtube svg {
+            width: 32px;
+        }
+        &:hover svg, 
+        &:hover img {
+            transform: scale(1.4);
+        }
+    }
+    .menu-list ul{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        a {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #ffffff;
+            text-transform: uppercase;
+            padding: 10px 12px;
+            text-decoration: none;
+            color: #989898;
+            display: block;
+
+            &:hover {
+                color: #f8e16b;
+            }
+        }
+        .active a {
+            color: #ffffff;
+        }
+    }
+    .login-btn {
+        background: #2d2d2d;
+        color: #ffffff;
+        box-shadow: none;
+        border: 0;
+        outline: 0;
+        padding: 10px 13px 10px 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 100px;
+        font-size: 16px;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+
+        &:hover {
+            background: #b28e2a;
+        }
+        img {
+            margin-right: 8px;
+        }
+    }
+}

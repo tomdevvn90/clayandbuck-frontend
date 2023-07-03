@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { GetStaticProps } from 'next'
 import Container from '../components/container'
-import MoreStories from '../components/more-stories'
-import HeroPost from '../components/hero-post'
+import TopStories from '../components/top-stories'
+import MainSideBar from '../components/main-sidebar'
 import Layout from '../components/layout'
 import PlayButtonList from '../components/play-button-list'
 import FeaturedPosts from '../components/featured-posts'
@@ -19,21 +19,27 @@ export default function Index({ allPosts: { edges }, preview }) {
         <meta name="description" content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."></meta>
       </Head>
       <div className='main-wrap'>
-        <Container>
-          <PlayButtonList></PlayButtonList>
-          <FeaturedPosts></FeaturedPosts>
-          {/* {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.featuredImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )} */}
-          {/* {morePosts.length > 0 && <MoreStories posts={morePosts} />} */}
-        </Container>
+        <div className='index-page'>
+          <Container>
+            <PlayButtonList></PlayButtonList>
+            <FeaturedPosts></FeaturedPosts>
+            <div className='main-content'>
+              <TopStories></TopStories>
+              <MainSideBar></MainSideBar>
+            </div>
+            {/* {heroPost && (
+              <HeroPost
+                title={heroPost.title}
+                coverImage={heroPost.featuredImage}
+                date={heroPost.date}
+                author={heroPost.author}
+                slug={heroPost.slug}
+                excerpt={heroPost.excerpt}
+              />
+            )} */}
+            {/* {morePosts.length > 0 && <MoreStories posts={morePosts} />} */}
+          </Container>
+        </div>
       </div>
       
     </Layout>
