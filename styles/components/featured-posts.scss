@@ -1,0 +1,81 @@
+.featured-posts {
+    margin: 32px 0;
+
+    #div-gpt-ad-minibar {
+        margin-top: 32px;
+        margin-bottom: 32px;
+        text-align: center;
+    }
+    .post-wrap {
+        .p-thumb img {
+            border: 4px solid #b28e2a;
+            width: 100%;
+            max-width: 100%;
+        }
+        .p-content {
+            h6 {
+                font-size: 20px;
+                line-height: 20px;
+                color: #f8e16b;
+                font-weight: 500;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+            }
+            h4 {
+                margin-bottom: 8px;
+                font-size: 30px;
+                line-height: 120%;
+                color: #ffffff;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+            }
+            .p-excerpt {
+                font-size: 18px;
+                line-height: 135%;
+                margin-top: 8px;
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal;
+                color: #b7b7b7;
+            }
+        }
+    }
+    .row-1 .post-wrap {
+        padding: 32px;
+        background: #000;
+        display: flex;
+
+        .p-thumb {
+            width: 33.333%;
+            padding-right: 24px;
+        }
+        .p-content {
+            width: calc(100% - 33.333%);
+            padding-left: 24px;
+        }
+    }
+    .row-2 {
+        margin-top: 32px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 32px 48px;
+        padding: 32px;
+        background: #000;
+
+        .post-wrap {
+            .p-thumb img {
+                border: 3px solid #b28e2a;
+            }
+            .p-content h4 {
+                margin-bottom: 0;
+                font-size: 18px;
+                line-height: 20px;
+                margin-top: 8px;
+            }
+        }
+    }
+}

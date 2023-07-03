@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 export default function TopStories() {
     return (
@@ -49,6 +51,33 @@ export default function TopStories() {
             </div>
 
 		    {/* Slider here */}
+            {/* <Swiper
+                spaceBetween={50}
+                slidesPerView={1}
+                onSlideChange={() => console.log('slide change')}
+                onSwiper={(swiper) => console.log(swiper)}
+                >
+                <SwiperSlide>
+                    <div>
+                        <p>"Independence Day weekend: Hanging out, hopefully having a lot of fun as we celebrate the best country in all the history of the world."<br/>- Clay Travis</p>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div>
+                        <p>"It's a great week for freedom. It's a great week for America."<br/>- Buck Sexton</p>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div>
+                        <p>"I think over time Americans get things right. Sometimes, it takes much too long."<br/>- Clay Travis</p>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div>
+                        <p>"Sometimes Clay and I almost get lost in the matrix fighting the commies for you guys."<br/>- Buck Sexton</p>
+                    </div>
+                </SwiperSlide>
+            </Swiper> */}
 
             <div className="post-item">
                 <Link href="/shannon-bream-breaks-down-the-scotus-rulings">

@@ -16,7 +16,7 @@ export default function FeaturedPosts() {
                         <div className="p-content">
                             <h6>30 June, 2023</h6>
                             <h4>Backup Multiple PCs, Macs and Mobile Devices Into ONE Account!</h4>
-                            <div className="p-excerpt"></div>
+                            <div className="p-excerpt">CLAY: Not only will you love us on YouTube, but you know your kids or grandkids will think you're cool if you share links with them! </div>
                         </div>
                     </div>
                 </Link>
