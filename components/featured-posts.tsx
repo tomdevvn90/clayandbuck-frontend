@@ -1,22 +1,20 @@
 import Link from 'next/link'
 
-export interface FeaturedPostsProps{
-
-}
-
-export default function FeaturedPosts() {
+export default function FeaturedPosts( {ftPosts} ) {
+    const firstPost = ftPosts[0]
+    const restPosts = ftPosts.slice(1)
     return (
         <div className="featured-posts">
             <div className="row-1">
-                <Link href="/backup-multiple-pcs-macs-and-mobile-devices-into-one-account">
+                <Link href={firstPost.url} target={firstPost.target}>
                     <div className="post-wrap">
                         <div className="p-thumb">
-                            <img src="https://www.clayandbuck.com/wp-content/uploads/2023/06/FT-860-x-380-062123-idrive-1.jpg" alt="Backup Multiple PCs, Macs and Mobile Devices Into ONE Account!" />
+                            <img src={firstPost.image_url} alt={firstPost.image_alt} />
                         </div>
                         <div className="p-content">
-                            <h6>30 June, 2023</h6>
-                            <h4>Backup Multiple PCs, Macs and Mobile Devices Into ONE Account!</h4>
-                            <div className="p-excerpt">CLAY: Not only will you love us on YouTube, but you know your kids or grandkids will think you're cool if you share links with them! </div>
+                            <h6>{firstPost.post_date}</h6>
+                            <h4 dangerouslySetInnerHTML={{ __html: firstPost.post_title }}></h4>
+                            <div className="p-excerpt" dangerouslySetInnerHTML={{ __html: firstPost.post_excerpt }}></div>
                         </div>
                     </div>
                 </Link>
@@ -29,38 +27,19 @@ export default function FeaturedPosts() {
             {/* End AdSlot 1 */}
 
             <div className="row-2">
-                <Link href="/listen-live">
-                    <div className="post-wrap">
-                        <div className="p-thumb">
-                            <img src="https://www.clayandbuck.com/wp-content/uploads/2023/06/FT-860-x-380-independence-day-2.jpg" alt="Inspired by Rush - The Clay Travis &amp; Buck Sexton Show" title="SLIDER CnB INSPIRED Clay and Buck" />
+                { restPosts && restPosts.map( p => (
+                    <Link href={p.url} key={p.post_id} target={p.target}>
+                        <div className="post-wrap">
+                            <div className="p-thumb">
+                                <img src={p.image_url} alt={p.image_alt}/>
+                            </div>
+                            <div className="p-content">
+                                <h4 dangerouslySetInnerHTML={{ __html: p.post_title }}></h4>
+                            </div>
                         </div>
-                        <div className="p-content">
-                            <h4>Wishing Everyone a Fabulous 4th!</h4>
-                        </div>
-                    </div>
-                </Link>
+                    </Link>
+                ) )}
 
-                <Link href="/listen-live">
-                    <div className="post-wrap">
-                        <div className="p-thumb">
-                            <img src="https://www.clayandbuck.com/wp-content/uploads/2023/06/FT-860-x-380-GUEST-HOST-Michael-Berry.jpg" alt="Inspired by Rush - The Clay Travis &amp; Buck Sexton Show" title="SLIDER CnB INSPIRED Clay and Buck"/>
-                        </div>
-                        <div className="p-content">
-                            <h4>Tune in Monday for Guest Host Michael Berry, and a Best of C&amp;B on July 4th.</h4>
-                        </div>
-                    </div>
-                </Link>
-
-                <Link href="/frank-siller">
-                    <div className="post-wrap">
-                        <div className="p-thumb">
-                            <img src="https://www.clayandbuck.com/wp-content/uploads/2023/06/FT-860-x-380-063023-1.jpg" alt="Tunnel to Towers CEO Frank Siller Makes a Big Independence Day Announcement" />
-                        </div>
-                        <div className="p-content">
-                            <h4>Tunnel to Towers CEO Frank Siller Makes a Big Independence Day Announcement</h4>
-                        </div>
-                    </div>
-                </Link>
             </div>
 		</div>
     )

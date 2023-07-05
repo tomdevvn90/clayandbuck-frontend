@@ -1,12 +1,24 @@
 .top-stories {
     width: 66%;
 
+    .load-more-wrap {
+        text-align: center;
+        margin: 24px;
+    }
+
     .quote-carousel {
         background: #b5912c;
-        padding: 20px 8% 40px;
+        padding: 48px 0 60px;
         margin: 0;
         margin-bottom: 20px;
 
+        .swiper-wrapper {
+            align-items: center;
+        }
+
+        .slide-content {
+            padding: 0 8%;
+        }
         p {
             font-size: 20px;
             line-height: 30px;
@@ -15,7 +27,26 @@
             font-family: $main-font;
             text-align: center;
             text-transform: uppercase;
-            margin-top: 0;
+            margin: 0 0 12px;
+            
+            &:last-child {
+                margin: 0;
+            }
+        }
+        .swiper-pagination {
+            bottom: 12px;
+
+            .swiper-pagination-bullet {
+                border: 0;
+                background: #d2ba69;
+                opacity: 1;
+                cursor: pointer;
+                margin: 0 5px;
+                
+                &.swiper-pagination-bullet-active {
+                    background: #fff;
+                }
+            }
         }
     }
 
