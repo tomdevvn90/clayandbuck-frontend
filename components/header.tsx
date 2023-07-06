@@ -3,17 +3,18 @@ import Image from 'next/image'
 import logo_img from '../public/images/clay-and-buck-logo.png'
 import white_mini_logo from '../public/images/white-mini-logo.png'
 import { useRouter } from "next/router";
+import { getAllMenu } from '../lib/graphql-api';
 
 export default function Header() {
   const router = useRouter();
-
+  // console.log(headerMenu)
   return (
     <header id="masthead" className="site-header">
 		  <div className="container">
         <div className="site-branding">
-			    <a href="https://inspired-by-rush.dev1.bwmmedia.com/" className="custom-logo-link" rel="home" aria-current="page">
+			    <Link href="/" className="custom-logo-link" rel="home" aria-current="page">
             <Image src={logo_img} width={150} height={80} alt='Clay and Buck'></Image>  
-          </a>
+          </Link>
         </div>
         <div className="main-menu">
           <div className="notice-and-social">
@@ -82,3 +83,10 @@ export default function Header() {
     </header>
   )
 }
+
+// export async function getServerSideProps() {
+//   const { headerMenu } = await getAllMenu();
+//   return {
+//      props: headerMenu
+//   }
+// }

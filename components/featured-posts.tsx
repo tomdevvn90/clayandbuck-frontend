@@ -6,7 +6,7 @@ export default function FeaturedPosts( {ftPosts} ) {
     return (
         <div className="featured-posts">
             <div className="row-1">
-                <Link href={firstPost.url} target={firstPost.target}>
+                <Link href={`posts/${firstPost.slug}`} target={firstPost.target}>
                     <div className="post-wrap">
                         <div className="p-thumb">
                             <img src={firstPost.image_url} alt={firstPost.image_alt} />
@@ -28,7 +28,7 @@ export default function FeaturedPosts( {ftPosts} ) {
 
             <div className="row-2">
                 { restPosts && restPosts.map( p => (
-                    <Link href={p.url} key={p.post_id} target={p.target}>
+                    <Link href={p.slug} key={p.post_id} target={p.target}>
                         <div className="post-wrap">
                             <div className="p-thumb">
                                 <img src={p.image_url} alt={p.image_alt}/>

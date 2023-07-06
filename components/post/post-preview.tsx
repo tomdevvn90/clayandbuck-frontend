@@ -1,6 +1,6 @@
-import Avatar from './avatar'
-import Date from './date'
-import CoverImage from './cover-image'
+// import Avatar from '../avatar'
+import Date from '../date'
+import CoverImage from '../cover-image'
 import Link from 'next/link'
 
 export default function PostPreview({
@@ -32,7 +32,7 @@ export default function PostPreview({
         className="text-lg leading-relaxed mb-4"
         dangerouslySetInnerHTML={{ __html: excerpt }}
       />
-      <Avatar author={author} />
+      {/* <Avatar author={author} /> */}
     </div>
   )
 }

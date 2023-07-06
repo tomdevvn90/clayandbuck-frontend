@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
@@ -6,23 +5,32 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight} from "@fortawesome/free-solid-svg-icons";
-import { getMoreStories } from "../lib/normal-api"
+import { getTopStories } from "../lib/normal-api"
+import PostItem from './post/post-item';
 
-export default function TopStories({tpStories, qtSliders}) {
-    const [displayStoriesNum, setDisplayStoriesNum] = useState(9);
-    const [articles, setArticles] = useState(tpStories);
-
-    const [nextPage, setNextPage] = useState(1)
+export default function TopStories({tpStories, exTopStories, qtSliders}) {
+    const [nextPage, setNextPage] = useState(2)
     const [topStories, setTopStories] = useState(tpStories)
+    const [showLoadMoreBtn, setLoadMoreBtn] = useState(true)
      
     // useEffect(() => {
     //     const _getNextPage = async () => {
-    //         const moreTopStories = await getMoreStories(nextPage, 9, '123');
+    //         const moreTopStories = await getTopStories(nextPage, 9, '123');
     //         console.log(moreTopStories)
     //         setTopStories([...topStories, ...moreTopStories]);
     //     }
     //     _getNextPage();
     // }, [nextPage])
+
+    async function loadMoreTopStories () {
+        const moreTopStories = await getTopStories(nextPage, 9, exTopStories);
+        if ( moreTopStories.length < 1 ) {
+            setLoadMoreBtn(false);
+        } else {
+            setTopStories([...topStories, ...moreTopStories]);
+            setNextPage( nextPage + 1 )
+        }
+    }
 
     const quoteSliders = (
         <Swiper pagination={{ clickable: true, }} modules={[Pagination]} className="quote-carousel">
@@ -39,60 +47,25 @@ export default function TopStories({tpStories, qtSliders}) {
         <div className="top-stories">		
             { topStories && topStories.map( (tpStory, index) => {
                 if ( index === 3 ) {
-                    console.log("here")
                     return (
                         <div key={index}>
                             {quoteSliders}
-                            <div className="post-item">
-                                <Link href={tpStory.url}>
-                                    <div className="post-wrap">
-                                        <div className="post-img">
-                                            <img src={tpStory.image_url} alt={tpStory.image_alt} />
-                                        </div>
-                                        <div className="post-content">
-                                            <h6>{tpStory.post_date}</h6>
-                                            <h4 title={tpStory.post_title} dangerouslySetInnerHTML={{ __html: tpStory.post_title }}></h4>
-                                            <p dangerouslySetInnerHTML={{ __html: tpStory.post_excerpt }}></p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div> 
+                            <PostItem postData={tpStory}></PostItem>
                         </div>
                     )
                 }
                 return (
-                    <div className="post-item" key={index}>
-                        <Link href={tpStory.url}>
-                            <div className="post-wrap">
-                                <div className="post-img">
-                                    <img src={tpStory.image_url} alt={tpStory.image_alt} />
-                                </div>
-                                <div className="post-content">
-                                    <h6>{tpStory.post_date}</h6>
-                                    <h4 title={tpStory.post_title} dangerouslySetInnerHTML={{ __html: tpStory.post_title }}></h4>
-                                    <p dangerouslySetInnerHTML={{ __html: tpStory.post_excerpt }}></p>
-                                </div>
-                            </div>
-                        </Link>
-                    </div> 
+                    <PostItem key={index} postData={tpStory}></PostItem>
                 )
             } )}	
-
-            {topStories.length > 0 ? ( 
+            { showLoadMoreBtn ? ( 
                 <div className='load-more-wrap'>
-                    <button onClick={async () => {
-                            //const moreTopStories = await getMoreStories(nextPage, 9, '123');
-                            // setTopStories([...topStories, ...moreTopStories]);
-                            setNextPage( nextPage + 1 )
-                            
-                            //console.log(moreTopStories);
-                        }}>
+                    <button onClick={ loadMoreTopStories }>
                         <span>Load More</span>
                         <FontAwesomeIcon icon={faRotateRight} style={{}} />
                     </button>
                 </div>
             ) : null}														
-
         </div>
     )
 }

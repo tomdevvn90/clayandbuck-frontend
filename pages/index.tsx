@@ -7,12 +7,15 @@ import Layout from '../components/layout'
 import PlayButtonList from '../components/play-button-list'
 import FeaturedPosts from '../components/featured-posts'
 import { getHomePageData } from '../lib/normal-api'
+import { getAllMenu } from '../lib/graphql-api'
 
-export default function Index( homePageData ) {
-  const { featuredPosts, topStories, quoteSliders } = homePageData
+export default function Index( {homePageData, headerMenu, preview} ) {
+  const { featuredPosts, 
+          topStories, excludeTopStories, 
+          quoteSliders } = homePageData
+  console.log("here", headerMenu)
   return (
-    // <Layout preview={preview}>
-    <Layout preview={false}>
+    <Layout preview={preview}>
       <Head>
         <title>The Clay Travis  & Buck Sexton Show</title>
         <meta name="description" content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."></meta>
@@ -24,7 +27,7 @@ export default function Index( homePageData ) {
             <FeaturedPosts ftPosts={featuredPosts}></FeaturedPosts>
           )}
           <div className='main-content'>
-            <TopStories tpStories={topStories} qtSliders={quoteSliders}></TopStories>
+            <TopStories tpStories={topStories} exTopStories={excludeTopStories} qtSliders={quoteSliders}></TopStories>
             <MainSideBar></MainSideBar>
           </div>
         </Container>
@@ -35,10 +38,11 @@ export default function Index( homePageData ) {
 }
 
 /** Server-side Rendering (SSR) */
-export async function getServerSideProps() {
+export async function getServerSideProps({ preview = false }) {
    const homePageData = await getHomePageData();
+   const headerMenu = await getAllMenu();
    return {
-      props: homePageData
+      props: {homePageData, headerMenu, preview}
    }
 }
 

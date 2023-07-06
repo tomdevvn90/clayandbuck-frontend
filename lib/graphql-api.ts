@@ -1,16 +1,16 @@
-const API_URL = process.env.WORDPRESS_API_URL
+const GRAPHQL_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_API_URL
 
 async function fetchAPI(query = '', { variables }: Record<string, any> = {}) {
   const headers = { 'Content-Type': 'application/json' }
 
-  if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
+  if (process.env.NEXT_PUBLIC_WORDPRESS_AUTH_REFRESH_TOKEN) {
     headers[
       'Authorization'
-    ] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`
+    ] = `Bearer ${process.env.NEXT_PUBLIC_WORDPRESS_AUTH_REFRESH_TOKEN}`
   }
 
   // WPGraphQL Plugin must be enabled
-  const res = await fetch(API_URL, {
+  const res = await fetch(GRAPHQL_API_URL, {
     headers,
     method: 'POST',
     body: JSON.stringify({
@@ -27,10 +27,39 @@ async function fetchAPI(query = '', { variables }: Record<string, any> = {}) {
   return json.data
 }
 
+export async function getAllMenu() {
+  const data = await fetchAPI(
+    `query GetMenu {
+      headerMenu: menuItems(where: {location: HEADER_MENU_FOR_REACT}) {
+        edges {
+          node {
+            id
+            label
+            path
+            url
+            order
+          }
+        }
+      }
+      footerMenu: menuItems(where: {location: FOOTER_MENU_FOR_REACT}) {
+        edges {
+          node {
+            id
+            label
+            path
+            url
+            order
+          }
+        }
+      }
+    }`, {}
+  )
+  return data
+}
+
 export async function getPreviewPost(id, idType = 'DATABASE_ID') {
   const data = await fetchAPI(
-    `
-    query PreviewPost($id: ID!, $idType: PostIdType!) {
+    `query PreviewPost($id: ID!, $idType: PostIdType!) {
       post(id: $id, idType: $idType) {
         databaseId
         slug
@@ -45,8 +74,8 @@ export async function getPreviewPost(id, idType = 'DATABASE_ID') {
 }
 
 export async function getAllPostsWithSlug() {
-  const data = await fetchAPI(`
-    {
+  const data = await fetchAPI(
+    `{
       posts(first: 10000) {
         edges {
           node {
@@ -61,8 +90,7 @@ export async function getAllPostsWithSlug() {
 
 export async function getAllPostsForHome(preview) {
   const data = await fetchAPI(
-    `
-    query AllPosts {
+    `query AllPosts {
       posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
         edges {
           node {
@@ -111,8 +139,7 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
   const isDraft = isSamePost && postPreview?.status === 'draft'
   const isRevision = isSamePost && postPreview?.status === 'publish'
   const data = await fetchAPI(
-    `
-    fragment AuthorFields on User {
+    `fragment AuthorFields on User {
       name
       firstName
       lastName

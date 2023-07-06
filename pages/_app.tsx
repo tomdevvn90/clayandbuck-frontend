@@ -10,7 +10,7 @@ import Footer from '../components/footer'
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <main>
-      <Header></Header>
+      <Header />
       <Component {...pageProps} />
       <Footer />
     </main>
