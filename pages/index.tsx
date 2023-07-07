@@ -1,21 +1,20 @@
 import Head from 'next/head'
-// import { GetStaticProps } from 'next'
 import Container from '../components/container'
 import TopStories from '../components/top-stories'
 import MainSideBar from '../components/main-sidebar'
-import Layout from '../components/layout'
+import Layout from '../components/layout/layout'
 import PlayButtonList from '../components/play-button-list'
 import FeaturedPosts from '../components/featured-posts'
 import { getHomePageData } from '../lib/normal-api'
 import { getAllMenu } from '../lib/graphql-api'
 
-export default function Index( {homePageData, headerMenu, preview} ) {
+export default function Index( {homePageData, allMenu, preview} ) {
   const { featuredPosts, 
           topStories, excludeTopStories, 
           quoteSliders } = homePageData
-  console.log("here", headerMenu)
+
   return (
-    <Layout preview={preview}>
+    <Layout preview={preview} allMenu={allMenu}>
       <Head>
         <title>The Clay Travis  & Buck Sexton Show</title>
         <meta name="description" content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."></meta>
@@ -40,9 +39,9 @@ export default function Index( {homePageData, headerMenu, preview} ) {
 /** Server-side Rendering (SSR) */
 export async function getServerSideProps({ preview = false }) {
    const homePageData = await getHomePageData();
-   const headerMenu = await getAllMenu();
+   const allMenu = await getAllMenu();
    return {
-      props: {homePageData, headerMenu, preview}
+      props: {homePageData, allMenu, preview}
    }
 }
 

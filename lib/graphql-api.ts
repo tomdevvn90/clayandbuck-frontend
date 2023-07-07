@@ -38,6 +38,7 @@ export async function getAllMenu() {
             path
             url
             order
+            target
           }
         }
       }
@@ -49,6 +50,7 @@ export async function getAllMenu() {
             path
             url
             order
+            target
           }
         }
       }
@@ -57,6 +59,47 @@ export async function getAllMenu() {
   return data
 }
 
+export async function getPageData(uri) {
+  const data = await fetchAPI(
+    `query PageData($uri: postUri!) {
+      headerMenu: menuItems(where: {location: HEADER_MENU_FOR_REACT}) {
+        edges {
+          node {
+            id
+            label
+            path
+            url
+            order
+            target
+          }
+        }
+      }
+      footerMenu: menuItems(where: {location: FOOTER_MENU_FOR_REACT}) {
+        edges {
+          node {
+            id
+            label
+            path
+            url
+            order
+            target
+          }
+        }
+      }
+      pageBy(uri: $uri) {
+        id
+        title
+        content
+        slug
+        uri
+      }
+    }`,
+    {
+      variables: { uri },
+    }
+  )
+  return data.post
+}
 export async function getPreviewPost(id, idType = 'DATABASE_ID') {
   const data = await fetchAPI(
     `query PreviewPost($id: ID!, $idType: PostIdType!) {

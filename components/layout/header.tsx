@@ -1,13 +1,20 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import logo_img from '../public/images/clay-and-buck-logo.png'
-import white_mini_logo from '../public/images/white-mini-logo.png'
+import logo_img from '../../public/images/clay-and-buck-logo.png'
+import white_mini_logo from '../../public/images/white-mini-logo.png'
 import { useRouter } from "next/router";
-import { getAllMenu } from '../lib/graphql-api';
+import MenuItem from '../menu-item'
 
-export default function Header() {
-  const router = useRouter();
-  // console.log(headerMenu)
+export default function Header( {headerMenu} ) {
+  const router = useRouter()
+
+  const menuList = headerMenu?.edges
+  if ( menuList ) menuList.sort( (a, b) => a.node.order - b.node.order )
+
+  const pacificDatetimeStr = new Date().toLocaleString("en-US", { timeZone: "US/Pacific" })
+  const pacificHour = new Date(pacificDatetimeStr).getHours() 
+  const showOnAirBtn = ( pacificHour >= 9 && pacificHour <= 11 ) ? true : false
+
   return (
     <header id="masthead" className="site-header">
 		  <div className="container">
@@ -19,7 +26,10 @@ export default function Header() {
         <div className="main-menu">
           <div className="notice-and-social">
             <div className="notice">
-                <span>Listen Weekdays 12pm - 3pm EST</span>    
+                <span>Listen Weekdays 12pm - 3pm EST</span>  
+                { showOnAirBtn && (
+                    <Link href="/videos/24-7-full-show-audio/" className="on-air-btn">On Air</Link>
+                ) }
             </div>
             <div className="social-lst">
               <a href="https://mobile.twitter.com/clayandbuck" target="_blank" className="social-item twitter">
@@ -46,30 +56,9 @@ export default function Header() {
           </div>
           <div className='menu-list'>
             <ul>
-              <li className={router.pathname == "/" ? "active" : ""}>
-                <Link href='/'>Home</Link>
-              </li>
-              <li className={router.pathname == "/stations" ? "active" : ""}>
-                <Link href='/stations'>Where to Listen</Link>
-              </li>
-              <li className={router.pathname == "/cnb-sign-up" ? "active" : ""}>
-                <Link href='/cnb-sign-up'>c&b VIP sign up</Link>
-              </li>
-              <li className={router.pathname == "/videos" ? "active" : ""}>
-                <Link href='/videos'>Audio/Video</Link>
-              </li>
-              <li className={router.pathname == "/free-podcast" ? "active" : ""}>
-                <Link href='/free-podcast'>Podcast</Link>
-              </li>
-              <li className={router.pathname == "/podcast" ? "active" : ""}>
-                <Link href='/podcast'>VIP Podcast</Link>
-              </li>
-              <li className={router.pathname == "/clay-and-buck-in-a-hurry" ? "active" : ""}>
-                <Link href='/clay-and-buck-in-a-hurry'>Newsletter</Link>
-              </li>
-              <li className={router.pathname == "/recommendations" ? "active" : ""}>
-                <Link href='/recommendations'>Recs</Link>
-              </li>
+              { menuList && menuList.map( ( { node }, index ) => (
+                  <MenuItem key={index} className={router.pathname == node.path ? "active" : ""} item={node}></MenuItem>
+              )) }
             </ul>
           </div>
 	      </div>
@@ -83,10 +72,3 @@ export default function Header() {
     </header>
   )
 }
-
-// export async function getServerSideProps() {
-//   const { headerMenu } = await getAllMenu();
-//   return {
-//      props: headerMenu
-//   }
-// }

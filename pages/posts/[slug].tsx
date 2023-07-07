@@ -5,9 +5,8 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import Container from '../../components/container'
 import PostBody from '../../components/post/post-body'
 import MoreStories from '../../components/more-stories'
-import Header from '../../components/header'
 import PostHeader from '../../components/post/post-header'
-import Layout from '../../components/layout'
+import Layout from '../../components/layout/layout'
 import PostTitle from '../../components/post/post-title'
 import Tags from '../../components/tags'
 import { getAllPostsWithSlug, getPostAndMorePosts } from '../../lib/graphql-api'
@@ -21,7 +20,7 @@ export default function Post({ post, posts, preview }) {
   }
 
   return (
-    <Layout preview={preview}>
+    <Layout preview={preview} allMenu={{}}>
       <Container>
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
