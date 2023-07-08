@@ -12,9 +12,10 @@ export default function Index( {homePageData, allMenu, preview} ) {
   const { featuredPosts, 
           topStories, excludeTopStories, 
           quoteSliders } = homePageData
+  const { headerMenu, footerMenu } = allMenu
 
   return (
-    <Layout preview={preview} allMenu={allMenu}>
+    <Layout headerMenu={headerMenu} footerMenu={footerMenu} preview={preview} >
       <Head>
         <title>The Clay Travis  & Buck Sexton Show</title>
         <meta name="description" content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."></meta>
@@ -31,7 +32,6 @@ export default function Index( {homePageData, allMenu, preview} ) {
           </div>
         </Container>
       </div>
-      
     </Layout>
   )
 }
@@ -52,13 +52,4 @@ export async function getServerSideProps({ preview = false }) {
 //         props: homePageData,
 //         revalidate: 10,
 //      }
-// }
-
-// export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
-//   const allPosts = await getAllPostsForHome(preview)
-
-//   return {
-//     props: { allPosts, preview },
-//     revalidate: 10,
-//   }
 // }

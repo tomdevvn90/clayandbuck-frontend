@@ -1,9 +1,8 @@
 import Meta from '../meta'
 import Header from './header'
-import Footer from '../footer'
+import Footer from './footer'
 
-export default function Layout({ preview, allMenu, children }) {
-  const { headerMenu, footerMenu } = allMenu
+export default function Layout({ headerMenu, footerMenu, preview, children }) {
   return (
     <>
       <Meta />
@@ -11,7 +10,7 @@ export default function Layout({ preview, allMenu, children }) {
       <div className="page-content">
         {children}
       </div>
-      <Footer  />
+      <Footer footerMenu={footerMenu} />
     </>
   )
 }

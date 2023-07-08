@@ -1,3 +1,5 @@
+import { fraHeaderFooter } from "./graphql-fragements"
+
 const GRAPHQL_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_API_URL
 
 async function fetchAPI(query = '', { variables }: Record<string, any> = {}) {
@@ -30,30 +32,7 @@ async function fetchAPI(query = '', { variables }: Record<string, any> = {}) {
 export async function getAllMenu() {
   const data = await fetchAPI(
     `query GetMenu {
-      headerMenu: menuItems(where: {location: HEADER_MENU_FOR_REACT}) {
-        edges {
-          node {
-            id
-            label
-            path
-            url
-            order
-            target
-          }
-        }
-      }
-      footerMenu: menuItems(where: {location: FOOTER_MENU_FOR_REACT}) {
-        edges {
-          node {
-            id
-            label
-            path
-            url
-            order
-            target
-          }
-        }
-      }
+      ${fraHeaderFooter}
     }`, {}
   )
   return data
@@ -61,48 +40,29 @@ export async function getAllMenu() {
 
 export async function getPageData(uri) {
   const data = await fetchAPI(
-    `query PageData($uri: postUri!) {
-      headerMenu: menuItems(where: {location: HEADER_MENU_FOR_REACT}) {
-        edges {
-          node {
-            id
-            label
-            path
-            url
-            order
-            target
-          }
-        }
-      }
-      footerMenu: menuItems(where: {location: FOOTER_MENU_FOR_REACT}) {
-        edges {
-          node {
-            id
-            label
-            path
-            url
-            order
-            target
-          }
-        }
-      }
+    `query PageData($uri: String) {
+      ${fraHeaderFooter}
       pageBy(uri: $uri) {
         id
         title
         content
         slug
         uri
+        template {
+          templateName
+        }
       }
     }`,
     {
       variables: { uri },
     }
   )
-  return data.post
+  return data
 }
 export async function getPreviewPost(id, idType = 'DATABASE_ID') {
   const data = await fetchAPI(
     `query PreviewPost($id: ID!, $idType: PostIdType!) {
+      ${fraHeaderFooter}
       post(id: $id, idType: $idType) {
         databaseId
         slug
@@ -131,54 +91,11 @@ export async function getAllPostsWithSlug() {
   return data?.posts
 }
 
-export async function getAllPostsForHome(preview) {
-  const data = await fetchAPI(
-    `query AllPosts {
-      posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
-        edges {
-          node {
-            title
-            excerpt
-            slug
-            date
-            featuredImage {
-              node {
-                sourceUrl
-              }
-            }
-            author {
-              node {
-                name
-                firstName
-                lastName
-                avatar {
-                  url
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `,
-    {
-      variables: {
-        onlyEnabled: !preview,
-        preview,
-      },
-    }
-  )
-
-  return data?.posts
-}
-
 export async function getPostAndMorePosts(slug, preview, previewData) {
   const postPreview = preview && previewData?.post
   // The slug may be the id of an unpublished post
   const isId = Number.isInteger(Number(slug))
-  const isSamePost = isId
-    ? Number(slug) === postPreview.id
-    : slug === postPreview.slug
+  const isSamePost = isId ? Number(slug) === postPreview.id : slug === postPreview.slug
   const isDraft = isSamePost && postPreview?.status === 'draft'
   const isRevision = isSamePost && postPreview?.status === 'publish'
   const data = await fetchAPI(
@@ -221,6 +138,7 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
       }
     }
     query PostBySlug($id: ID!, $idType: PostIdType!) {
+      ${fraHeaderFooter}
       post(id: $id, idType: $idType) {
         ...PostFields
         content

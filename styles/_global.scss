@@ -28,6 +28,13 @@ body {
     h1, h2, h3, h4, h5, h6 {
         margin: 0 0 20px;    
     }
+    h1 {
+        margin: 24px 0;
+        font-size: 48px;
+        line-height: normal;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
     a {
         text-decoration: none;
         color: #4169e1;
@@ -39,14 +46,64 @@ body {
     img {
         max-width: 100%;
     }
+    ul, ol {
+        font-weight: 400;
+        padding: 0;
+        margin: 0 0 24px;
+    }
+    ul.breadcrumbs {
+        margin-bottom: 20px;
+
+        li {
+            display: inline-block;
+            position: relative;
+            font-size: 18px;
+            letter-spacing: 1px;
+            line-height: 24px;
+            color: #f8e16b;
+            font-weight: 700;
+            font-family: "Barlow";
+            text-transform: uppercase;
+
+            a {
+                color: #f8e16b;
+                text-transform: uppercase;
+                text-decoration: none;
+            }
+            &.active {
+                padding-left: 20px;
+                color: #fff;
+                &::before {
+                    display: block;
+                    content: '|';
+                    position: absolute;
+                    left: 8px;
+                }
+            }
+        }
+    }
     main {
         background: #232323;
 
-        .main-wrap {
-            background-image: url(../public/images/container-bg.png);
-            background-repeat: no-repeat;
-            background-position: top left;
-            background-size: initial;
+        .page-content {
+            color: #fff;
+
+            .main-wrap {
+                background-image: url(../public/images/container-bg.png);
+                background-repeat: no-repeat;
+                background-position: top left;
+                background-size: initial;
+                padding: 48px 0;
+    
+                &.white-background {
+                    background-color: #fff;
+                    color: #000;
+    
+                    ul.breadcrumbs li.active a {
+                        color: #000;
+                    }
+                }
+            }
         }
     }
     .container {

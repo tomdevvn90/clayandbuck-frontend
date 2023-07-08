@@ -6,7 +6,9 @@ import 'swiper/css/pagination';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight} from "@fortawesome/free-solid-svg-icons";
 import { getTopStories } from "../lib/normal-api"
+import { sanitize } from '../utils/miscellaneous';
 import PostItem from './post/post-item';
+
 
 export default function TopStories({tpStories, exTopStories, qtSliders}) {
     const [nextPage, setNextPage] = useState(2)
@@ -37,7 +39,7 @@ export default function TopStories({tpStories, exTopStories, qtSliders}) {
             { qtSliders && qtSliders.map( (sl, index) => {
                 return (
                     <SwiperSlide key={index}>
-                        <div className='slide-content' dangerouslySetInnerHTML={{ __html: sl.content}}></div>
+                        <div className='slide-content' dangerouslySetInnerHTML={{ __html: sanitize(sl.content) }}></div>
                     </SwiperSlide>
                 )
             } )}

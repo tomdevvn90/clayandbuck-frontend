@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import {sanitize} from '../utils/miscellaneous';
 
 export default function FeaturedPosts( {ftPosts} ) {
     const firstPost = ftPosts[0]
@@ -13,8 +14,8 @@ export default function FeaturedPosts( {ftPosts} ) {
                         </div>
                         <div className="p-content">
                             <h6>{firstPost.post_date}</h6>
-                            <h4 dangerouslySetInnerHTML={{ __html: firstPost.post_title }}></h4>
-                            <div className="p-excerpt" dangerouslySetInnerHTML={{ __html: firstPost.post_excerpt }}></div>
+                            <h4 dangerouslySetInnerHTML={{ __html: sanitize( firstPost.post_title ) }}></h4>
+                            <div className="p-excerpt" dangerouslySetInnerHTML={{ __html: sanitize( firstPost.post_excerpt ) }}></div>
                         </div>
                     </div>
                 </Link>
@@ -34,7 +35,7 @@ export default function FeaturedPosts( {ftPosts} ) {
                                 <img src={p.image_url} alt={p.image_alt}/>
                             </div>
                             <div className="p-content">
-                                <h4 dangerouslySetInnerHTML={{ __html: p.post_title }}></h4>
+                                <h4 dangerouslySetInnerHTML={{ __html: sanitize( p.post_title ) }}></h4>
                             </div>
                         </div>
                     </Link>

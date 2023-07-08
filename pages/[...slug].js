@@ -7,23 +7,25 @@ import { getPageData } from '../lib/graphql-api'
 
 export default function Page( {pageData, preview} ) {
 
-	console.log(pageData)
+	const { headerMenu, footerMenu } = pageData
+	const page = pageData?.pageBy ?? {}
+	const { templateName } = page.template
+	const pageClass = templateName.toLowerCase().replace(' ', '-')
 
 	const router = useRouter()
-
-	// if (!router.isFallback && !pageData?.slug) {
-	// 	return <ErrorPage statusCode={404} />
-	// }
+	if (!router.isFallback && !page?.slug) {
+		return <ErrorPage statusCode={404} />
+	}
   
 	return (
-	  <Layout preview={preview} allMenu={{}}>
+	  <Layout headerMenu={headerMenu} footerMenu={footerMenu} preview={preview}>
 		<Head>
-		  <title>The Clay Travis  & Buck Sexton Show</title>
+		  <title>{page.title}</title>
 		  <meta name="description" content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."></meta>
 		</Head>
-		<div className='main-wrap index-page'>
+		<div className={`main-wrap page ${pageClass}`}>
 		  <Container>
-			 <div>Here is content</div>
+		  	<div dangerouslySetInnerHTML={{__html: page?.content ?? {} }} ></div>
 		  </Container>
 		</div>
 		
@@ -37,8 +39,8 @@ export default function Page( {pageData, preview} ) {
 	preview = false,
 	previewData,
   } ) {
-	 console.log(params.slug[0])
-	 const pageData = {}//await getPageData(params.slug);
+	 const slug = params?.slug.join( '/' )
+	 const pageData = await getPageData( slug );
 	 return {
 		props: {pageData, preview}
 	 }
