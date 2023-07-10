@@ -28,6 +28,7 @@ export default function Meta() {
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta name="description" content={META_DESC} />
       <meta property="og:image" content={HOME_OG_IMAGE_URL} />
+      <script async type="text/javascript" src="//www.googletagservices.com/tag/js/gpt.js"></script>
     </Head>
   )
 }

@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import Container from '../components/container'
-import TopStories from '../components/top-stories'
+import TopStories from '../components/home/top-stories'
 import MainSideBar from '../components/main-sidebar'
 import Layout from '../components/layout/layout'
-import PlayButtonList from '../components/play-button-list'
-import FeaturedPosts from '../components/featured-posts'
+import PlayButtonList from '../components/home/play-button-list'
+import FeaturedPosts from '../components/home/featured-posts'
 import { getHomePageData } from '../lib/normal-api'
 import { getAllMenu } from '../lib/graphql-api'
 
@@ -44,7 +44,6 @@ export async function getServerSideProps({ preview = false }) {
       props: {homePageData, allMenu, preview}
    }
 }
-
 /** Static Site Generation (SSG) */
 // export const getStaticProps: GetStaticProps = async () => {
 //      const homePageData = await getHomePageData();

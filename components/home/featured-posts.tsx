@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import {sanitize} from '../utils/miscellaneous';
+import {sanitize} from '../../utils/miscellaneous';
 
 export default function FeaturedPosts( {ftPosts} ) {
-    const firstPost = ftPosts[0]
-    const restPosts = ftPosts.slice(1)
-    return (
+    const firstPost = ftPosts ? ftPosts[0] : []
+    const restPosts = ftPosts ? ftPosts.slice(1): []
+    return firstPost && (
         <div className="featured-posts">
             <div className="row-1">
                 <Link href={`posts/${firstPost.slug}`} target={firstPost.target}>
@@ -28,19 +28,35 @@ export default function FeaturedPosts( {ftPosts} ) {
             {/* End AdSlot 1 */}
 
             <div className="row-2">
-                { restPosts && restPosts.map( p => (
-                    <Link href={p.slug} key={p.post_id} target={p.target}>
-                        <div className="post-wrap">
-                            <div className="p-thumb">
-                                <img src={p.image_url} alt={p.image_alt}/>
-                            </div>
-                            <div className="p-content">
-                                <h4 dangerouslySetInnerHTML={{ __html: sanitize( p.post_title ) }}></h4>
-                            </div>
-                        </div>
-                    </Link>
-                ) )}
-
+                { restPosts && restPosts.map( p => {
+                    if ( !p.slug.includes('http') ) { 
+                        return (
+                            <Link href={p.slug} key={p.post_id} target={p.target}>
+                                <div className="post-wrap">
+                                    <div className="p-thumb">
+                                        <img src={p.image_url} alt={p.image_alt}/>
+                                    </div>
+                                    <div className="p-content">
+                                        <h4 dangerouslySetInnerHTML={{ __html: sanitize( p.post_title ) }}></h4>
+                                    </div>
+                                </div>
+                            </Link>
+                        )
+                    } else {
+                        return (
+                            <a href={p.slug} key={p.post_id} target={p.target}>
+                                <div className="post-wrap">
+                                    <div className="p-thumb">
+                                        <img src={p.image_url} alt={p.image_alt}/>
+                                    </div>
+                                    <div className="p-content">
+                                        <h4 dangerouslySetInnerHTML={{ __html: sanitize( p.post_title ) }}></h4>
+                                    </div>
+                                </div>
+                            </a>
+                        )
+                    }
+                } )}
             </div>
 		</div>
     )

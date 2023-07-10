@@ -1,0 +1,46 @@
+//all paths in css files now relative - AL-3104
+//@function static-domain() {
+//  @return "//#{map-get($urls, staticdomain)}";
+//}
+
+@function map-deep-get($map, $keys...) {
+    @each $key in $keys {
+        $map: map-get($map, $key);
+    }
+    @return $map;
+}
+
+@function getcolor($key) {
+  @if map-has-key($colors, $key) {
+    @return map-get($colors, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $colors.";
+  @return null;
+}
+
+@function get-palette-color($palette, $key) {
+  @if map-has_key($palettes, $palette) {
+
+    @return map-deep-get($palettes, $palette, $key);
+
+    //@warn "Unknown `#{$key}` in `#{$palette}`.";
+    //@return null;
+  }
+
+  @warn "Unknown `#{$palette}` in $palettes.";
+  @return null;
+}
+
+// TODO: figure out what's going on with pxtoem and pxtorem
+@function pxtoem($pixels, $context: $base-font-size) {
+  @return ($pixels / $context) * 1em;
+}
+
+@function pxtorem($pixels, $context: $base-font-size) {
+  @return ($pixels / $context) * 1rem;
+}
+
+@function getfont($family){
+  @return "#{map-get($fonts, $family)}";
+}

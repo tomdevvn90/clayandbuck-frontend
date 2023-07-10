@@ -1,0 +1,59 @@
+
+//@mixin background-img($path) {
+//  background-image: url("#{static-domain()}#{$path}");
+//}
+
+@mixin placeholdit($width, $height, $bgonly: false) {
+  background: url("//placehold.it/#{$width}x#{$height}") no-repeat center;
+  background-size: cover;
+  // TODO: logic to hide this part if bgonly is true
+  display: block;
+  height: #{$height}px;
+  width: #{$width}px;
+}
+
+@mixin font-face($family) {
+  font-family: #{getfont($family)};
+}
+
+/* mixin for multiline */
+@mixin multi-line-ellipsis($lineHeight: 1.2em, $lineCount: 1, $bgColor: white){
+  overflow: hidden;
+  position: relative;
+  line-height: $lineHeight;
+  max-height: $lineHeight * $lineCount;
+  text-align: justify;
+  //margin-right: -1em;
+  padding-right: 1em;
+
+  &:before {
+    content: "...";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background: $bgColor;
+  }
+}
+
+/* mixin for desktop/no-touchevents hover */
+@mixin desktop-hover {
+    .no-touchevents & {
+        &:hover {
+            @content;
+        }
+    }
+}
+
+@mixin heading($size) {
+  line-height: var(--heading-#{$size}-line-height);
+  font-size: var(--heading-#{$size}-font-size);
+}

@@ -1,0 +1,116 @@
+
+// base font size that overrides bootstrap's $font-size-base
+$base-font-size: 10;
+$base-font-px: #{$base-font-size}px;
+
+// bootstrap nav
+$navbar-height-md: 80px;
+
+// ads
+$rail-ad-begins-breakpoint: 1190px;
+$rail-ad-showright-breakpoint: 1310px;
+$rail-ad-showall-breakpoint: 1460px;
+
+$small-tablet-breakpoint: 768px;
+$mobile-breakpoint: 1060px;
+
+// sass map
+// use map-get($mapname, key)
+
+$urls: (
+  staticdomain: "flint-img.iheart.com"
+);
+
+$fonts: (
+  default: "Lato, Helvetica, Arial, sans-serif",
+  accent: "Merriweather, serif",
+  ihr: "'Helvetica Neue', Helvetica, Arial, sans-serif"
+);
+
+$colors: (
+  fpo: #ffdfff,
+  fpo2: #0783bc,
+  black: #27292D,
+  medium: #717277,
+  hrdivider: #C5CDD2,
+  black2: #3F4447,
+  ltgray: #C5CDD2,
+  iheart: #c6002b,
+  flpink: #ef69a8,
+  white: #fff,
+  ltblack: #3F4447,
+  silver: #C5CDD2,
+  ltblue: #68C8D5,
+  gray: #717277
+);
+
+$palettes: (
+  red: (
+    600: #C6002B,
+    500: #CD212E,
+    400: #E22C3A,
+    300: #F4747C,
+    200: #F79096,
+    100: #F4ADB1
+  ),
+  orange: (
+    600: #CC8838,
+    500: #DA994D,
+    400: #EDB574,
+    300: #F2C086,
+    200: #F7CA94,
+    100: #F5D2A9
+  ),
+  green: (
+    600: #46815A,
+    500: #62AA7B,
+    400: #78D297,
+    300: #8BDEA7,
+    200: #9CE2B4,
+    100: #ACE7C0
+  ),
+  blue: (
+    600: #267883,
+    500: #509DA7,
+    400: #60BAC6,
+    300: #68C8D5,
+    200: #84DAE5,
+    100: #A3E2EB
+  ),
+  purple: (
+    600: #5B34CC,
+    500: #6B44DA,
+    400: #7D5AE0,
+    300: #8B6AE9,
+    200: #A488F3,
+    100: #BBA6F8
+  ),
+  grey: (
+    600: #27292D,
+    500: #3F4447,
+    400: #717277,
+    300: #C5CDD2,
+    200: #E6EAED,
+    100: #F6F8F9
+  )
+);
+
+$zindexes: (
+  panelbody: 1,
+  panelshadow: 2,
+  panellink: 3
+);
+
+$gallery-control-left-image: "../../../assets/img/gallery/nav-left.png";
+$gallery-control-right-image: "../../../assets/img/gallery/nav-right.png";
+$gallery-height: 478px;
+
+$station-livebar-zindex: 9990;
+$legal-notice-zindex: 9991;
+$modal-component-zindex: 9997;
+$modal-bg-zindex: 9998;
+$modal-content-zindex: 9999;
+
+$spinkit-spinner-margin: 40px auto !default;
+$spinkit-size: 40px !default;
+$spinkit-spinner-color: var(--station-link-color) !default;
