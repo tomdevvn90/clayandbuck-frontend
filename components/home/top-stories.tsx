@@ -35,7 +35,13 @@ export default function TopStories({tpStories, exTopStories, qtSliders}) {
     }
 
     const quoteSliders = (
-        <Swiper pagination={{ clickable: true, }} modules={[Pagination]} className="quote-carousel">
+        <Swiper 
+            pagination={{
+                clickable: true,
+            }}
+            modules={[Pagination]} 
+            className="quote-carousel" 
+        >
             { qtSliders && qtSliders.map( (sl, index) => {
                 return (
                     <SwiperSlide key={index}>

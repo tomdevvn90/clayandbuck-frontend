@@ -8,8 +8,9 @@
   padding: 3px 0;
   cursor: pointer;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
 }
-
 .track:first-child {
   margin: 0;
 }
@@ -22,8 +23,13 @@
   margin: 5px 0;
   padding: 3px 0;
   cursor: pointer;
-
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.track img, .active img {
+  max-width: 80px;
 }
 
 .active:first-child {

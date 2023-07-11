@@ -9,7 +9,7 @@ export default function Page( {pageData, preview} ) {
 
 	const { headerMenu, footerMenu } = pageData
 	const page = pageData?.pageBy ?? {}
-	const { templateName } = page.template
+	const { templateName } = page?.template
 	const pageClass = templateName.toLowerCase().replace(' ', '-')
 
 	const router = useRouter()

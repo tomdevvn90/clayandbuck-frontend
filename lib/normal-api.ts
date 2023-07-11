@@ -13,7 +13,15 @@ async function fetchAPINormal( url: string ) {
         console.error("Error while fetching PWS API:", e);
     }
   };
-  
+
+/**
+ * Get Podcasts data
+ * @returns 
+ */
+export async function getPodcastsData() {
+    const data = await fetchAPINormal( `/v2/podcasts-player/`)
+    return data;
+}
 /**
  * Get data for Homepage
  * @returns 

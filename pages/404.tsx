@@ -6,8 +6,9 @@ import { GetStaticProps } from 'next'
 import { getAllMenu } from '../lib/graphql-api'
 
 export default function FourZeroFourPage( allMenu ) {
+    const { headerMenu, footerMenu } = allMenu
     return (
-    <Layout preview={false} allMenu={allMenu}>
+    <Layout headerMenu={headerMenu} footerMenu={footerMenu} preview={false} >
             <div className='main-wrap page-404'>
                 <Container>
                     <h1>Sorry No result found</h1>

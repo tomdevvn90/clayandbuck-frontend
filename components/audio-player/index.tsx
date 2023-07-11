@@ -29,6 +29,7 @@ import pauseBtn from "./icons/pause.png";
 import nextBtn from "./icons/next.png";
 import shuffleAllBtn from "./icons/shuffle_all.png";
 import shuffleNoneBtn from "./icons/shuffle_none.png";
+import AudioImage from "./parts/AudioImage";
 
 const colors = `html{
     --tagsBackground: #9440f3;
@@ -54,35 +55,32 @@ const colors = `html{
   }`;
 
 const Player = ({
-  trackList,
-  includeTags = true,
-  includeSearch = true,
-  showPlaylist = true,
-  autoPlayNextTrack = true,
-  customColorScheme = colors,
+    trackList,
+    includeTags = true,
+    includeSearch = true,
+    showPlaylist = true,
+    autoPlayNextTrack = true,
+    customColorScheme = colors,
 }) => {
-  const [query, updateQuery] = useState("");
+    let playlist = [];
+    const [query, updateQuery] = useState("");
+    const [audio, setAudio] = useState(null);
+    const [active, setActive] = useState(false);
+    const [title, setTitle] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
+    const [length, setLength] = useState(0);
+    const [time, setTime] = useState(0);
+    const [slider, setSlider] = useState(1);
+    const [drag, setDrag] = useState(0);
+    const [volume, setVolume] = useState(0.8);
+    let [end, setEnd] = useState(0);
+    const [shuffled, setShuffled] = useState(false);
+    const [looped, setLooped] = useState(false);
+    const [filter, setFilter] = useState([]);
+    let [curTrack, setCurTrack] = useState(0);
 
-  let playlist = [];
-
-  const [audio, setAudio] = useState(null);
-  const [active, setActive] = useState(false);
-  const [title, setTitle] = useState("");
-  const [length, setLength] = useState(0);
-  const [time, setTime] = useState(0);
-  const [slider, setSlider] = useState(1);
-  const [drag, setDrag] = useState(0);
-  const [volume, setVolume] = useState(0.8);
-  let [end, setEnd] = useState(0);
-  const [shuffled, setShuffled] = useState(false);
-  const [looped, setLooped] = useState(false);
-
-  const [filter, setFilter] = useState([]);
-  let [curTrack, setCurTrack] = useState(0);
-
-  const GlobalStyles = createGlobalStyle`${customColorScheme}`;
-
-  const fmtMSS = (s) => new Date(1000 * s).toISOString().substr(15, 4);
+    const GlobalStyles = createGlobalStyle`${customColorScheme}`;
+    const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(15, 4);
 
   useEffect(() => {
     const audio = new Audio(trackList[curTrack].url);
@@ -99,7 +97,6 @@ const Player = ({
     };
 
     const setAudioVolume = () => setVolume(audio.volume);
-
     const setAudioEnd = () => setEnd((end += 1));
 
     // events on audio object
@@ -110,6 +107,7 @@ const Player = ({
 
     setAudio(audio);
     setTitle(trackList[curTrack].title);
+    setImageUrl(trackList[curTrack].imageUrl)
 
     return () => {
       audio.pause();
@@ -117,14 +115,16 @@ const Player = ({
   }, []);
 
   const tags = [];
-  trackList.forEach((track) => {
-    track.tags.forEach((tag) => {
-      if (!tags.includes(tag)) {
-        tags.push(tag);
-      }
+  if ( includeTags ) {
+    trackList.forEach((track) => {
+      track.tags.forEach((tag) => {
+        if (!tags.includes(tag)) {
+          tags.push(tag);
+        }
+      });
     });
-  });
-
+  }
+  
   const shufflePlaylist = (arr) => {
     if (arr.length === 1) return arr;
     const rand = Math.floor(Math.random() * arr.length);
@@ -175,6 +175,7 @@ const Player = ({
     if (audio != null) {
       audio.src = trackList[curTrack].url;
       setTitle(trackList[curTrack].title);
+      setImageUrl(trackList[curTrack].imageUrl)
       play();
     }
   }, [curTrack]);
@@ -228,15 +229,14 @@ const Player = ({
   return (
     <PageTemplate>
       <GlobalStyles />
+
       {includeTags && (
         <TagsTemplate>
           {tags.map((tag, index) => {
             return (
               <TagItem
                 key={index}
-                className={
-                  filter.length !== 0 && filter.includes(tag) ? "active" : ""
-                }
+                className={ filter.length !== 0 && filter.includes(tag) ? "active" : "" }
                 tag={tag}
                 onClick={tagClickHandler}
               />
@@ -244,6 +244,7 @@ const Player = ({
           })}
         </TagsTemplate>
       )}
+
       {includeSearch && (
         <Search
           value={query}
@@ -251,12 +252,14 @@ const Player = ({
           placeholder={`Search ${trackList.length} tracks...`}
         />
       )}
+
       <PlayerTemplate>
         <div className={styles.title_time_wrapper}>
+          <AudioImage imageUrl={imageUrl} />
           <Title title={title} />
           <Time
-            time={`${!time ? "0:00" : fmtMSS(time)}/${
-              !length ? "0:00" : fmtMSS(length)
+            time={`${!time ? "00:00" : fmtMMSS(time)}/${
+              !length ? "00:00" : fmtMMSS(length)
             }`}
           />
         </div>
@@ -270,6 +273,7 @@ const Player = ({
           onMouseUp={play}
           onTouchEnd={play}
         />
+
         <div className={styles.buttons_volume_wrapper}>
           <ButtonsBox>
             <LoopCurrent
@@ -314,6 +318,7 @@ const Player = ({
                       key={index}
                       data_key={index}
                       title={el.title}
+                      imageUrl={el.imageUrl}
                       src={el.url}
                       onClick={playlistItemClickHandler}
                     />

@@ -12,18 +12,15 @@
 .wrapper::-webkit-scrollbar {
   width: 5px;
 }
-
 /* Track */
 .wrapper::-webkit-scrollbar-track {
   border-radius: 10px;
 }
-
 /* Handle */
 .wrapper::-webkit-scrollbar-thumb {
   background: var(--primaryText);
   border-radius: 10px;
 }
-
 @media only screen and (min-width: 768px) {
   .wrapper {
     width: 90%;
