@@ -36,7 +36,7 @@
 }
 .active:first-child {
   margin: 0;
-}
+} 
 .track:hover {
   background-color: var(--playlistBackground);
   color: var(--playlistTextHoverActive);
