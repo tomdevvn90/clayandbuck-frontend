@@ -30,6 +30,8 @@ import nextBtn from "./icons/next.png";
 import shuffleAllBtn from "./icons/shuffle_all.png";
 import shuffleNoneBtn from "./icons/shuffle_none.png";
 import AudioImage from "./parts/AudioImage";
+import StartDate from "./parts/StartDate";
+import PlaylistToggle from "./parts/PlaylistToggle";
 
 const colors = `html{
     --tagsBackground: #9440f3;
@@ -39,15 +41,15 @@ const colors = `html{
     --searchBackground: #18191f;
     --searchText: #ffffff;
     --searchPlaceHolder: #575a77;
-    --playerBackground: #18191f;
+    --playerBackground: #000;
     --titleColor: #ffffff;
-    --timeColor: #ffffff;
-    --progressSlider: #9440f3;
-    --progressUsed: #ffffff;
-    --progressLeft: #151616;
-    --volumeSlider: #9440f3;
-    --volumeUsed: #ffffff;
-    --volumeLeft:  #151616;
+    --timeColor: #AAAFB3;
+    --progressSlider: #b28e2a;
+    --progressUsed: #b28e2a;
+    --progressLeft: #AAAFB3;
+    --volumeSlider: #b28e2a;
+    --volumeUsed: #b28e2a;
+    --volumeLeft:  #AAAFB3;
     --playlistBackground: #18191f;
     --playlistText: #575a77;
     --playlistBackgroundHoverActive:  #18191f;
@@ -68,8 +70,10 @@ const Player = ({
     const [active, setActive] = useState(false);
     const [title, setTitle] = useState("");
     const [imageUrl, setImageUrl] = useState("");
+    const [startDate, setStartDate] = useState("");
     const [length, setLength] = useState(0);
     const [time, setTime] = useState(0);
+    const [playlistShowing, setPlaylistShowing] = useState(false)
     const [slider, setSlider] = useState(1);
     const [drag, setDrag] = useState(0);
     const [volume, setVolume] = useState(0.8);
@@ -80,10 +84,11 @@ const Player = ({
     let [curTrack, setCurTrack] = useState(0);
 
     const GlobalStyles = createGlobalStyle`${customColorScheme}`;
-    const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(15, 4);
+    // const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(11, 8);
+    const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(14, 5);
 
   useEffect(() => {
-    const audio = new Audio(trackList[curTrack].url);
+    const audio = new Audio(trackList[curTrack].mediaUrl);
 
     const setAudioData = () => {
       setLength(audio.duration);
@@ -107,7 +112,8 @@ const Player = ({
 
     setAudio(audio);
     setTitle(trackList[curTrack].title);
-    setImageUrl(trackList[curTrack].imageUrl)
+    setImageUrl(trackList[curTrack].imageUrl);
+    setStartDate(trackList[curTrack].startDate);
 
     return () => {
       audio.pause();
@@ -173,9 +179,10 @@ const Player = ({
 
   useEffect(() => {
     if (audio != null) {
-      audio.src = trackList[curTrack].url;
+      audio.src = trackList[curTrack].mediaUrl;
       setTitle(trackList[curTrack].title);
-      setImageUrl(trackList[curTrack].imageUrl)
+      setImageUrl(trackList[curTrack].imageUrl);
+      setStartDate(trackList[curTrack].startDate);
       play();
     }
   }, [curTrack]);
@@ -197,6 +204,10 @@ const Player = ({
   const shuffle = () => {
     setShuffled(!shuffled);
   };
+
+  const togglePlaylist = () => {
+    setPlaylistShowing( !playlistShowing )
+  }
 
   const playlistItemClickHandler = (e) => {
     const num = Number(e.currentTarget.getAttribute("data-key"));
@@ -254,57 +265,71 @@ const Player = ({
       )}
 
       <PlayerTemplate>
-        <div className={styles.title_time_wrapper}>
+        <div className={styles.image_title_time_wrapper}>
           <AudioImage imageUrl={imageUrl} />
-          <Title title={title} />
-          <Time
-            time={`${!time ? "00:00" : fmtMMSS(time)}/${
-              !length ? "00:00" : fmtMMSS(length)
-            }`}
-          />
+          
+          <div className={styles.title_time}>
+            <Title title={title} />
+            <StartDate startDate={startDate} />
+          </div>
         </div>
 
-        <Progress
-          value={slider}
-          onChange={(e) => {
-            setSlider(e.target.value);
-            setDrag(e.target.value);
-          }}
-          onMouseUp={play}
-          onTouchEnd={play}
-        />
+        <div className={styles.buttons_progress_wrapper}>
+          <div className={styles.buttons_wrapper}>
+            <ButtonsBox>
+              <LoopCurrent
+                src={looped ? loopCurrentBtn : loopNoneBtn}
+                onClick={loop}
+              />
+              <Previous src={previousBtn} onClick={previous} />
+              {active ? (
+                <Pause src={pauseBtn} onClick={pause} />
+              ) : (
+                <Play src={playBtn} onClick={play} />
+              )}
+              <Next src={nextBtn} onClick={next} />
+              <Shuffle
+                src={shuffled ? shuffleAllBtn : shuffleNoneBtn}
+                onClick={shuffle}
+              />
+            </ButtonsBox>
+          </div>
 
-        <div className={styles.buttons_volume_wrapper}>
-          <ButtonsBox>
-            <LoopCurrent
-              src={looped ? loopCurrentBtn : loopNoneBtn}
-              onClick={loop}
+          <div className={styles.progress_wrapper}>
+            <Time
+              time={`${!time ? "00:00" : fmtMMSS(time)}/${
+                !length ? "00:00" : fmtMMSS(length)
+              }`}
             />
-            <Previous src={previousBtn} onClick={previous} />
-            {active ? (
-              <Pause src={pauseBtn} onClick={pause} />
-            ) : (
-              <Play src={playBtn} onClick={play} />
-            )}
-            <Next src={nextBtn} onClick={next} />
-            <Shuffle
-              src={shuffled ? shuffleAllBtn : shuffleNoneBtn}
-              onClick={shuffle}
+            <Progress
+              value={slider}
+              onChange={(e) => {
+                setSlider(e.target.value);
+                setDrag(e.target.value);
+              }}
+              onMouseUp={play}
+              onTouchEnd={play}
             />
-          </ButtonsBox>
+          </div>
+          
+        </div>
+
+        <div className={styles.playlist_wrapper}>
           <Volume
             value={volume}
             onChange={(e) => {
               setVolume(e.target.value / 100);
             }}
           />
+          <PlaylistToggle onClick={togglePlaylist} />
         </div>
+
       </PlayerTemplate>
 
-      {showPlaylist && (
+      {showPlaylist && playlistShowing && (
         <PlaylistTemplate>
           {trackList
-            .sort((a, b) => (a.title > b.title ? 1 : -1))
+            // .sort((a, b) => (a.title > b.title ? 1 : -1))
             .map((el, index) => {
               if (
                 filter.length === 0 ||
@@ -319,7 +344,9 @@ const Player = ({
                       data_key={index}
                       title={el.title}
                       imageUrl={el.imageUrl}
-                      src={el.url}
+                      src={el.mediaUrl}
+                      startDate={el.startDate}
+                      duration={el.duration}
                       onClick={playlistItemClickHandler}
                     />
                   );

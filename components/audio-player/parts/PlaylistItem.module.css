@@ -1,11 +1,10 @@
 .track {
-  background-color: var(--playlistBackground);
+  /* background-color: var(--playlistBackground); */
   color: var(--playlistText);
-  font-family: 'Poppins', sans-serif;
   text-align: center;
   font-size: 16px;
   margin: 5px 0;
-  padding: 3px 0;
+  padding: 3px 6px;
   cursor: pointer;
   border-radius: 5px;
   display: flex;
@@ -16,7 +15,7 @@
 }
 
 .active {
-  background-color: var(--playlistBackground);
+  background-color: rgba(238, 100, 82, 0.3);
   color: var(--playlistTextHoverActive);
   text-align: center;
   font-size: 18px;
@@ -27,17 +26,27 @@
   display: flex;
   align-items: center;
 }
-
 .track img, .active img {
-  max-width: 80px;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
 }
-
+.track h3, .active h3 {
+  font-size: 16px;
+}
 .active:first-child {
   margin: 0;
 }
-
 .track:hover {
   background-color: var(--playlistBackground);
   color: var(--playlistTextHoverActive);
   border-radius: 5px;
 }
+.title_date_time_wrapper {
+  width: calc(100% - 48px);
+}
+.date_time {
+  display: flex;
+  align-items: center;
+}
+

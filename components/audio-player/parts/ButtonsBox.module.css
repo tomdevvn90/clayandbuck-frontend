@@ -3,11 +3,11 @@
   display: inline-grid;
   grid-template-columns: repeat(5, auto);
   place-items: center;
+  max-width: 300px;
 }
 
 @media only screen and (max-width: 600px) {
   .wrapper {
-    width: 100%;
     grid-template-columns: repeat(3, auto);
   }
 }

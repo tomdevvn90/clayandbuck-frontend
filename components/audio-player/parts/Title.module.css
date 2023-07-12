@@ -1,7 +1,18 @@
 .title {
   color: var(--titleColor);
-  font-size: 28px;
+  font-weight: normal;
   margin: 0;
+  padding: 0;
+  text-align: left;
+  margin-left: 12px;
+  font-size: 17px;
+  line-height: 110%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 @media only screen and (max-width: 600px) {

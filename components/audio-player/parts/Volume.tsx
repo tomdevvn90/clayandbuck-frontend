@@ -1,9 +1,11 @@
 import styles from './Volume.module.css'
-import React from 'react'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 
 const Volume = (props) => {
   return (
     <div className={styles.wrapper}>
+      <FontAwesomeIcon icon={faVolumeUp} style={{}} />
       <input
         type='range'
         min='1'

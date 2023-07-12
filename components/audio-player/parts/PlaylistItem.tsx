@@ -2,6 +2,8 @@ import AudioImage from './AudioImage'
 import styles from './PlaylistItem.module.css'
 import React from 'react'
 import Title from './Title'
+import StartDate from './StartDate'
+import Duration from './Duration'
 
 const PlaylistItem = (props) => {
   return (
@@ -13,7 +15,13 @@ const PlaylistItem = (props) => {
       onClick={props.onClick}
     >
       <AudioImage imageUrl={props.imageUrl} />
-      <Title title={props.title} />
+      <div className={styles.title_date_time_wrapper}>
+        <Title title={props.title} />
+        <div className={styles.date_time}>
+          <StartDate startDate={props.startDate} />
+          <Duration duration={props.duration} />
+        </div>
+      </div>
     </div>
   )
 }

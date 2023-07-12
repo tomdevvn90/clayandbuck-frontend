@@ -1,0 +1,12 @@
+.playlist_toggle {
+    margin: 0;
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.playlist_toggle svg {
+    margin-right: 8px;
+    font-size: 20px;
+}

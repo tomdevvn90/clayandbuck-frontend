@@ -8,7 +8,6 @@
   margin: 5px 5px;
   transition: transform 0.2s;
   padding: 0 10px;
-  font-family: 'Varela Round', sans-serif;
   border-radius: 10px;
   font-size: 18px;
 }
@@ -23,7 +22,6 @@
   margin: 0 5px;
   transition: transform 0.3s;
   padding: 0 10px;
-  font-family: 'Varela Round', sans-serif;
   cursor: pointer;
   border-radius: 10px;
   font-size: 18px;

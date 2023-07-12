@@ -9,6 +9,22 @@ export async function fetcher<JSON = any>(
     return res.json()
 }
 
+export default function PodcastsPlayer() {
+    const REST_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_API_URL
+    const { data, error } = useSWR<PodcastResponse[], Error>( `${REST_API_URL}/v2/podcasts-player/`, fetcher )
+    
+    if (error) return (
+        <div className="no-podcasts"></div>
+    )
+    return (
+        <div className="cnb-podcasts-player">
+            { Array.isArray(data) && (
+                <Player trackList={data} includeTags={false} includeSearch={false} />
+            )}
+        </div>
+    )
+}
+
 type PodcastResponse = {
     id: string,
     endDate: string,
@@ -22,35 +38,4 @@ type PodcastResponse = {
     mediaUrl: string,
     startDate: string,
     imageUrl: string
-}
-
-export default function PodcastsPlayer() {
-    const REST_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_API_URL
-    const { data, error } = useSWR<PodcastResponse[], Error>( `${REST_API_URL}/v2/podcasts-player/`, fetcher )
-
-    if (error) return (
-        <div className="no-podcasts"></div>
-    )
-
-    let podcastsData = []
-    if ( typeof data != 'undefined' ) {
-        data.forEach( ( pc ) => {
-            podcastsData.push({
-                title: pc.title,
-                url: pc.mediaUrl,
-                date: pc.startDate,
-                imageUrl: pc.imageUrl,
-                id: pc.id
-            })
-        })
-    }
-    podcastsData.sort( (a, b) => a.id - b.id )
-
-    return (
-        <div className="cnb-podcasts-player">
-            { podcastsData.length > 0 && (
-                <Player trackList={podcastsData} includeTags={false} includeSearch={false} />
-            )}
-        </div>
-    )
 }
