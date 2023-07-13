@@ -2,7 +2,7 @@
   width: 100%;
   padding: 10px;
   margin: 0 auto;
-  background-color: var(--playerBackground);
+  background-color: #000;
   overflow: auto;
   display: flex;
   align-items: center;

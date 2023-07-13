@@ -8,21 +8,21 @@
   font-size: 18px;
   width: 100%;
   margin: 0 auto 10px auto;
-  background-color: var(--searchBackground);
-  color: var(--searchText);
+  background-color: #18191f;
+  color: #ffffff;
   padding-left: 20px;
   border-radius: 10px;
 }
 
 .search::placeholder {
-  color: var(--searchPlaceHolder);
+  color: #575a77;
   opacity: 1;
 }
 
 .search:-ms-input-placeholder {
-  color: var(--searchPlaceHolder);
+  color: #575a77;
 }
 
 .search::-ms-input-placeholder {
-  color: var(--searchPlaceHolder);
+  color: #575a77;
 }

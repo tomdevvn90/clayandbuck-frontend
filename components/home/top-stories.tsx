@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -9,37 +9,16 @@ import { getTopStories } from "../../lib/normal-api"
 import { sanitize } from '../../utils/miscellaneous';
 import PostItem from '../post/post-item';
 
-
 export default function TopStories({tpStories, exTopStories, qtSliders}) {
     const [nextPage, setNextPage] = useState(2)
     const [topStories, setTopStories] = useState(tpStories)
     const [showLoadMoreBtn, setLoadMoreBtn] = useState(true)
-     
-    // useEffect(() => {
-    //     const _getNextPage = async () => {
-    //         const moreTopStories = await getTopStories(nextPage, 9, '123');
-    //         console.log(moreTopStories)
-    //         setTopStories([...topStories, ...moreTopStories]);
-    //     }
-    //     _getNextPage();
-    // }, [nextPage])
-
-    async function loadMoreTopStories () {
-        const moreTopStories = await getTopStories(nextPage, 9, exTopStories);
-        if ( moreTopStories.length < 1 ) {
-            setLoadMoreBtn(false);
-        } else {
-            setTopStories([...topStories, ...moreTopStories]);
-            setNextPage( nextPage + 1 )
-        }
-    }
 
     // const quoteSliders = (
-    //     <Swiper 
-    //         pagination={{
-    //             clickable: true,
-    //         }}
-    //         modules={[Pagination]} 
+    //     <Swiper pagination={{
+    //         dynamicBullets: true,
+    //       }}
+    //       modules={[Pagination]}
     //         className="quote-carousel" 
     //     >
     //         { qtSliders && qtSliders.map( (sl, index) => {
@@ -51,6 +30,16 @@ export default function TopStories({tpStories, exTopStories, qtSliders}) {
     //         } )}
     //     </Swiper>
     // )
+    async function loadMoreTopStories () {
+        const moreTopStories = await getTopStories(nextPage, 9, exTopStories);
+        if ( moreTopStories.length < 1 ) {
+            setLoadMoreBtn(false);
+        } else {
+            setTopStories([...topStories, ...moreTopStories]);
+            setNextPage( nextPage + 1 )
+        }
+    }
+
     return (
         <div className="top-stories">		
             { topStories && topStories.map( (tpStory, index) => {

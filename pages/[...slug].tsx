@@ -1,3 +1,4 @@
+import React from 'react'
 import Head from 'next/head'
 import ErrorPage from 'next/error'
 import { useRouter } from 'next/router'

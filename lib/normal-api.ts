@@ -1,4 +1,4 @@
-const REST_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_API_URL
+import { WP_REST_API_URL } from "./constants";
 
 /**
  * Fetch data by REST API
@@ -7,7 +7,7 @@ const REST_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_API_URL
  */
 async function fetchAPINormal( url: string ) {
     try {
-        const response = await fetch( `${REST_API_URL}${url}` );
+        const response = await fetch( `${WP_REST_API_URL}${url}` );
         return await response.json();
     } catch (e) {
         console.error("Error while fetching PWS API:", e);
@@ -28,6 +28,13 @@ export async function getPodcastsData() {
  */
 export async function getHomePageData() {
     const data = await fetchAPINormal( `/v2/home-data/`)
+    return data;
+}
+/**
+ * Get Sidebar Widget
+ */
+export async function getSidebarWidget( sidebar_id: string ) {
+    const data = await fetchAPINormal( `/wp-json/wp/v2/widgets?sidebar=${sidebar_id}` )
     return data;
 }
 /**

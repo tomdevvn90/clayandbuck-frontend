@@ -16,9 +16,9 @@ const Progress = (props) => {
         onMouseUp={props.onMouseUp}
         onTouchEnd={props.onTouchEnd}
         style={{
-          background: `linear-gradient(90deg, var(--progressUsed) ${Math.floor(
+          background: `linear-gradient(90deg, #b28e2a ${Math.floor(
             props.value
-          )}%, var(--progressLeft) ${Math.floor(props.value)}%)`,
+          )}%, #AAAFB3 ${Math.floor(props.value)}%)`,
         }}
       />
     </div>

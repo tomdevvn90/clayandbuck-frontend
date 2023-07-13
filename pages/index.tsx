@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import Container from '../components/container'
 import TopStories from '../components/home/top-stories'
-import MainSideBar from '../components/main-sidebar'
 import Layout from '../components/layout/layout'
 import PlayButtonList from '../components/home/play-button-list'
 import FeaturedPosts from '../components/home/featured-posts'
 import { getHomePageData } from '../lib/normal-api'
 import { getAllMenu } from '../lib/graphql-api'
+import Sidebar from '../components/home/sidebar'
 
 export default function Index( {homePageData, allMenu, preview} ) {
   const { featuredPosts, 
@@ -28,7 +28,7 @@ export default function Index( {homePageData, allMenu, preview} ) {
           )}
           <div className='main-content'>
             <TopStories tpStories={topStories} exTopStories={excludeTopStories} qtSliders={quoteSliders}></TopStories>
-            <MainSideBar></MainSideBar>
+            <Sidebar></Sidebar>
           </div>
         </Container>
       </div>

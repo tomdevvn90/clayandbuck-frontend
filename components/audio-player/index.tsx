@@ -1,5 +1,4 @@
 import styles from "./styles/Player.module.css";
-import { createGlobalStyle } from "styled-components";
 import React, { useState, useEffect, useRef } from "react";
 
 import PageTemplate from "./parts/PageTemplate";
@@ -33,36 +32,12 @@ import AudioImage from "./parts/AudioImage";
 import StartDate from "./parts/StartDate";
 import PlaylistToggle from "./parts/PlaylistToggle";
 
-const colors = `html{
-    --tagsBackground: #9440f3;
-    --tagsText: #ffffff;
-    --tagsBackgroundHoverActive: #2cc0a0;
-    --tagsTextHoverActive: #ffffff;
-    --searchBackground: #18191f;
-    --searchText: #ffffff;
-    --searchPlaceHolder: #575a77;
-    --playerBackground: #000;
-    --titleColor: #ffffff;
-    --timeColor: #AAAFB3;
-    --progressSlider: #b28e2a;
-    --progressUsed: #b28e2a;
-    --progressLeft: #AAAFB3;
-    --volumeSlider: #b28e2a;
-    --volumeUsed: #b28e2a;
-    --volumeLeft:  #AAAFB3;
-    --playlistBackground: #18191f;
-    --playlistText: #575a77;
-    --playlistBackgroundHoverActive:  #18191f;
-    --playlistTextHoverActive: #ffffff;
-  }`;
-
 const Player = ({
     trackList,
     includeTags = true,
     includeSearch = true,
     showPlaylist = true,
     autoPlayNextTrack = true,
-    customColorScheme = colors,
 }) => {
     let playlist = [];
     const [query, updateQuery] = useState("");
@@ -83,7 +58,6 @@ const Player = ({
     const [filter, setFilter] = useState([]);
     let [curTrack, setCurTrack] = useState(0);
 
-    const GlobalStyles = createGlobalStyle`${customColorScheme}`;
     // const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(11, 8);
     const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(14, 5);
 
@@ -239,7 +213,6 @@ const Player = ({
 
   return (
     <PageTemplate>
-      <GlobalStyles />
 
       {includeTags && (
         <TagsTemplate>

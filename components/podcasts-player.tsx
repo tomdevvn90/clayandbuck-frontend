@@ -1,18 +1,9 @@
+import { WP_REST_API_URL, fetcher } from "../lib/constants";
 import Player from "./audio-player";
 import useSWR from "swr"
 
-export async function fetcher<JSON = any>(
-    input: RequestInfo,
-    init?: RequestInit
-  ): Promise<JSON> {
-    const res = await fetch(input, init)
-    return res.json()
-}
-
 export default function PodcastsPlayer() {
-    const REST_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_API_URL
-    const { data, error } = useSWR<PodcastResponse[], Error>( `${REST_API_URL}/v2/podcasts-player/`, fetcher )
-    
+    const { data, error } = useSWR<PodcastResponse[], Error>( `${WP_REST_API_URL}/v2/podcasts-player/`, fetcher )
     if (error) return (
         <div className="no-podcasts"></div>
     )
@@ -24,7 +15,6 @@ export default function PodcastsPlayer() {
         </div>
     )
 }
-
 type PodcastResponse = {
     id: string,
     endDate: string,

@@ -8,4 +8,6 @@
     margin-top: 6px;
     text-align: left;
     margin-left: 12px;
+    padding-left: 12px;
+    border-left: 1px solid #AAAFB3;
 }

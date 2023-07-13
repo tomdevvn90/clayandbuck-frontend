@@ -15,9 +15,9 @@ const Volume = (props) => {
         id='myRange'
         onChange={props.onChange}
         style={{
-          background: `linear-gradient(90deg, var(--volumeUsed) ${
+          background: `linear-gradient(90deg, #b28e2a ${
             props.value * 100
-          }%, var(--volumeLeft) ${props.value * 100}%)`
+          }%, #AAAFB3 ${props.value * 100}%)`
         }}
       />
     </div>

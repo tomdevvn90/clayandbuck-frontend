@@ -6,7 +6,6 @@ import MenuItem from '../menu-item'
 import SocialChannels from '../social-channels';
 
 export default function Header( { headerMenu } ) {
-
   const menuList = headerMenu?.edges
   if ( menuList ) menuList.sort( (a, b) => a.node.order - b.node.order )
 
