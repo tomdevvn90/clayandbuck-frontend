@@ -34,30 +34,30 @@ export default function TopStories({tpStories, exTopStories, qtSliders}) {
         }
     }
 
-    const quoteSliders = (
-        <Swiper 
-            pagination={{
-                clickable: true,
-            }}
-            modules={[Pagination]} 
-            className="quote-carousel" 
-        >
-            { qtSliders && qtSliders.map( (sl, index) => {
-                return (
-                    <SwiperSlide key={index}>
-                        <div className='slide-content' dangerouslySetInnerHTML={{ __html: sanitize(sl.content) }}></div>
-                    </SwiperSlide>
-                )
-            } )}
-        </Swiper>
-    )
+    // const quoteSliders = (
+    //     <Swiper 
+    //         pagination={{
+    //             clickable: true,
+    //         }}
+    //         modules={[Pagination]} 
+    //         className="quote-carousel" 
+    //     >
+    //         { qtSliders && qtSliders.map( (sl, index) => {
+    //             return (
+    //                 <SwiperSlide key={index}>
+    //                     <div className='slide-content' dangerouslySetInnerHTML={{ __html: sanitize(sl.content) }}></div>
+    //                 </SwiperSlide>
+    //             )
+    //         } )}
+    //     </Swiper>
+    // )
     return (
         <div className="top-stories">		
             { topStories && topStories.map( (tpStory, index) => {
                 if ( index === 3 ) {
                     return (
                         <div key={index}>
-                            {quoteSliders}
+                            {/* {quoteSliders} */}
                             <PostItem postData={tpStory}></PostItem>
                         </div>
                     )
