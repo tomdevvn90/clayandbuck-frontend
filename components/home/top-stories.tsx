@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,22 +14,20 @@ export default function TopStories({tpStories, exTopStories, qtSliders}) {
     const [topStories, setTopStories] = useState(tpStories)
     const [showLoadMoreBtn, setLoadMoreBtn] = useState(true)
 
-    // const quoteSliders = (
-    //     <Swiper pagination={{
-    //         dynamicBullets: true,
-    //       }}
-    //       modules={[Pagination]}
-    //         className="quote-carousel" 
-    //     >
-    //         { qtSliders && qtSliders.map( (sl, index) => {
-    //             return (
-    //                 <SwiperSlide key={index}>
-    //                     <div className='slide-content' dangerouslySetInnerHTML={{ __html: sanitize(sl.content) }}></div>
-    //                 </SwiperSlide>
-    //             )
-    //         } )}
-    //     </Swiper>
-    // )
+    const quoteSliders = (
+        <Swiper pagination={{ clickable: true }}
+          modules={[Pagination]}
+            className="quote-carousel" 
+        >
+            { qtSliders && qtSliders.map( (sl, index) => {
+                return (
+                    <SwiperSlide key={index}>
+                        <div className='slide-content' dangerouslySetInnerHTML={{ __html: sanitize(sl.content) }}></div>
+                    </SwiperSlide>
+                )
+            } )}
+        </Swiper>
+    )
     async function loadMoreTopStories () {
         const moreTopStories = await getTopStories(nextPage, 9, exTopStories);
         if ( moreTopStories.length < 1 ) {
@@ -46,7 +44,7 @@ export default function TopStories({tpStories, exTopStories, qtSliders}) {
                 if ( index === 3 ) {
                     return (
                         <div key={index}>
-                            {/* {quoteSliders} */}
+                            {quoteSliders}
                             <PostItem postData={tpStory}></PostItem>
                         </div>
                     )
