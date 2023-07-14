@@ -6,7 +6,7 @@ import PlayButtonList from '../components/home/play-button-list'
 import FeaturedPosts from '../components/home/featured-posts'
 import { getHomePageData } from '../lib/normal-api'
 import { getAllMenu } from '../lib/graphql-api'
-import Sidebar from '../components/home/sidebar'
+import Sidebar from '../components/sidebar'
 
 export default function Index( {homePageData, allMenu, preview} ) {
   const { featuredPosts, 

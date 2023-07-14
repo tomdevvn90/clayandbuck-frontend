@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { WP_REST_API_URL, fetcher } from "../../lib/constants";
+import { WP_REST_API_URL, fetcher } from "../lib/constants";
 
 export default function Sidebar(){
     const { data, error } = useSWR<SidebarWidgetRes[], Error>( `${WP_REST_API_URL}/v2/widgets?sidebar=home-sidebar-1`, fetcher )

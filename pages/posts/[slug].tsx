@@ -10,42 +10,54 @@ import Layout from '../../components/layout/layout'
 import PostTitle from '../../components/post/post-title'
 import Tags from '../../components/tags'
 import { getAllPostsWithSlug, getPostAndMorePosts } from '../../lib/graphql-api'
+import BreadCrumb from '../../components/post/post-breadcrumb'
+import Sidebar from '../../components/sidebar'
 
 export default function Post({ post, headerMenu, footerMenu, posts, preview }) {
+  
   const router = useRouter()
-  const morePosts = posts?.edges
-
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
 
+  const morePosts = posts?.edges
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu} preview={preview} >
-      <Container>
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
-            <article>
+      <div className={`main-wrap post white-background`}>
+        <Container>
+          {router.isFallback ? (
+            <PostTitle>Loading…</PostTitle>
+          ) : (
+            <>
               <Head>
                 <title> {`${post.title}`} </title>
                 <meta property="og:image"
                       content={post.featuredImage?.node.sourceUrl}
                 />
               </Head>
-              <PostHeader title={post.title} coverImage={post.featuredImage}
-                  date={post.date} author={post.author} categories={post.categories}
-              />
-              <PostBody content={post.content} />
-              <footer>
-                {post.tags.edges.length > 0 && <Tags tags={post.tags} />}
-              </footer>
-            </article>
 
-            {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-          </>
-        )}
-      </Container>
+              <BreadCrumb />
+
+              <div className='main-content'>
+                <div className='post-content-wrap'>
+                  <PostHeader title={post.title} coverImage={post.featuredImage}
+                    date={post.date} author={post.author} categories={post.categories}
+                  />
+                  <PostBody content={post.content} />
+                  {/* <footer>
+                    {post.tags.edges.length > 0 && <Tags tags={post.tags} />}
+                  </footer> */}
+                </div>
+                
+                <Sidebar></Sidebar>
+              </div>
+
+              {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+
+            </>
+          )}
+        </Container>
+      </div>
     </Layout>
   )
 }

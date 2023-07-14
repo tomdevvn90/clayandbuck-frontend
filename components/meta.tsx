@@ -31,7 +31,6 @@ export default function Meta() {
       <meta property="og:image" content={HOME_OG_IMAGE_URL} />
 
       <Script async type="text/javascript" src="//www.googletagservices.com/tag/js/gpt.js" />
-
       <Script async src='https://securepubads.g.doubleclick.net/tag/js/gpt.js' />
       {/* <Script>
           window.googletag = window.googletag || {cmd: []};

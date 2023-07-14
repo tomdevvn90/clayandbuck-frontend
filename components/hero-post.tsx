@@ -1,6 +1,6 @@
 // import Avatar from './avatar'
 import Date from './date'
-import CoverImage from './cover-image'
+import CoverImage from './post/cover-image'
 import Link from 'next/link'
 import {sanitize} from '../utils/miscellaneous';
 

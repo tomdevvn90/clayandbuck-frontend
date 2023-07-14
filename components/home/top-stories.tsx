@@ -1,13 +1,14 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/pagination';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight} from "@fortawesome/free-solid-svg-icons";
 import { getTopStories } from "../../lib/normal-api"
 import { sanitize } from '../../utils/miscellaneous';
 import PostItem from '../post/post-item';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 export default function TopStories({tpStories, exTopStories, qtSliders}) {
     const [nextPage, setNextPage] = useState(2)
@@ -55,7 +56,7 @@ export default function TopStories({tpStories, exTopStories, qtSliders}) {
             } )}	
             { showLoadMoreBtn ? ( 
                 <div className='load-more-wrap'>
-                    <button onClick={ loadMoreTopStories }>
+                    <button className='btn' onClick={ loadMoreTopStories }>
                         <span>Load More</span>
                         <FontAwesomeIcon icon={faRotateRight} style={{}} />
                     </button>

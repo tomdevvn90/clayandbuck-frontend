@@ -1,6 +1,6 @@
 // import Avatar from '../avatar'
 import Date from '../date'
-import CoverImage from '../cover-image'
+import CoverImage from './cover-image'
 import Categories from '../categories'
 import PostTitle from './post-title'
 
@@ -14,19 +14,25 @@ export default function PostHeader({
   return (
     <>
       <PostTitle>{title}</PostTitle>
-      {/* <div className="hidden md:block md:mb-12">
+
+      {/* <div className="">
         <Avatar author={author} />
       </div> */}
-      <div className="mb-8 md:mb-16 sm:mx-0">
+
+      <div className="featured-image">
         <CoverImage title={title} coverImage={coverImage} />
       </div>
-      <div className="max-w-2xl mx-auto">
-        {/* <div className="block md:hidden mb-6">
+
+      <div className="post-meta">
+        {/* <div className="">
           <Avatar author={author} />
         </div> */}
-        <div className="mb-6 text-lg">
-          Posted <Date dateString={date} />
-          <Categories categories={categories} />
+
+        <div className="create-date">
+          <Date dateString={date} />
+
+          {/* <Categories categories={categories} /> */}
+          
         </div>
       </div>
     </>

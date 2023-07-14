@@ -1,0 +1,39 @@
+main .main-wrap.post {
+    h1 {
+        font-size: 32px;
+        margin: 0 0 24px;
+    }
+    .breadcrumb-ss {
+        padding-bottom: 24px;
+    }
+    .main-content {
+        display: flex;
+        align-items: center;
+        align-items: flex-start;
+
+        .post-content-wrap {
+            width: 66%;
+            padding-right: 10px;
+
+            .create-date {
+                font-size: 22px;
+                line-height: 24px;
+                color: #b28e2a;
+                font-weight: 500;
+                font-family: $main-font;
+                margin-top: 25px;
+                margin-bottom: 15px;
+                text-transform: uppercase;
+            }
+        }
+        .main-sidebar {
+            width: 34%;
+            padding-left: 44px;
+
+            .sidebar-wrap {
+                background-color: #fff;
+                border: 1px solid #d4d4d4;
+            }
+        }
+    }
+}
