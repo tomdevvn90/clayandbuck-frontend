@@ -299,8 +299,8 @@ const Player = ({
 
       </PlayerTemplate>
 
-      {showPlaylist && playlistShowing && (
-        <PlaylistTemplate>
+      {showPlaylist && (
+        <PlaylistTemplate playlistShowing={playlistShowing}>
           {trackList
             // .sort((a, b) => (a.title > b.title ? 1 : -1))
             .map((el, index) => {
