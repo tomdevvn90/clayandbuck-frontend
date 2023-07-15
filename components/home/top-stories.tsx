@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight} from "@fortawesome/free-solid-svg-icons";
 import { getTopStories } from "../../lib/normal-api"
 import { sanitize } from '../../utils/miscellaneous';
-import PostItem from '../post/post-item';
+import PostItem from './post-item';
 
 import 'swiper/css';
 import 'swiper/css/pagination';

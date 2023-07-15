@@ -1,5 +1,5 @@
 // import Avatar from './avatar'
-import Date from './date'
+import Date from './post/date'
 import CoverImage from './post/cover-image'
 import Link from 'next/link'
 import {sanitize} from '../utils/miscellaneous';

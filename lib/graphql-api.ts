@@ -1,4 +1,4 @@
-import { fraHeaderFooter } from "./graphql-fragements"
+import { fraAuthorFields, fraHeaderFooter, fraPostFields } from "./graphql-fragements"
 
 const GRAPHQL_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_API_URL
 
@@ -98,45 +98,9 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
   const isSamePost = isId ? Number(slug) === postPreview.id : slug === postPreview.slug
   const isDraft = isSamePost && postPreview?.status === 'draft'
   const isRevision = isSamePost && postPreview?.status === 'publish'
-  const data = await fetchAPI(
-    `fragment AuthorFields on User {
-      name
-      firstName
-      lastName
-      avatar {
-        url
-      }
-    }
-    fragment PostFields on Post {
-      title
-      excerpt
-      slug
-      date
-      featuredImage {
-        node {
-          sourceUrl
-        }
-      }
-      author {
-        node {
-          ...AuthorFields
-        }
-      }
-      categories {
-        edges {
-          node {
-            name
-          }
-        }
-      }
-      tags {
-        edges {
-          node {
-            name
-          }
-        }
-      }
-    }
+  const data = await fetchAPI(`
+    ${fraAuthorFields}
+    ${fraPostFields}
     query PostBySlug($id: ID!, $idType: PostIdType!) {
       ${fraHeaderFooter}
       post(id: $id, idType: $idType) {
@@ -164,7 +128,7 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
             : ''
         }
       }
-      posts(first: 3, where: { orderby: { field: DATE, order: DESC } }) {
+      posts(first: 6, where: { orderby: { field: DATE, order: DESC } }) {
         edges {
           node {
             ...PostFields
@@ -193,8 +157,8 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
 
   // Filter out the main post
   data.posts.edges = data.posts.edges.filter(({ node }) => node.slug !== slug)
-  // If there are still 3 posts, remove the last one
-  if (data.posts.edges.length > 2) data.posts.edges.pop()
+  // If there are still 5 posts, remove the last one
+  if (data.posts.edges.length > 5) data.posts.edges.pop()
 
   return data
 }

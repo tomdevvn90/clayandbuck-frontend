@@ -17,6 +17,11 @@
   text-decoration: none;
 }
 
+.content img {
+  height: auto;
+  max-width: 100%;
+}
+
 .content ul,
 .content ol {
   margin: 0;

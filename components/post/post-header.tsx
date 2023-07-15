@@ -1,5 +1,5 @@
 // import Avatar from '../avatar'
-import Date from '../date'
+import Date from './date'
 import CoverImage from './cover-image'
 import Categories from '../categories'
 import PostTitle from './post-title'
