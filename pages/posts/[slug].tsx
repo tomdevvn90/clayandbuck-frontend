@@ -1,6 +1,6 @@
 // import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { getAllPostsWithSlug, getPostAndMorePosts } from '../../lib/graphql-api'
+import { getPostAndMorePosts } from '../../lib/graphql-api'
 import ErrorPage from 'next/error'
 import Head from 'next/head'
 import Container from '../../components/container'
@@ -9,11 +9,10 @@ import MoreStories from '../../components/post/more-stories'
 import PostHeader from '../../components/post/post-header'
 import Layout from '../../components/layout/layout'
 import PostTitle from '../../components/post/post-title'
-import Tags from '../../components/post/tags'
 import BreadCrumb from '../../components/post/post-breadcrumb'
 import Sidebar from '../../components/sidebar'
 
-export default function Post({ post, headerMenu, footerMenu, posts, preview }) {
+export default function Post({ post, headerMenu, footerMenu, posts }) {
   
   const router = useRouter()
   if (!router.isFallback && !post?.slug) {
@@ -22,25 +21,26 @@ export default function Post({ post, headerMenu, footerMenu, posts, preview }) {
 
   const morePosts = posts?.edges
   return (
-    <Layout headerMenu={headerMenu} footerMenu={footerMenu} preview={preview} >
-      <div className={`main-wrap post white-background`}>
+    <Layout headerMenu={headerMenu} footerMenu={footerMenu} >
+      <div className="main-wrap post white-background">
         <Container>
           {router.isFallback ? (
             <PostTitle>Loading…</PostTitle>
           ) : (
             <>
               <Head>
-                <title> {`${post.title}`} </title>
-                <meta property="og:image"
-                      content={post.featuredImage?.node.sourceUrl}
-                />
+                <title>{post.title}</title>
+                <meta property="og:image" content={post.featuredImage?.node.sourceUrl} />
               </Head>
 
               <BreadCrumb />
 
               <div className='main-content'>
                 <div className='post-content-wrap'>
-                  <PostHeader title={post.title} coverImage={post.featuredImage}
+                  <PostHeader title={post.title} coverImage={post.featuredImage} 
+                    featureImageUrl={post.featureImageUrl}
+                    featureImageTab={post.featureImageTab}
+                    featuredVideosPost={post.featuredVideosPost}
                     date={post.date} author={post.author} categories={post.categories}
                   />
                   <PostBody content={post.content} />
@@ -62,15 +62,10 @@ export default function Post({ post, headerMenu, footerMenu, posts, preview }) {
   )
 }
 
-export const getServerSideProps = async ( {
-  params,
-  preview = false,
-  previewData
-} ) => {
-  const data = await getPostAndMorePosts(params?.slug, preview, previewData)
+export const getServerSideProps = async ( { params } ) => {
+  const data = await getPostAndMorePosts(params?.slug)
   return {
     props: {
-      preview,
       post: data.post,
       headerMenu: data.headerMenu,
       footerMenu: data.footerMenu,

@@ -7,7 +7,6 @@ config.autoAddCss = false;
 import '../styles/main.scss'
 import '../components/cnb-media/shared/Skeleton.style.scss'
 import '../components/cnb-media/zype/ZypeMedia.style.scss'
-import { getPodcastsData } from '../lib/normal-api';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   
@@ -19,9 +18,3 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     </main>
   )
 }
-// export async function getServerSideProps() {
-//   const homePageData = await getPodcastsData();
-//   return {
-//      props: {homePageData}
-//   }
-// }

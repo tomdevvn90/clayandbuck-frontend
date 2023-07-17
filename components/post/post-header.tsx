@@ -7,6 +7,9 @@ import PostTitle from './post-title'
 export default function PostHeader({
   title,
   coverImage,
+  featureImageUrl,
+  featureImageTab,
+  featuredVideosPost,
   date,
   author,
   categories,
@@ -20,7 +23,10 @@ export default function PostHeader({
       </div> */}
 
       <div className="featured-image">
-        <CoverImage title={title} coverImage={coverImage} />
+        <CoverImage title={title} coverImage={coverImage} 
+                    featureImageUrl={featureImageUrl}
+                    featureImageTab={featureImageTab}
+                    ftVideosPost={featuredVideosPost} />
       </div>
 
       <div className="post-meta">

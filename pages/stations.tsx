@@ -4,16 +4,16 @@ import Layout from '../components/layout/layout'
 import { getAllMenu } from '../lib/graphql-api'
 import AffiliatesMap from '../components/stations/AffiliatesMap'
 
-export default function StationsPage( {allMenu, preview} ) {
+export default function StationsPage( {allMenu} ) {
     const { headerMenu, footerMenu } = allMenu
 
     return (
-        <Layout headerMenu={headerMenu} footerMenu={footerMenu} preview={preview} >
+        <Layout headerMenu={headerMenu} footerMenu={footerMenu} >
             <Head>
                 <title>Where To Listen</title>
                 <meta name="description" content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."></meta>
             </Head>
-            <div className={`main-wrap page`}>
+            <div className="main-wrap page">
                 <Container>
                     <div className="heading_ss">
                         <h1>Where To Listen</h1>
@@ -32,9 +32,9 @@ export default function StationsPage( {allMenu, preview} ) {
 }
 
 /** Server-side Rendering (SSR) */
-export async function getServerSideProps({ preview = false }) {
+export async function getServerSideProps() {
     const allMenu = await getAllMenu();
     return {
-       props: {allMenu, preview}
+       props: {allMenu}
     }
  }

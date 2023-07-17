@@ -7,7 +7,7 @@ import { getPageData } from '../lib/graphql-api'
 import { useRouter } from 'next/router'
 import { ParseHtmlToReact } from '../utils/parse-html-to-react'
 
-export default function Page( {pageData, preview} ) {
+export default function Page( {pageData} ) {
 
 	const page = pageData?.pageBy ?? {}
 	const router = useRouter()
@@ -19,7 +19,7 @@ export default function Page( {pageData, preview} ) {
 	const { templateName } = page?.template ?? ''
 	const pageClass = templateName? templateName.toLowerCase().replace(' ', '-') : ''
 	return (
-	  <Layout headerMenu={headerMenu} footerMenu={footerMenu} preview={preview}>
+	  <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
 		<Head>
 		  <title>{page.title}</title>
 		  <meta name="description" content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."></meta>
@@ -36,15 +36,11 @@ export default function Page( {pageData, preview} ) {
   }
   
   /** Server-side Rendering (SSR) */
-  export async function getServerSideProps( {
-	params,
-	preview = false,
-	previewData,
-  } ) {
+  export async function getServerSideProps( { params } ) {
 	 const slug = params?.slug.join( '/' )
 	 const pageData = await getPageData( slug );
 	 return {
-		props: {pageData, preview}
+		props: {pageData}
 	 }
   }
   

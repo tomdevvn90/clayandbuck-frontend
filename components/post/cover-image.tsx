@@ -1,4 +1,3 @@
-import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -9,10 +8,12 @@ interface Props {
       sourceUrl: string
     }
   }
-  slug?: string
+  featureImageUrl: string
+  featureImageTab: string
+  ftVideosPost?: string
 }
 
-export default function CoverImage({ title, coverImage, slug }: Props) {
+export default function CoverImage({ title, coverImage, featureImageUrl, featureImageTab, ftVideosPost }: Props) {
   const image = (
     <Image
       width={0}
@@ -23,15 +24,28 @@ export default function CoverImage({ title, coverImage, slug }: Props) {
       style={{ width: '100%', height: 'auto', border: '5px solid #b28e2a' }}
     />
   )
-  return (
-    <div className="sm:mx-0">
-      {slug ? (
-        <Link href={`/posts/${slug}`} aria-label={title}>
+  let ftImage = image
+  if (!featureImageUrl.includes('http') && featureImageTab != '_blank') {
+    ftImage = (
+        <Link href={featureImageUrl}>
           {image}
         </Link>
-      ) : (
-        image
-      )}
+    )
+  } else {
+    ftImage = (
+        <a href={featureImageUrl} target={featureImageTab}>
+          {image}
+        </a>
+    )
+  }
+
+  return (
+    <div>
+      {ftVideosPost ? (
+        <iframe src={ftVideosPost} width="720" height="400" frameBorder="0" allowFullScreen={true}></iframe>
+      ) 
+      : featureImageUrl ?  ( ftImage ) : ( image )
+     }
     </div>
   )
 }
