@@ -8,30 +8,14 @@ import SocialChannels from '../social-channels';
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
+import NoticeAndSocials from './notice-and-socials'
 
 export default function Header( { headerMenu } ) {
-  const [menuStatus, setMenuStatus] = useState(true)
+  const [menuStatus, setMenuStatus] = useState(false)
   const menuList = headerMenu?.edges
   if ( menuList ) menuList.sort( (a, b) => a.node.order - b.node.order )
 
-  const pacificDatetimeStr = new Date().toLocaleString("en-US", { timeZone: "US/Pacific" })
-  const pacificHour = new Date(pacificDatetimeStr).getHours() 
-  const showOnAirBtn = ( pacificHour >= 9 && pacificHour <= 11 ) ? true : false
-
-  // const useWidth = () => {
-  //   const [width, setWidth] = useState(0)
-  //   const handleResize = () => setWidth(window.innerWidth)
-  //   useEffect(() => {
-  //       handleResize()
-  //       window.addEventListener('resize', handleResize)
-  //       return () => window.removeEventListener('resize', handleResize)
-  //   }, [])
-  //   return width
-  // }
-  // const hideMenu = (!menuStatus || window.innerWidth < 1025) ? 'hide' : ''
-
-  const hideMenu = (!menuStatus) ? 'hide' : ''
-
+  const hideMenu = (menuStatus) ? 'expanded' : ''
   const toggleMenuHeader = () => {
     setMenuStatus(!menuStatus)
   }
@@ -47,15 +31,7 @@ export default function Header( { headerMenu } ) {
         </div>
 
         <div className="main-menu">
-          <div className="notice-and-social">
-            <div className="notice">
-                <span>Listen Weekdays 12pm - 3pm EST</span>  
-                { showOnAirBtn && (
-                    <Link href="/videos/24-7-full-show-audio/" className="on-air-btn">On Air</Link>
-                ) }
-            </div>
-            <SocialChannels lessItems={true}></SocialChannels>
-          </div>
+          <NoticeAndSocials />
           <div className={`menu-list ${hideMenu}`}>
             <ul>
               { menuList && menuList.map( ( { node }, index ) => (
@@ -65,6 +41,9 @@ export default function Header( { headerMenu } ) {
                 <span className='search-btn'>
                   <FontAwesomeIcon icon={faSearch} style={{}} />
                 </span>
+              </li>
+              <li className='nt-and-sls-mobile'>
+                <NoticeAndSocials />
               </li>
             </ul>
           </div>

@@ -2,6 +2,7 @@ export const META_DESC = 'Clay Travis and Buck Sexton tackle the biggest stories
 export const HOME_OG_IMAGE_URL = '/public/home-og-image.png'
 
 export const WP_REST_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_API_URL
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL
 
 export async function fetcher<JSON = any>(
     input: RequestInfo,

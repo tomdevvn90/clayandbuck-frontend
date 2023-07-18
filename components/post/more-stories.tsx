@@ -11,7 +11,21 @@ export default function MoreStories({ posts }) {
       <div className="stories-wrapper">
         <Swiper className="stories-carousel" 
               navigation={true} modules={[Navigation]}
-              slidesPerView={3} spaceBetween={30}
+              slidesPerView={1} spaceBetween={30}
+              breakpoints={{
+                600: {
+                  slidesPerView: 2,
+                  spaceBetween: 15,
+                },
+                768: {
+                  slidesPerView: 3,
+                  spaceBetween: 20,
+                },
+                992: {
+                  slidesPerView: 3,
+                  spaceBetween: 30,
+                }
+              }}
           >
               {posts.map(({ node }, index) => (
                 <SwiperSlide key={index}>

@@ -77,5 +77,10 @@
                 margin-top: 8px;
             }
         }
+        @media screen and (max-width: 991px) {
+            margin-top: 20px;
+            grid-gap: 20px;
+            padding: 20px;
+        }
     }
 }

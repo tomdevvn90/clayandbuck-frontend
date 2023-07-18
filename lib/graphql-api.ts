@@ -48,6 +48,12 @@ export async function getPageData(uri) {
         content
         slug
         uri
+        seo {
+          metaDesc
+          fullHead
+          title
+        }
+        seoTwitterThumb
         template {
           templateName
         }
@@ -100,6 +106,12 @@ export async function getPostAndMorePosts(slug) {
       post(id: $id, idType: $idType) {
         ...PostFields
         content
+        seo {
+          metaDesc
+          fullHead
+          title
+        }
+        seoTwitterThumb
         featureImageUrl
         featureImageTab
         featuredVideosPost

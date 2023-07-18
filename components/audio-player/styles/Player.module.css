@@ -31,12 +31,22 @@
   padding: 0 50px;
   position: relative;
 }
-@media only screen and (max-width: 800px) {
-  .title_time_wrapper {
-    grid-template-columns: 100%;
-  }
 
-  .buttons_volume_wrapper {
-    grid-template-columns: 100%;
+@media screen and (max-width: 767px) {
+  .image_title_time_wrapper {
+    width: 37%;
+    padding-right: 10px;
+  }
+  .title_time {
+    width: 100%;
+  }
+  .buttons_progress_wrapper {
+    width: 50%;
+  }
+  .playlist_wrapper {
+    width: 13%;
+  }
+  .progress_wrapper {
+    padding: 0 38px;
   }
 }

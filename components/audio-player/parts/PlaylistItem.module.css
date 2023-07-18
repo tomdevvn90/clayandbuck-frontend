@@ -50,4 +50,25 @@
   display: flex;
   align-items: center;
 }
-
+@media only screen and (max-width: 767px) {
+  .track img, .active img {
+    width: 40px;
+    height: 40px;
+    display: block;
+  }
+  .title_date_time_wrapper {
+    width: calc(100% - 40px);
+  }
+  .track h3, .active h3 {
+    font-size: 15px;
+    margin-left: 8px;
+  }
+  .track .duration, .active .duration {
+    font-size: 13px;
+  }
+  .track p, .active p {
+    display: block;
+    margin-top: 3px;
+    margin-left: 10px;
+  }
+}

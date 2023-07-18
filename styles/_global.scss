@@ -47,11 +47,16 @@ body {
     }
     ul, ol {
         font-weight: 400;
-        padding: 0;
+        padding: 0 0 0 20px;
         margin: 0 0 24px;
+
+        li {
+            margin-bottom: 12px;
+        }
     }
     ul.breadcrumbs {
         margin-bottom: 20px;
+        padding: 0;
 
         li {
             display: inline-block;
@@ -198,19 +203,20 @@ body {
     }
     .on-air-btn {
         background: linear-gradient(to right, rgba(180,144,44,1) 0%,rgba(235,211,96,1) 100%);
-        padding: 4px 16px;
+        padding: 4px 16px !important;
         font-weight: bold;
-        font-size: 14px;
-        line-height: 1.5;
+        font-size: 14px !important;
+        line-height: 1.5 !important;
         border: none;
         text-decoration: none;
-        margin: 0 0 0 10px;
+        margin: 8px;
         border-radius: 1.55em;
         box-shadow: none;
         cursor: pointer;
-        display: inline-block;
-        color: #fff;
+        display: inline-block !important;
+        color: #fff !important;
         letter-spacing: normal;
+        text-transform: none !important;
         &:hover {
             background: linear-gradient(to right, rgba(235,211,96,1) 0%,rgba(180,144,44,1) 100%);
         }

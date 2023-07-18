@@ -9,7 +9,7 @@
   transform: scale(1.2);
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 767px) {
   .loop_current {
     display: none;
   }

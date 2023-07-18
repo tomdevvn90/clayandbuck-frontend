@@ -1,73 +1,6 @@
-# An Incremental Static Regeneration Blog Example Using Next.js and WordPress
-
-This example showcases Next.js's [Incremental Static Regeneration](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration) feature using [WordPress](https://wordpress.org) as the data source.
-
-## Deploy your own
-
-Once you have access to [the environment variables you'll need](#step-3-set-up-environment-variables), deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/cms-wordpress&project-name=cms-wordpress&repository-name=cms-wordpress&env=WORDPRESS_GRAPHQL_API_URL&envDescription=Required%20to%20connect%20the%20app%20with%20WordPress&envLink=https://vercel.link/cms-wordpress-env)
-
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
-
-```bash
-npx create-next-app --example cms-wordpress cms-wordpress-app
-```
-
-```bash
-yarn create next-app --example cms-wordpress cms-wordpress-app
-```
-
-```bash
-pnpm create next-app --example cms-wordpress cms-wordpress-app
-```
-
 ## Configuration
 
-### Step 1. Prepare your WordPress site
-
-First, you need a WordPress site. There are many solutions for WordPress hosting, such as [WP Engine](https://wpengine.com/) and [WordPress.com](https://wordpress.com/).
-
-Once the site is ready, you'll need to install the [WPGraphQL](https://www.wpgraphql.com/) plugin. It will add GraphQL API to your WordPress site, which we'll use to query the posts. Follow these steps to install it:
-
-- Download the [WPGraphQL repo](https://github.com/wp-graphql/wp-graphql) as a ZIP archive.
-- Inside your WordPress admin, go to **Plugins** and then click **Add New**.
-
-![Add new plugin](./docs/plugins-add-new.png)
-
-- Click the **Upload Plugin** button at the top of the page and upload the WPGraphQL plugin.
-
-![Upload new plugin](./docs/plugins-upload-new.png)
-
-- Once the plugin has been added, activate it from either the **Activate Plugin** button displayed after uploading or from the **Plugins** page.
-
-![WPGraphQL installed](./docs/plugin-installed.png)
-
-#### GraphiQL
-
-The [WPGraphQL](https://www.wpgraphql.com/) plugin also gives you access to a GraphQL IDE directly from your WordPress Admin, allowing you to inspect and play around with the GraphQL API.
-
-![WPGraphiQL page](./docs/wp-graphiql.png)
-
-### Step 2. Populate Content
-
-Inside your WordPress admin, go to **Posts** and start adding new posts:
-
-- We recommend creating at least **2 posts**
-- Use dummy data for the content
-- Pick an author from your WordPress users
-- Add a **Featured Image**. You can download one from [Unsplash](https://unsplash.com/)
-- Fill the **Excerpt** field
-
-![New post](./docs/new-post.png)
-
-When you’re done, make sure to **Publish** the posts.
-
-> **Note:** Only **published** posts and public fields will be rendered by the app unless [Preview Mode](https://nextjs.org/docs/advanced-features/preview-mode) is enabled.
-
-### Step 3. Set up environment variables
+### Step 1. Set up environment variables
 
 Copy the `.env.local.example` file in this directory to `.env.local` (which will be ignored by Git):
 
@@ -87,7 +20,7 @@ WORDPRESS_GRAPHQL_API_URL=...
 # WORDPRESS_PREVIEW_SECRET=
 ```
 
-### Step 4. Run Next.js in development mode
+### Step 2. Run Next.js in development mode
 
 ```bash
 npm install

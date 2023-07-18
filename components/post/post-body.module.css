@@ -23,15 +23,7 @@
 
 .content ul,
 .content ol {
-  margin: 0;
-}
-
-.content ul {
-  margin: 0;
-}
-
-.content ol {
-  margin: 0;
+  font-family: 'Helvetica';
 }
 
 .content ul > li > ul,
@@ -41,46 +33,6 @@
 
 .content ul > li > ul {
   list-style: circle;
-}
-
-.content h2 {
-  margin: 0;
-}
-
-.content h3 {
-  margin: 0;
-}
-
-.content h4 {
-  margin: 0;
-}
-
-.content pre {
-  margin: 0;
-}
-
-.content code {
-  margin: 0;
-}
-
-.content figcaption {
-  margin: 0;
-}
-
-.content blockquote {
-  margin: 0;
-}
-
-.content blockquote p {
-  margin: 0;
-}
-
-.content blockquote cite {
-  margin: 0;
-}
-
-.content audio {
-  margin: 0;
 }
 
 @media only screen and (max-width: 1499px) {

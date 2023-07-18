@@ -8,3 +8,9 @@
   cursor: pointer;
   transform: scale(1.2);
 }
+@media screen and (max-width: 767px) {
+  .next {
+    width: 20px;
+    height: 20px;
+  }
+}

@@ -5,6 +5,10 @@ main .main-wrap.post {
     }
     .breadcrumb-ss {
         padding-bottom: 24px;
+
+        @media screen and (max-width: 767px) {
+            padding-bottom: 0;
+        }
     }
     .main-content {
         display: flex;
@@ -25,6 +29,22 @@ main .main-wrap.post {
                 margin-bottom: 15px;
                 text-transform: uppercase;
             }
+
+            @media screen and (max-width: 1024px) {
+                .featured-image {
+                  position: relative;
+                  padding-bottom: 56.25%;
+                  height: 0;
+                }
+                .featured-image iframe {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  margin: 0;
+                }
+            }
         }
         .main-sidebar {
             width: 34%;
@@ -33,6 +53,25 @@ main .main-wrap.post {
             .sidebar-wrap {
                 background-color: #fff;
                 border: 1px solid #d4d4d4;
+            }
+        }
+        @media screen and (max-width: 1024px) {
+            .main-sidebar {
+                padding-left: 24px;
+            }
+        }
+        @media screen and (max-width: 767px) {
+            flex-direction: column;
+
+            .post-content-wrap {
+                width: 100%;
+                padding-right: 0;
+            }
+            .main-sidebar {
+                width: 100%;
+                max-width: 400px;
+                margin: 40px auto 0;
+                padding-left: 0;
             }
         }
     }
@@ -49,6 +88,14 @@ main .main-wrap.post {
             font-family: $main-font;
             margin-bottom: -40px;
             text-transform: uppercase;
+
+            @media screen and (max-width: 767px) {
+                font-size: 32px;
+            }
+            @media screen and (max-width: 480px) {
+                font-size: 32px;
+                margin: 0;
+            }
         }
 
         .post-wrap {
@@ -118,6 +165,23 @@ main .main-wrap.post {
             }
             .swiper-button-next {
                 right: 15px;
+            }
+            @media screen and (max-width: 767px) {
+                padding: 60px 15px 15px;
+            }
+            @media screen and (max-width: 480px) {
+                padding: 15px 15px 64px;
+
+                .swiper-button-prev, .swiper-button-next {
+                    left: auto;
+                    right: calc(50% + 10px);
+                    top: auto;
+                    bottom: 0;
+                }
+                .swiper-button-next {
+                    right: auto;
+                    left: calc(50% + 10px);
+                }
             }
         }
     }

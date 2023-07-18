@@ -17,10 +17,12 @@
   right: 0;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 767px) {
   .time {
-    width: 100%;
-    margin: 0 auto;
-    display: none;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .duration, .cr_time {
+    top: 6px;
   }
 }

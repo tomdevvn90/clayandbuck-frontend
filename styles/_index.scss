@@ -11,5 +11,21 @@
             width: 34%;
             padding-left: 44px;
         }
+        @media screen and (max-width: 991px) {
+            .main-sidebar {
+                padding-left: 24px;
+            }
+        }
+        @media screen and (max-width: 767px) {
+            .top-stories {
+                width: 100%;
+            }
+            .main-sidebar {
+                width: 100%;
+                padding-left: 0;
+                max-width: 400px;
+                margin: 40px auto 0;
+            }
+        }
     }
 }

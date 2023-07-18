@@ -11,3 +11,14 @@
     margin-right: 8px;
     font-size: 20px;
 }
+@media only screen and (max-width: 767px) {
+    .playlist_toggle {
+        padding-right: 0;
+    }
+    .playlist_toggle svg {
+        margin-right: 0;
+    }
+    .playlist_toggle span {
+        display: none;
+    }
+}

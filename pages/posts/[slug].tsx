@@ -11,6 +11,7 @@ import Layout from '../../components/layout/layout'
 import PostTitle from '../../components/post/post-title'
 import BreadCrumb from '../../components/post/post-breadcrumb'
 import Sidebar from '../../components/sidebar'
+import { ParseHtmlToReact } from '../../utils/parse-html-to-react'
 
 export default function Post({ post, headerMenu, footerMenu, posts }) {
   
@@ -18,7 +19,8 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
-
+  const { seo } = post
+  const fullHead = ParseHtmlToReact(seo.fullHead);
   const morePosts = posts?.edges
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu} >
@@ -29,8 +31,11 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
           ) : (
             <>
               <Head>
-                <title>{post.title}</title>
-                <meta property="og:image" content={post.featuredImage?.node.sourceUrl} />
+                {fullHead}
+                <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"></meta>
+                <meta name="twitter:image" content={post.seoTwitterThumb} />
+                <meta name="twitter:image:width" content="1200" />
+                <meta name="twitter:image:height" content="640" />
               </Head>
 
               <BreadCrumb />

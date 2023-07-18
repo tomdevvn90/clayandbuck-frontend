@@ -18,11 +18,17 @@ export default function Page( {pageData} ) {
 	const { headerMenu, footerMenu } = pageData
 	const { templateName } = page?.template ?? ''
 	const pageClass = templateName? templateName.toLowerCase().replace(' ', '-') : ''
+
+	const { seo } = page
+  	const fullHead = ParseHtmlToReact(seo.fullHead);
 	return (
 	  <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
 		<Head>
-		  <title>{page.title}</title>
-		  <meta name="description" content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."></meta>
+		  {fullHead}
+		  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"></meta>
+		  <meta name="twitter:image" content={page.seoTwitterThumb} />
+		  <meta name="twitter:image:width" content="1200" />
+		  <meta name="twitter:image:height" content="640" />
 		</Head>
 		<div className={`main-wrap page ${pageClass}`}>
 		  <Container>

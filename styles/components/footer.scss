@@ -1,8 +1,12 @@
 .site-footer {
     background: #171717;
-    padding: 12px 12px 100px;
+    padding: 12px 0 100px;
     margin: auto;
     text-align: center;
+
+    @media screen and (max-width: 767px) {
+        padding-bottom: 80px;
+    }
 
     .social-ss {
         margin-top: 25px;
@@ -31,14 +35,18 @@
             &:hover svg, &:hover img {
                 transform: scale(1.4);
             }
+            @media screen and (max-width:600px) {
+                margin-top: 8px;
+                display: inline-block;
+            }
         }
-        
     }
     .copy-right-ss {
         margin-top: 25px;
         margin-bottom: 0;
         color: #fff;
         font-size: 16px;
+        line-height: 1.5;
     }
     .bottom-menu-ss {
         ul {
@@ -57,11 +65,12 @@
                     border-right: 1px solid #ccc;
                     padding-left: 14px;
                     padding-right: 14px;
-                    line-height: 24px;
+                    line-height: 20px;
                     font-size: 16px;
                     color: #989898;
                     font-weight: 500;
                     text-align: center;
+                    // margin: 6px 0;
                     img {
                         margin-left: 8px;
                     }

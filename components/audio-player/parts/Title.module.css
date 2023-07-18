@@ -6,7 +6,7 @@
   text-align: left;
   margin-left: 12px;
   font-size: 17px;
-  line-height: 110%;
+  line-height: 120%;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -14,11 +14,22 @@
   line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
+  .title {
+    font-size: 15px;
+  }
+}
+@media only screen and (max-width: 767px) {
   .title {
     width: 100%;
     margin-bottom: 0;
-    text-align: center;
+    margin-left: 0;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .title {
+    font-size: 14px;
   }
 }
