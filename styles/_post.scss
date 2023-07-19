@@ -74,6 +74,36 @@ main .main-wrap.post {
                 padding-left: 0;
             }
         }
+        .post-content {
+            p {
+                font-size: 18px;
+                line-height: 25px;
+                color: #000000;
+                font-weight: 400;
+                font-family: $main-font;
+                @media only screen and (max-width: 1499px) {
+                    font-size: 16px;
+                }
+            }
+            a {
+                color: #007bff;
+                text-decoration: none;
+            }
+            img {
+                height: auto;
+                max-width: 100%;
+            }
+            ul, ol {
+                font-family: 'Helvetica';
+            }
+            ul > li > ul,
+            ol > li > ol {
+                margin: 0;
+            }
+            ul > li > ul {
+                list-style: circle;
+            }
+        }
     }
     .more-stories-ss {
         margin: 60px 0;

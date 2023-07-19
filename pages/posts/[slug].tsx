@@ -1,6 +1,4 @@
 // import { GetStaticPaths, GetStaticProps } from 'next'
-import { useRouter } from 'next/router'
-import { getPostAndMorePosts } from '../../lib/graphql-api'
 import ErrorPage from 'next/error'
 import Head from 'next/head'
 import Container from '../../components/container'
@@ -11,7 +9,10 @@ import Layout from '../../components/layout/layout'
 import PostTitle from '../../components/post/post-title'
 import BreadCrumb from '../../components/post/post-breadcrumb'
 import Sidebar from '../../components/sidebar'
+import { useRouter } from 'next/router'
+import { getPostAndMorePosts } from '../../lib/graphql-api'
 import { ParseHtmlToReact } from '../../utils/parse-html-to-react'
+import { SITE_URL } from '../../lib/constants'
 
 export default function Post({ post, headerMenu, footerMenu, posts }) {
   
@@ -21,6 +22,9 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
   }
   const { seo } = post
   const fullHead = ParseHtmlToReact(seo.fullHead);
+  const cleanPath = router.asPath.split('#')[0].split('?')[0];
+  const canonicalUrl = `${SITE_URL}` + (router.asPath === '/' ? '' : cleanPath);
+
   const morePosts = posts?.edges
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu} >
@@ -32,6 +36,7 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
             <>
               <Head>
                 {fullHead}
+                <link rel="canonical" href={canonicalUrl} />
                 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"></meta>
                 <meta name="twitter:image" content={post.seoTwitterThumb} />
                 <meta name="twitter:image:width" content="1200" />

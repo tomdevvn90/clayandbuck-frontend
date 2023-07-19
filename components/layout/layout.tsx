@@ -1,4 +1,4 @@
-import Meta from '../meta'
+import Meta from '../seo/meta'
 import Header from './header'
 import Footer from './footer'
 

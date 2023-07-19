@@ -29,10 +29,14 @@ body {
         margin: 0 0 20px;    
     }
     h1 {
-        margin: 24px 0;
+        margin: 12px 0 24px;
         font-size: 48px;
         line-height: normal;
         font-weight: 700;
+
+        @media screen and (max-width: 600px) {
+            font-size: 36px;
+        }
     }
     a {
         text-decoration: none;
@@ -41,9 +45,13 @@ body {
     p {
         font-family: $secondary-font;
         font-weight: 400;
+        line-height: 1.4;
     }
     img {
         max-width: 100%;
+    }
+    dfn, cite, em, i {
+        font-style: italic;
     }
     ul, ol {
         font-weight: 400;
@@ -84,6 +92,10 @@ body {
                     left: 8px;
                 }
             }
+            @media screen and (max-width: 600px) {
+                font-size: 16px;
+                font-weight: 500;
+            }
         }
     }
     embed,
@@ -95,6 +107,7 @@ body {
     img {
         height: auto;
         max-width: 100%;
+        border-style: none;
     }
     figure {
         margin: 1em 0;
@@ -114,7 +127,7 @@ body {
                 background-repeat: no-repeat;
                 background-position: top left;
                 background-size: initial;
-                padding: 48px 0;
+                padding: 40px 0;
 
                 &.page {
                     h1 {
@@ -122,7 +135,7 @@ body {
                     }
                 }
     
-                &.white-background {
+                &.white-background, &.eib-in-a-hurry {
                     background-color: #fff;
                     color: #000;
     
@@ -291,6 +304,17 @@ body {
 
 /* Posts and pages
 --------------------------------------------- */
+.contact_eib_link {
+    padding: 10px 20px;
+    margin: 24px 0;
+    background: linear-gradient(268deg, #f8e16b 0%, #f8e16b 8%, #f2da66 20%, #e3c958 46%, #cbac41 75%, #b28e2a 100%);
+    width: 100%;
+}
+.contact_eib_link h2 {
+    font-size: 20px;
+    margin-bottom: 0px;
+    color: #000;
+}
 .page-content .wp-smiley,
 .entry-content .wp-smiley,
 .comment-content .wp-smiley {

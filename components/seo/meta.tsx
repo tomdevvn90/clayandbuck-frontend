@@ -1,13 +1,8 @@
 import Head from 'next/head'
 import Script from 'next/script'
-import { META_DESC, HOME_OG_IMAGE_URL, SITE_URL } from '../lib/constants'
-import { useRouter } from 'next/router';
+import { META_DESC, HOME_OG_IMAGE_URL } from '../../lib/constants'
 
 export default function Meta() {
-  const router = useRouter();
-  const cleanPath = router.asPath.split('#')[0].split('?')[0];
-  const canonicalUrl = `${SITE_URL}` + (router.asPath === '/' ? '' : cleanPath);
-  
   return (
     <Head>
       <link
@@ -29,7 +24,6 @@ export default function Meta() {
       />
       <link rel="shortcut icon" href="/favicon/favicon.ico" />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-      <link rel="canonical" href={canonicalUrl} />
 
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="msapplication-config" content="/favicon/browserconfig.xml" />

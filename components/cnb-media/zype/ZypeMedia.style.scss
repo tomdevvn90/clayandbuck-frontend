@@ -82,6 +82,8 @@ $active-tab-background-color: #06203A;
             display: flex;
             justify-content: space-between;
             flex-direction: column;
+            display: block;
+		    padding: 10px 5px;
 
             @media only screen and (min-width: $small-tablet-breakpoint) {
                 flex-direction: row-reverse;
@@ -131,6 +133,10 @@ $active-tab-background-color: #06203A;
                 justify-content: space-between;
                 width: 100%;
                 overflow: hidden;
+                max-width: 100%;
+                float: none;
+                padding: 0;
+                margin: 0px 0px 14px;
 
                 @media only screen and (min-width: $small-tablet-breakpoint) {
                     max-width: 250px;
@@ -228,6 +234,8 @@ $active-tab-background-color: #06203A;
                     display: grid;
                     grid-gap: 2.4rem;
                     grid-template-columns: 1fr;
+                    background: #000;
+	                padding: 10px;
 
                     @media only screen and (min-width: $small-tablet-breakpoint) {
                         grid-gap: 2rem;
@@ -278,6 +286,16 @@ $active-tab-background-color: #06203A;
                         }
                     }
                 }
+            }
+        }
+    }
+}
+@media screen and (max-width: 1024px) {
+    .component-zype-media {
+        .component-zype-tabs {
+            .component-zype-nav-bar {
+                display: block;
+                padding: 10px 5px;
             }
         }
     }

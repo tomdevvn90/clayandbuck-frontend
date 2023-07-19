@@ -1,0 +1,62 @@
+.cnb-download-app-at-mobile {
+	display: none;
+	color: #000;
+	background: #f2f2f2;
+	padding: 8px;
+	transition: ease .25s all;
+
+    .cnb-download-app-inner {
+        display: flex;
+      align-items: center;
+    }
+    span {
+        font-size: 32px;
+        line-height: 40px;
+        padding-right: 6px;
+        width: 7%;
+        cursor: pointer;
+    }
+    .left-col {
+        width: 60%;
+        display: flex;
+
+        img {
+            float: left;
+            margin-right: 10px;
+            border-radius: 10px;
+        }
+        h2 {
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            padding-bottom: 5px;
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+        p {
+            font-size: 10px;
+            color: #979797;
+            line-height: 13px;
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+    }
+    .right-col {
+		display: flex;
+		justify-content: flex-end;
+		width: 33%;
+		padding-right: 4px;
+
+        h2 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #436dd6;
+            margin-block-start: 0;
+            margin-block-end: 0;
+            text-align: center;
+        }
+    }
+    @media screen and (max-width: 767px) {
+        display: block;
+    }
+}
