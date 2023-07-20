@@ -1,6 +1,5 @@
 import classnames from "classnames";
 import * as React from "react";
-// import "./Skeleton.style.scss";
 
 interface SkeletonProps {
     type: "image" | "text";

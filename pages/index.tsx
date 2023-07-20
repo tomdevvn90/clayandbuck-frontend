@@ -4,31 +4,41 @@ import TopStories from '../components/home/top-stories'
 import Layout from '../components/layout/layout'
 import PlayButtonList from '../components/home/play-button-list'
 import FeaturedPosts from '../components/home/featured-posts'
-import { getHomePageData } from '../lib/normal-api'
-import { getAllMenu } from '../lib/graphql-api'
 import Sidebar from '../components/sidebar'
+import { getHomePageData } from '../lib/normal-api'
+import { getPageData } from '../lib/graphql-api'
+import { ParseHtmlToReact } from '../utils/parse-html-to-react'
+import { SITE_URL } from '../lib/constants'
 
-export default function Index( {homePageData, allMenu} ) {
+export default function Index( {homePageData, pageData} ) {
   const { featuredPosts, 
           topStories, excludeTopStories, 
           quoteSliders } = homePageData
-  const { headerMenu, footerMenu } = allMenu
+  const { headerMenu, footerMenu } = pageData
+
+  const page = pageData?.pageBy ?? {}
+  const { seo } = page
+  const fullHead = ParseHtmlToReact(seo.fullHead);
 
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu} >
       <Head>
-        <title>The Clay Travis  & Buck Sexton Show</title>
-        <meta name="description" content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."></meta>
+        {fullHead}
+        <link rel="canonical" href={`${SITE_URL}/`} />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"></meta>
+        <meta name="twitter:image" content={page.seoTwitterThumb} />
+        <meta name="twitter:image:width" content="1200" />
+        <meta name="twitter:image:height" content="640" />
       </Head>
       <div className='main-wrap index-page'>
         <Container>
-          <PlayButtonList></PlayButtonList>
+          <PlayButtonList />
           {featuredPosts && (
-            <FeaturedPosts ftPosts={featuredPosts}></FeaturedPosts>
+            <FeaturedPosts ftPosts={featuredPosts} />
           )}
           <div className='main-content'>
-            <TopStories tpStories={topStories} exTopStories={excludeTopStories} qtSliders={quoteSliders}></TopStories>
-            <Sidebar></Sidebar>
+            <TopStories tpStories={topStories} exTopStories={excludeTopStories} qtSliders={quoteSliders} />
+            <Sidebar />
           </div>
         </Container>
       </div>
@@ -39,9 +49,9 @@ export default function Index( {homePageData, allMenu} ) {
 /** Server-side Rendering (SSR) */
 export async function getServerSideProps() {
    const homePageData = await getHomePageData();
-   const allMenu = await getAllMenu();
+   const pageData = await getPageData( '/' );
    return {
-      props: {homePageData, allMenu}
+      props: {homePageData, pageData}
    }
 }
 /** Static Site Generation (SSG) */

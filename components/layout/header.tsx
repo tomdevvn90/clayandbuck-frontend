@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
 import NoticeAndSocials from './notice-and-socials'
 import DownloadApp from './download-app'
+import LeaderBoardTopAds from '../ads/leaderboard-top-ads'
 
 export default function Header( { headerMenu } ) {
   const [menuStatus, setMenuStatus] = useState(false)
@@ -23,6 +24,7 @@ export default function Header( { headerMenu } ) {
   return (
     <>
       <DownloadApp />
+      <LeaderBoardTopAds />
       <header id="masthead" className="site-header">
         <div className="container">
 

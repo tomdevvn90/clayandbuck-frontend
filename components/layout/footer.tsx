@@ -1,6 +1,7 @@
 import Container from '../container'
 import SocialChannels from '../social-channels'
 import MenuItem from '../menu-item'
+import LeaderBoardBottomAds from '../ads/leaderboard-bottom-ads'
 
 export default function Footer( { footerMenu } ) {
   const currentYear = new Date().getFullYear()
@@ -9,6 +10,8 @@ export default function Footer( { footerMenu } ) {
   if ( menuList ) menuList.sort( (a, b) => a.node.order - b.node.order )
 
   return (
+    <>
+    <LeaderBoardBottomAds />
     <footer className="site-footer">
       <Container>
 
@@ -30,5 +33,6 @@ export default function Footer( { footerMenu } ) {
               
       </Container>
     </footer>
+    </>
   )
 }

@@ -1,6 +1,6 @@
-@import "./sass/common/vars";
-@import "./sass/common/mixins";
-@import "./sass/common/functions";
+@import "./zype-common/vars";
+@import "./zype-common/mixins";
+@import "./zype-common/functions";
 
 .component-skeleton {
     --base-color: var(--palette-grey-600);

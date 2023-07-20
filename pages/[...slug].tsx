@@ -27,7 +27,7 @@ export default function Page( {pageData, cnbMediaData} ) {
   	const fullHead = ParseHtmlToReact(seo.fullHead);
 	const cleanPath = router.asPath.split('#')[0].split('?')[0];
 	const canonicalUrl = `${SITE_URL}` + (router.asPath === '/' ? '' : cleanPath);
-console.log(templateName)
+
 	return (
 	  <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
 		<Head>

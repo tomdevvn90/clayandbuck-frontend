@@ -18,6 +18,10 @@
 
 .title_time {
   width: calc(100% - 60px);
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .buttons_wrapper {
@@ -31,7 +35,11 @@
   padding: 0 50px;
   position: relative;
 }
-
+@media screen and (max-width: 992px) {
+  .title_time {
+    min-height: 40px;
+  }
+}
 @media screen and (max-width: 767px) {
   .image_title_time_wrapper {
     width: 37%;
@@ -39,6 +47,7 @@
   }
   .title_time {
     width: 100%;
+    justify-content: center;
   }
   .buttons_progress_wrapper {
     width: 50%;

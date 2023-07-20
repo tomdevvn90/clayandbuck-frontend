@@ -5,9 +5,7 @@ import { ZypeTabsSkeleton } from "./ZypeTabsSkeleton.component";
 import { PwsMediaService } from "../service/pws-media.service";
 import { ZypePlayer } from "./ZypePlayer.component";
 import { ZypeTabs } from "./ZypeTabs.component";
-import { ZypeAd } from "./ZypeAd.component";
-
-// import "./ZypeMedia.style.scss";
+// import { ZypeAd } from "./ZypeAd.component";
 
 interface ZypeMediaProps {
     viewVideoResponse: ZypeViewVideoResponse;
@@ -315,11 +313,11 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
                     )
                 }
                 <section className="ads">
-                    <ZypeAd
+                    {/* <ZypeAd
                         path="/6663/prnd/prn-rush"
                         size={[300,250]}
                         id="div-gpt-ad-Midrec_300x250_Top"
-                    />
+                    /> */}
                 </section>
             </div>
         );
