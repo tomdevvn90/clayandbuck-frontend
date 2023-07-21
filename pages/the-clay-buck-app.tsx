@@ -1,14 +1,15 @@
 import React from 'react'
 import Head from 'next/head'
 import ErrorPage from 'next/error'
-import Container from '../components/container'
 import Layout from '../components/layout/layout'
+import ClayAndBuckApp from '../components/the-clay-buck-app/clay-buck-app'
+import Container from '../components/container'
 import { getPageData } from '../lib/graphql-api'
 import { useRouter } from 'next/router'
 import { ParseHtmlToReact } from '../utils/parse-html-to-react'
 import { SITE_URL } from '../lib/constants'
 
-export default function Page( {pageData, cnbMediaData} ) {
+export default function MobileAppPage( {pageData} ) {
 
 	const page = pageData?.pageBy ?? {}
 	const router = useRouter()
@@ -40,9 +41,9 @@ export default function Page( {pageData, cnbMediaData} ) {
 		  <meta name="twitter:image:height" content="640" />
 		</Head>
 		<div className={`main-wrap page ${pageClass} ${moreClass}`}>
-			<Container>
-				{ ParseHtmlToReact(page?.content ?? {}) }
-			</Container>
+            <Container>
+                <ClayAndBuckApp content={page?.content ?? {}} />
+            </Container>
 		</div>
 		
 	  </Layout>
@@ -51,8 +52,7 @@ export default function Page( {pageData, cnbMediaData} ) {
   
   /** Server-side Rendering (SSR) */
   export async function getServerSideProps( { params } ) {
-	 const slug = params?.slug.join( '/' )
-	 const pageData = await getPageData( slug );
+	 const pageData = await getPageData( '/the-clay-buck-app' );
 
 	 return {
 		props: {pageData}

@@ -12,7 +12,7 @@ export const ParseHtmlToReact = ( htmlContent ) => {
     const processingInstructions = [
         {
             // Custom <a /> processing
-            shouldProcessNode: (node) => {return  node.name === 'a' && ( !node.attribs.href.includes('http') && !node.attribs.target );},
+            shouldProcessNode: (node) => {return  node.name === 'a' && node.attribs.href && ( !node.attribs.href.includes('http') && !node.attribs.target );},
             processNode: (node, children,index) => {
                 return <Link key={index} href={node.attribs.href} className={node.attribs.class} target={node.attribs.target}>{children[0]}</Link>;
             }

@@ -25,7 +25,7 @@ export default function Header( { headerMenu } ) {
     <>
       <DownloadApp />
       <LeaderBoardTopAds />
-      <header id="masthead" className="site-header">
+      <header className="site-header">
         <div className="container">
 
           <div className="site-branding">

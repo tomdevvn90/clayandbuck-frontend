@@ -52,11 +52,6 @@
   dependencies:
     tslib "^2.4.0"
 
-"@types/google-publisher-tag@^1.20230410.0":
-  version "1.20230410.0"
-  resolved "https://registry.npmjs.org/@types/google-publisher-tag/-/google-publisher-tag-1.20230410.0.tgz"
-  integrity sha512-H2oBE/QXFzxP7iLJq+ohEb5yflIwhIfc6E4F4AkMpiCYfvKFZkQaH2VoBs/Jf8QdthT7ZkHYTzNiRoI2ch0D1Q==
-
 "@types/node@^18.6.3":
   version "18.16.19"
   resolved "https://registry.npmjs.org/@types/node/-/node-18.16.19.tgz"

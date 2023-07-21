@@ -1,14 +1,14 @@
 import React from 'react'
 import Head from 'next/head'
 import ErrorPage from 'next/error'
-import Container from '../components/container'
 import Layout from '../components/layout/layout'
+import Newsletter from '../components/newsletter/newsletter'
 import { getPageData } from '../lib/graphql-api'
 import { useRouter } from 'next/router'
 import { ParseHtmlToReact } from '../utils/parse-html-to-react'
 import { SITE_URL } from '../lib/constants'
 
-export default function Page( {pageData, cnbMediaData} ) {
+export default function NewsletterPage( {pageData} ) {
 
 	const page = pageData?.pageBy ?? {}
 	const router = useRouter()
@@ -40,9 +40,7 @@ export default function Page( {pageData, cnbMediaData} ) {
 		  <meta name="twitter:image:height" content="640" />
 		</Head>
 		<div className={`main-wrap page ${pageClass} ${moreClass}`}>
-			<Container>
-				{ ParseHtmlToReact(page?.content ?? {}) }
-			</Container>
+            <Newsletter />
 		</div>
 		
 	  </Layout>
@@ -50,9 +48,8 @@ export default function Page( {pageData, cnbMediaData} ) {
   }
   
   /** Server-side Rendering (SSR) */
-  export async function getServerSideProps( { params } ) {
-	 const slug = params?.slug.join( '/' )
-	 const pageData = await getPageData( slug );
+  export async function getServerSideProps() {
+	 const pageData = await getPageData( '/clay-and-buck-in-a-hurry' );
 
 	 return {
 		props: {pageData}

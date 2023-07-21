@@ -2,7 +2,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 16px;
     margin: 0 0 48px;
 
     a {
@@ -30,6 +29,34 @@
             border: 1px solid #f8da49;
             background: #000;
             color: #f8da49;
+        }
+    }
+    @media screen and (max-width: 767px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 10px;
+        margin: 0 0 40px;
+        a {
+            text-align: center;
+            width: 100%;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            margin: 0;
+
+            span {
+                font-size: 15px;
+                line-height: 20px;
+                display: block;
+                margin-top: 6px;
+            }
+            > svg {
+                height: 1.8em;
+                margin: 0;
+            }
         }
     }
 }

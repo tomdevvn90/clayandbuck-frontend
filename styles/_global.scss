@@ -38,6 +38,16 @@ body {
             font-size: 36px;
         }
     }
+    h2 {
+        font-size: 32px;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+
+        @media screen and (max-width: 600px) {
+            font-size: 28px;
+        }
+    }
     a {
         text-decoration: none;
         color: #4169e1;
@@ -102,7 +112,7 @@ body {
     iframe,
     object {
         max-width: 100%;
-        margin: 24px 0;
+        margin: 0 0 24px;
     }
     img {
         height: auto;
@@ -134,7 +144,9 @@ body {
                         text-transform: uppercase;
                     }
                 }
-    
+                &.clay-buck-app-page {
+                    padding: 0 0 40px;
+                }
                 &.white-background, &.eib-in-a-hurry {
                     background-color: #fff;
                     color: #000;
@@ -293,6 +305,44 @@ body {
             color: #b7b7b7;
             margin-bottom: 8px;
         }
+        @media screen and (max-width: 991px) {
+            .post-wrap .post-img {
+                padding-right: 16px;
+            }
+            h6 {
+                font-size: 13px;
+                line-height: 15px;
+                margin-bottom: 6px;
+            }
+            h4 {
+                font-size: 18px;
+                line-height: 20px;
+                margin: 6px 0;
+            }
+            p {
+                font-size: 14px;
+                line-height: 1.2;
+                margin: 6px 0;
+                -webkit-line-clamp: 3;
+            }
+        }
+        @media screen and (max-width: 767px) {
+            .post-wrap  {
+                flex-wrap: wrap;
+
+                .post-img,
+                .post-content {
+                    width: 100%;
+                    padding: 0;
+                }
+            }
+            h6 {
+                margin-top: 10px;
+            }
+            p {
+                display: none;
+            }
+        }
     }
 
     #ihrAffiliatesMapContainer #ihmInViewStationsList {
@@ -394,4 +444,65 @@ body {
 }
 .text-center {
     text-align: center;
+}
+.content-ss {
+    padding: 32px 0;
+}
+a.download-btn {
+    img {
+        transition: ease .25s all;
+    }
+    &:hover img {
+        transform: scale(1.2);
+    }
+}
+
+body .podcast-feed-page {
+    h1 {
+        font-size: 55px;
+        line-height: normal;
+        color: #ffffff;
+        font-weight: 700;
+        font-family: "Barlow";
+        text-transform: uppercase;
+    }
+    p,
+    ul {
+        font-size: 20px;
+        margin-bottom: 16px;
+        color: #b7b7b7;
+    }
+    ul.breadcrumbs {
+        margin-bottom: 40px;
+    }
+    .cnb-copy-link {
+		padding: 10px 20px;
+		margin: 10px 0 20px;
+		background: linear-gradient(268deg, #f8e16b 0%, #f8e16b 8%, #f2da66 20%, #e3c958 46%, #cbac41 75%, #b28e2a 100%);
+		color: #000;
+		text-decoration: underline;
+		display: block;
+        width: max-content;
+    }
+    @media (max-width: 767px) {
+		p,
+		ul {
+				font-size: 16px;
+		}
+		h1 {
+		    font-size: 40px;
+		}
+        ul.breadcrumbs {
+            margin-bottom: 30px;
+        }
+    }
+    @media (max-width: 499px) {
+		.cnb-copy-link {
+			font-size: 14px;
+	        padding: 10px 2px;
+		}
+        ul.breadcrumbs {
+            margin-bottom: 24px;
+        }
+    }
 }

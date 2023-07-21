@@ -1,14 +1,15 @@
 import React from 'react'
 import Head from 'next/head'
 import ErrorPage from 'next/error'
-import Container from '../components/container'
-import Layout from '../components/layout/layout'
-import { getPageData } from '../lib/graphql-api'
+import Container from '../../components/container'
+import Layout from '../../components/layout/layout'
+import CnbMedia from "../../components/cnb-media";
+import { getPageData } from '../../lib/graphql-api'
 import { useRouter } from 'next/router'
-import { ParseHtmlToReact } from '../utils/parse-html-to-react'
-import { SITE_URL } from '../lib/constants'
+import { ParseHtmlToReact } from '../../utils/parse-html-to-react'
+import { SITE_URL } from '../../lib/constants'
 
-export default function Page( {pageData, cnbMediaData} ) {
+export default function VideosSubPage( {pageData} ) {
 
 	const page = pageData?.pageBy ?? {}
 	const router = useRouter()
@@ -25,10 +26,6 @@ export default function Page( {pageData, cnbMediaData} ) {
 	const cleanPath = router.asPath.split('#')[0].split('?')[0];
 	const canonicalUrl = `${SITE_URL}` + (router.asPath === '/' ? '' : cleanPath);
 
-	let moreClass = ''
-	if ( pageClass == 'terms-conditions-single-post' ) {
-		moreClass = 'white-background'
-	}
 	return (
 	  <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
 		<Head>
@@ -39,23 +36,33 @@ export default function Page( {pageData, cnbMediaData} ) {
 		  <meta name="twitter:image:width" content="1200" />
 		  <meta name="twitter:image:height" content="640" />
 		</Head>
-		<div className={`main-wrap page ${pageClass} ${moreClass}`}>
-			<Container>
-				{ ParseHtmlToReact(page?.content ?? {}) }
-			</Container>
+		<div className={`main-wrap page ${pageClass}`}>
+            <Container>
+                {/* { ParseHtmlToReact(page?.content ?? {}) } */}
+				<div className='hero-ss'>
+					<h1>Audio/Video</h1>
+					<ul className="breadcrumbs">
+						<li><a href="/">Home</a></li>
+						<li className="active">Media</li>
+					</ul>
+				</div>
+
+				<CnbMedia />
+            </Container>
 		</div>
 		
 	  </Layout>
 	)
-  }
+}
   
   /** Server-side Rendering (SSR) */
-  export async function getServerSideProps( { params } ) {
-	 const slug = params?.slug.join( '/' )
-	 const pageData = await getPageData( slug );
+export async function getServerSideProps( { params } ) {
+    console.log(params)
+    // const slug = params?.slug.join( '/' )
+    const pageData = await getPageData( '/videos' );
 
-	 return {
-		props: {pageData}
-	 }
-  }
+    return {
+        props: {pageData}
+    }
+}
   

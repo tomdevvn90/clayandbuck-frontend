@@ -14,6 +14,7 @@ export default function PostHeader({
   author,
   categories,
 }) {
+  const ftClass = (featuredVideosPost) ? 'featured-image has-video' : 'featured-image'
   return (
     <>
       <PostTitle>{title}</PostTitle>
@@ -22,7 +23,7 @@ export default function PostHeader({
         <Avatar author={author} />
       </div> */}
 
-      <div className="featured-image">
+      <div className={ftClass}>
         <CoverImage title={title} coverImage={coverImage} 
                     featureImageUrl={featureImageUrl}
                     featureImageTab={featureImageTab}
