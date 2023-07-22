@@ -7,6 +7,7 @@ import { getPageData } from '../lib/graphql-api'
 import { useRouter } from 'next/router'
 import { ParseHtmlToReact } from '../utils/parse-html-to-react'
 import { SITE_URL } from '../lib/constants'
+import TwoColumnTemp from '../components/two-column-template/two-column'
 
 export default function Page( {pageData, cnbMediaData} ) {
 
@@ -18,7 +19,7 @@ export default function Page( {pageData, cnbMediaData} ) {
 
 	const { headerMenu, footerMenu } = pageData
 	const { templateName } = page?.template ?? ''
-	const pageClass = templateName? templateName.toLowerCase().replace(' ', '-') : ''
+	const pageClass = templateName? templateName.toLowerCase().replaceAll(' ', '-') : ''
 
 	const { seo } = page
   	const fullHead = ParseHtmlToReact(seo.fullHead);
@@ -40,9 +41,18 @@ export default function Page( {pageData, cnbMediaData} ) {
 		  <meta name="twitter:image:height" content="640" />
 		</Head>
 		<div className={`main-wrap page ${pageClass} ${moreClass}`}>
-			<Container>
-				{ ParseHtmlToReact(page?.content ?? {}) }
-			</Container>
+			{(() => {
+				switch(pageClass) {
+					case 'two-column-template-page':
+						return <TwoColumnTemp data={page} />
+					default:
+						return (
+							<Container>
+								{ ParseHtmlToReact(page?.content ?? {}) }
+							</Container>
+						)
+				}
+			})()}
 		</div>
 		
 	  </Layout>

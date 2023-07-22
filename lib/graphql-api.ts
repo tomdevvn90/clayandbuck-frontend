@@ -48,6 +48,11 @@ export async function getPageData(uri) {
         content
         slug
         uri
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
         seo {
           metaDesc
           fullHead
