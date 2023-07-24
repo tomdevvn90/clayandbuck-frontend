@@ -48,3 +48,16 @@ export async function getTopStories( crPage: number, perPage: number, excludeSto
     const data = await fetchAPINormal( `/v2/top-stories/?crPage=${crPage}&perPage=${perPage}&excludeStories=${excludeStories}`)
     return data;
 }
+
+/**
+ * Get Books Movies
+ * @param crPage 
+ * @param perPage 
+ * @param excludeStories 
+ * @returns 
+ */
+export async function getRecsData(crPage: number, perPage: number, 
+                                  excludeBooks: string = '', typeRec: string = '') {
+    const data = await fetchAPINormal( `/v2/books-movies/?crPage=${crPage}&perPage=${perPage}&excludeBooks=${excludeBooks}&type=${typeRec}`)
+    return data;
+}

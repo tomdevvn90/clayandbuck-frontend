@@ -11,3 +11,13 @@ export async function fetcher<JSON = any>(
     const res = await fetch(input, init)
     return res.json()
 }
+
+export interface recItemProps {
+  ratingPostBooks: string,
+  buyUrlPostBooks: string,
+  watchUrlPostBooks: string,
+  typePostBooks: string,
+  content: string,
+  title: string,
+  ftImage: string
+}

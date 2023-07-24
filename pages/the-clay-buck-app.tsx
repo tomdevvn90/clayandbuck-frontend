@@ -26,10 +26,6 @@ export default function MobileAppPage( {pageData} ) {
 	const cleanPath = router.asPath.split('#')[0].split('?')[0];
 	const canonicalUrl = `${SITE_URL}` + (router.asPath === '/' ? '' : cleanPath);
 
-	let moreClass = ''
-	if ( pageClass == 'terms-conditions-single-post' ) {
-		moreClass = 'white-background'
-	}
 	return (
 	  <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
 		<Head>
@@ -40,7 +36,7 @@ export default function MobileAppPage( {pageData} ) {
 		  <meta name="twitter:image:width" content="1200" />
 		  <meta name="twitter:image:height" content="640" />
 		</Head>
-		<div className={`main-wrap page ${pageClass} ${moreClass}`}>
+		<div className={`main-wrap page ${pageClass}`}>
             <Container>
                 <ClayAndBuckApp content={page?.content ?? {}} />
             </Container>
@@ -51,7 +47,7 @@ export default function MobileAppPage( {pageData} ) {
   }
   
   /** Server-side Rendering (SSR) */
-  export async function getServerSideProps( { params } ) {
+  export async function getServerSideProps() {
 	 const pageData = await getPageData( '/the-clay-buck-app' );
 
 	 return {

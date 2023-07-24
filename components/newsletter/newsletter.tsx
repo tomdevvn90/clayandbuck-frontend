@@ -1,5 +1,5 @@
 import Image from "next/image"
-import NewsLetterImg from '../../public/images/newsletter-page-main-header.jpg'
+import NewsLetterHeaderImg from '../../public/images/newsletter-header.jpg'
 import Container from "../container"
 
 export default function Newsletter() {
@@ -7,7 +7,7 @@ export default function Newsletter() {
         <div>
             <section className="rushinhurry">
                 <Container>
-                    <Image src={NewsLetterImg} width={1200} height={314} alt="Clay & Buck In A Hurry" />
+                    <Image src={NewsLetterHeaderImg} width={1200} height={314} alt="Clay & Buck In A Hurry" />
                 </Container>
             </section>
 
