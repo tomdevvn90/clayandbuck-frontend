@@ -41,7 +41,7 @@ export default function Page( {pageData, cnbMediaData} ) {
 		  <meta name="twitter:image:height" content="640" />
 		</Head>
 		<div className={`main-wrap page ${pageClass} ${moreClass}`}>
-			{(() => {
+			{/* {(() => {
 				switch(pageClass) {
 					case 'two-column-template-page':
 						return <TwoColumnTemp data={page} />
@@ -52,7 +52,11 @@ export default function Page( {pageData, cnbMediaData} ) {
 							</Container>
 						)
 				}
-			})()}
+			})()} */}
+
+			<Container>
+				{ ParseHtmlToReact(page?.content ?? {}) }
+			</Container>
 		</div>
 		
 	  </Layout>
