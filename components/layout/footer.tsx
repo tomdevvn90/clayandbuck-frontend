@@ -2,13 +2,11 @@ import Container from "../container";
 import SocialChannels from "../social-channels";
 import MenuItem from "../menu-item";
 import dynamic from "next/dynamic";
+
 // import LeaderBoardBottomAds from '../ads/leaderboard-bottom-ads'
-const LeaderBoardBottomAds = dynamic(
-  () => import("../ads/leaderboard-bottom-ads"),
-  {
+const LeaderBoardBottomAds = dynamic( () => import("../ads/leaderboard-bottom-ads"), {
     ssr: false,
-  }
-);
+});
 
 export default function Footer({ footerMenu }) {
   const currentYear = new Date().getFullYear();
@@ -29,11 +27,7 @@ export default function Footer({ footerMenu }) {
             <p>
               The Clay Travis &amp; Buck Sexton Show - Copyright ©{" "}
               <span className="year_copyright">{currentYear}</span> -{" "}
-              <a
-                href="https://www.premierenetworks.com/"
-                target="_blank"
-                rel="noopener"
-              >
+              <a href="https://www.premierenetworks.com/" target="_blank" rel="noopener" >
                 Premiere Networks, Inc
               </a>
             </p>

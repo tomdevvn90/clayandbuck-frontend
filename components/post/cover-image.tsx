@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { isExternalLink } from '../../utils/global-functions'
 
 interface Props {
   title: string
@@ -25,7 +26,7 @@ export default function CoverImage({ title, coverImage, featureImageUrl, feature
     />
   )
   let ftImage = image
-  if (!featureImageUrl.includes('http') && featureImageTab != '_blank') {
+  if (!isExternalLink(featureImageUrl) && featureImageTab != '_blank') {
     ftImage = (
         <Link href={featureImageUrl}>
           {image}

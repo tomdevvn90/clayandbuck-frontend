@@ -3,13 +3,13 @@ import Image from "next/image";
 import logo_img from "../../public/images/clay-and-buck-logo.png";
 import white_mini_logo from "../../public/images/white-mini-logo.png";
 import MenuItem from "../menu-item";
-
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
 import NoticeAndSocials from "./notice-and-socials";
 import DownloadApp from "./download-app";
 import dynamic from "next/dynamic";
+
 // import LeaderBoardTopAds from '../ads/leaderboard-top-ads'
 const LeaderBoardTopAds = dynamic(() => import("../ads/leaderboard-top-ads"), {
   ssr: false,

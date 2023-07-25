@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
 
-export default function OptoutPage({ pageData }) {
+export default function PrivacyPolicyPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
   const router = useRouter();
   if (!router.isFallback && !page?.slug) {
@@ -43,8 +43,8 @@ export default function OptoutPage({ pageData }) {
       <div className={`main-wrap page white-background ${pageClass}`}>
         <Container>
           <OneTrustContent 
-                id="otnotice-e793553f-90ff-43e8-8f5f-1b974af65076" 
-                jsonLink="https://privacyportal-cdn.onetrust.com/3546d798-21cd-434d-b031-f8701f4d2f21/privacy-notices/e793553f-90ff-43e8-8f5f-1b974af65076.json" 
+             id="otnotice-817b67df-8a7f-42db-8847-d9d07698faf2" 
+             jsonLink="https://privacyportal-cdn.onetrust.com/3546d798-21cd-434d-b031-f8701f4d2f21/privacy-notices/817b67df-8a7f-42db-8847-d9d07698faf2.json" 
           />
         </Container>
       </div>
@@ -54,7 +54,7 @@ export default function OptoutPage({ pageData }) {
 
 /** Server-side Rendering (SSR) */
 export async function getServerSideProps() {
-  const pageData = await getPageData("/optout");
+  const pageData = await getPageData("/privacy-policy");
 
   return {
     props: { pageData },

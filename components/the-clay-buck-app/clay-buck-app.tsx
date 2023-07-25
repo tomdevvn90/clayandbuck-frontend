@@ -3,7 +3,6 @@ import MobileApp from '../../public/images/clay-buck-app-header.jpg'
 import { ParseHtmlToReact } from "../../utils/parse-html-to-react"
 
 export default function ClayAndBuckApp( {content} ) {
-    console.log(content)
     return (
         <div>
             <section className="hero-ss">

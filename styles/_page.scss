@@ -398,3 +398,20 @@ body .page.recommendations {
         }
     }
 }
+
+body .one-trust-content-wrap {
+    padding: 40px 0;
+    min-height: 500px;
+
+    ul, ol {
+        font-family: $secondary-font;
+    }
+
+    .otnotice-content {
+        padding: 0;
+    }
+
+    @media (max-width: 699px) {
+        padding: 20px 0;
+    }
+}

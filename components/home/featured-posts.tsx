@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { isExternalLink } from "../../utils/global-functions";
 // import HomeMinibarAds from '../ads/home-minibar-ads'
 const HomeMinibarAds = dynamic(() => import("../ads/home-minibar-ads"), {
   ssr: false,
@@ -39,7 +40,7 @@ export default function FeaturedPosts({ ftPosts }) {
         <div className="row-2">
           {restPosts &&
             restPosts.map((p) => {
-              if (!p.slug.includes("http")) {
+              if (!isExternalLink(p.slug)) {
                 return (
                   <Link href={p.slug} key={p.post_id} target={p.target}>
                     <div className="post-wrap">

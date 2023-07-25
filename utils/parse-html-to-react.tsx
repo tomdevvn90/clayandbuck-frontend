@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { isExternalLink } from './global-functions';
 
 const HtmlToReact = require('html-to-react');
 const HtmlToReactParser = require('html-to-react').Parser;
@@ -12,7 +13,7 @@ export const ParseHtmlToReact = ( htmlContent ) => {
     const processingInstructions = [
         {
             // Custom <a /> processing
-            shouldProcessNode: (node) => {return  node.name === 'a' && node.attribs.href && ( !node.attribs.href.includes('http') && !node.attribs.target );},
+            shouldProcessNode: (node) => {return  node.name === 'a' && node.attribs.href && ( !isExternalLink(node.attribs.href) && !node.attribs.target );},
             processNode: (node, children,index) => {
                 return <Link key={index} href={node.attribs.href} className={node.attribs.class} target={node.attribs.target}>{children[0]}</Link>;
             }
