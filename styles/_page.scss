@@ -152,7 +152,7 @@ body .page.recommendations {
         }
         .rc-info {
             width: 58%;
-            padding-right: 10%;
+            padding-right: 7%;
         }
         .rc-image {
             width: 42%;
@@ -406,11 +406,9 @@ body .one-trust-content-wrap {
     ul, ol {
         font-family: $secondary-font;
     }
-
     .otnotice-content {
         padding: 0;
     }
-
     @media (max-width: 699px) {
         padding: 20px 0;
     }
