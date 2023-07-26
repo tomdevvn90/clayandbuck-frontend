@@ -82,14 +82,15 @@ h2.empty-pc-msg {
     line-height: 135%;
     color: #AAAFB3;
 }
-.song_info p.datetime {
+.song_info p.date_time {
     font-weight: bold;
+    letter-spacing: 0.01rem;
 }
 .song_info p.full-desc {
     display: none
 }
 .song_info .bot_row {
-    margin-top: 12px;
+    margin-top: 8px;
     padding-bottom: 12px;
     border-bottom: 1px solid rgb(255 255 255 / 20%);
 }
@@ -139,7 +140,7 @@ h2.empty-pc-msg {
 .vip_podcast_content h1 {
     font-size: 40px;
     margin: 16px 0;
-    text-transform: none;
+    text-transform: none !important;
 }
 .podcast_feed_link {
     background-image: url(../../../public/images/podcast-icon.png);
@@ -193,7 +194,27 @@ h2.empty-pc-msg {
     color: #FFFF;
     font-size: 18px;
 }
-
+.load_more__pc_wrap {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+.load_more__pc_wrap button {
+    background: #b28e2a;
+    padding: 12px 24px;
+    width: 180px;
+    height: 50px;
+    color: #FFF;
+    text-align: center;
+    display: block;
+    cursor: pointer;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    font-family: "Barlow";
+    font-size: 1rem;
+    line-height: 1.5;
+}
 @media (max-width: 599px) {
     .download_btn svg {
         width: 20px;
@@ -244,7 +265,6 @@ h2.empty-pc-msg {
         padding: 12px 8px 0;
     }
     .song_info .bot_row {
-        margin-top: 8px;
         padding-bottom: 12px;
     }
     .vip_pc_playlist {
