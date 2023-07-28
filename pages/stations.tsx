@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import { ParseHtmlToReact } from '../utils/parse-html-to-react'
 import { SITE_URL } from '../lib/constants'
 
-export default function Page( {pageData} ) {
+export default function StationPage( {pageData} ) {
 
 	const page = pageData?.pageBy ?? {}
 	const router = useRouter()

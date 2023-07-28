@@ -148,7 +148,7 @@ body {
                 &.clay-buck-app-page {
                     padding: 0 0 40px;
                 }
-                &.white-background, &.eib-in-a-hurry {
+                &.white-background {
                     background-color: #fff;
                     color: #000;
     
@@ -193,6 +193,9 @@ body {
             }
         }
     }
+    .text-center {
+        text-align: center;
+    }
     .container {
         max-width: 1180px;
         width: 100%;
@@ -225,6 +228,31 @@ body {
         svg { margin-left: 6px; }
         &:hover {
             background-image: linear-gradient(268deg, #b28e2a 0%, #cbac41 8%, #e3c958 20%, #f2da66 46%, #f8e16b 75%, #f8e16b 100%);
+        }
+    }
+    a.cnb-btn {
+        box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.65);
+        background-image: linear-gradient(268deg, #f8e16b 0%, #f8e16b 8%, #f2da66 20%, #e3c958 46%, #cbac41 75%, #b28e2a 100%);
+        text-transform: uppercase;
+        line-height: 22px;
+        color: #000000;
+        font-size: 1rem;
+        font-weight: 700;
+        font-family: $main-font;
+        text-align: center;
+        min-width: 100px;
+        border-radius: 0;
+        padding: 16px 20px;
+        margin: 10px auto;
+        display: inline-block;
+        transition: ease .25s all;
+        text-decoration: none;
+        border: 1px solid transparent;
+
+        &:hover {
+            border: 1px solid #f8da49;
+            background: #000;
+            color: #f8da49;
         }
     }
     .on-air-btn {
@@ -457,52 +485,19 @@ a.download-btn {
         transform: scale(1.2);
     }
 }
+body .podcast .react-datepicker__close-icon {
+    background-image: url(../public/images/btn-close.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #AD903F;
+    background-size: 14px;
+    cursor: pointer;
+    width: 28px; height: 28px;
+    position: absolute;
+    right: 10px; top: 7px;
+    border-radius: 2px;
 
-body .podcast-feed-page {
-    h1 {
-        font-size: 55px;
-        line-height: normal;
-        color: #ffffff;
-        font-weight: 700;
-        text-transform: uppercase;
-    }
-    p,
-    ul {
-        font-size: 20px;
-        margin-bottom: 16px;
-        color: #b7b7b7;
-    }
-    ul.breadcrumbs {
-        margin-bottom: 40px;
-    }
-    .cnb-copy-link {
-		padding: 10px 20px;
-		margin: 10px 0 20px;
-		background: linear-gradient(268deg, #f8e16b 0%, #f8e16b 8%, #f2da66 20%, #e3c958 46%, #cbac41 75%, #b28e2a 100%);
-		color: #000;
-		text-decoration: underline;
-		display: block;
-        width: max-content;
-    }
-    @media (max-width: 767px) {
-		p,
-		ul {
-				font-size: 16px;
-		}
-		h1 {
-		    font-size: 40px;
-		}
-        ul.breadcrumbs {
-            margin-bottom: 30px;
-        }
-    }
-    @media (max-width: 499px) {
-		.cnb-copy-link {
-			font-size: 14px;
-	        padding: 10px 2px;
-		}
-        ul.breadcrumbs {
-            margin-bottom: 24px;
-        }
+    &::after {
+        display: none;
     }
 }

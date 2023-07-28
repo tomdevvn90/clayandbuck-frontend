@@ -6,13 +6,15 @@ import { useEffect, useState } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styles from './styles/podcast.module.css'
-import { format } from "date-fns";
 
 export default function Podcast() {
     const [filterDate, setFilterDate] = useState(null);
     const [ allPodcasts, setAllPodcasts ] = useState(null)
     const [ podcasts, setPodcasts ] = useState(null)
     const [ podcastsNum, setPodcastsNum ] = useState(20)
+    const [ showLoadMoreBtn, setLoadMoreBtn ] = useState(true)
+    const [ headingText, setHeadingText ] = useState('Latest Podcasts')
+    const [ messageText, setMessageText ] = useState('Something went wrong! Please try again.')
 
     const user_email = 'luke@bigwigmonster.com'
     const user_pass = 'password'
@@ -21,37 +23,74 @@ export default function Podcast() {
 
     useEffect( () => {
         if ( filterDate !== null ) { 
+            setLoadMoreBtn(false)
+
             // Filter podcasts by date
-            const filterDateFm = format(filterDate, "MM/dd/yyyy")
-            setPodcasts(null)
+            const fDate = new Date(filterDate)
+            let fDay = (fDate.getDate() < 10) ? `0${fDate.getDate()}` : fDate.getDate()
+            let fMonth = (fDate.getMonth() < 10) ? `0${fDate.getMonth()+1}` : fDate.getMonth()
+            let fYear = fDate.getFullYear();
+            const filterDateFm = `${fYear}/${fMonth}/${fDay}`
+
+            setHeadingText(`Podcasts on ${fMonth}/${fDay}/${fYear}`)
             fetch( `https://services.premierenetworks.com/podcast/${filterDateFm}/clayandbuck.xml`, { headers } )
                     .then( res => res.text())
-                    .then( res => {
-                        parseString(res, function (err, result) { //console.log(result)
-                            const podcastsJson = (result.rss.channel[0])?.item ?? {}
-                            setPodcasts(podcastsJson)
-                        })
+                    .then( res => { 
+                        if ( res.includes('"status":"ERROR"') ) {
+                            setPodcasts(null)
+                            setMessageText ( JSON.parse(res).data.message )
+                        } else {
+                            parseString(res, function (err, result) {
+                                const podcastsJson = (result.rss.channel[0])?.item ?? {}
+                                if ( podcastsJson ) {
+                                    setPodcasts(podcastsJson)
+                                } else {
+                                    setMessageText('There were no podcast episodes available for this date.')
+                                    setPodcasts(null)
+                                }
+                            })
+                        }
                     } ) 
-                    .catch(err => console.log(err))
+                    .catch(err => {
+                        console.log(err)
+                        setMessageText('Something went wrong! Please try again.')
+                        setPodcasts(null)
+                    })
         } else {
             // Load all podcasts
+            setHeadingText('Latest Podcasts')
+            setLoadMoreBtn(true)
             if ( allPodcasts === null ) {
                 fetch( 'https://services.premierenetworks.com/podcast/clayandbuck.xml', { headers } )
                     .then( res => res.text())
                     .then( res => {
-                        parseString(res, function (err, result) {
-                            const podcastsJson = (result.rss.channel[0])?.item ?? {}
-                            setAllPodcasts(podcastsJson)
-                            setPodcasts(podcastsJson.slice(0, podcastsNum))
-                        })
+                        if ( res.includes('"status":"ERROR"') ) {
+                            setPodcasts(null)
+                            setMessageText ( JSON.parse(res).data.message )
+                        } else {
+                            parseString(res, function (err, result) {
+                                const podcastsJson = (result.rss.channel[0])?.item ?? {}
+                                if ( podcastsJson ) {
+                                    setAllPodcasts(podcastsJson)
+                                    setPodcasts(podcastsJson.slice(0, podcastsNum))
+                                } else {
+                                    setMessageText('Something went wrong! Please try again.')
+                                    setPodcasts(null)
+                                    setLoadMoreBtn(false)
+                                }
+                            })
+                        }
                     } ) 
-                    .catch(err => console.log(err))
+                    .catch(err => {
+                        console.log(err)
+                        setMessageText('Something went wrong! Please try again.')
+                        setPodcasts(null)
+                        setLoadMoreBtn(false)
+                    })
             } else {
                 setPodcasts(allPodcasts.slice(0, podcastsNum))
             }
-
         }
-
         return () => {}
     }, [podcastsNum, filterDate])
 
@@ -65,35 +104,38 @@ export default function Podcast() {
             </div>
 
             <div className={styles.vip_podcast_list}>
-                <div className="wrap">
-                    <div className={styles.filter_block}>
-                        <h2 className={styles.filter_title}>Latest Podcasts</h2>
-                        <div className={styles.search_by_date}>
-                            <span className="clear-filter"></span>
-                            <DatePicker
-                                className={styles.podcasts_by_date}
-                                selected={filterDate}
-                                placeholderText="Search by date"
-                                dateFormat="MM/dd/yyyy"
-                                isClearable
-                                onChange={(selectedDate) => setFilterDate(selectedDate) }
-                            />
+
+                <div className={styles.filter_block}>
+                    <h2 className={styles.filter_title}>{headingText}</h2>
+                    <div className={styles.search_by_date}>
+                        <DatePicker
+                            className={styles.podcasts_by_date}
+                            selected={filterDate}
+                            placeholderText="Search by date"
+                            dateFormat="MM/dd/yyyy"
+                            isClearable
+                            onChange={ (slDate) => setFilterDate(slDate) }
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.vip_pc_playlist}>    
+                    { (! podcasts) && (
+                        <h2 className={styles.error_msg}>{messageText}</h2>
+                        )
+                    }
+
+                    { podcasts && podcasts.length > 0 && podcasts.map( (pc, index) => {
+                            return <PodcastItem key={index} podItem={pc} styles={styles} />
+                        })
+                    }
+
+                    { podcasts && podcasts.length > 0 && showLoadMoreBtn && (
+                        <div className={styles.load_more__pc_wrap}>
+                            <button onClick={ () => setPodcastsNum( podcastsNum + 20 ) }>Load more</button>
                         </div>
-                    </div>
-
-                    <div className={styles.vip_pc_playlist}>    
-                        { podcasts && podcasts.map( (pc, index) => {
-                                return <PodcastItem key={index} podItem={pc} styles={styles} />
-                            })
-                        }
-
-                        { podcasts && (
-                            <div className={styles.load_more__pc_wrap}>
-                                <button onClick={ () => setPodcastsNum( podcastsNum + 20 ) }>Load more</button>
-                            </div>
-                        )}
-                    </div>
-                </div> 
+                    )}
+                </div>
             </div>
         </div>
     )

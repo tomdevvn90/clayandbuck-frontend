@@ -8,6 +8,8 @@ import { useRouter } from 'next/router'
 import { ParseHtmlToReact } from '../utils/parse-html-to-react'
 import { SITE_URL } from '../lib/constants'
 import TwoColumnTemp from '../components/two-column-template/two-column'
+import SpecialOffer from '../components/special-offer-template/special-offer'
+import { getBackgroundClass } from '../utils/global-functions'
 
 export default function Page( {pageData, cnbMediaData} ) {
 
@@ -25,11 +27,8 @@ export default function Page( {pageData, cnbMediaData} ) {
   	const fullHead = ParseHtmlToReact(seo.fullHead);
 	const cleanPath = router.asPath.split('#')[0].split('?')[0];
 	const canonicalUrl = `${SITE_URL}` + (router.asPath === '/' ? '' : cleanPath);
+	const backgroundClass = getBackgroundClass(pageClass)
 
-	let moreClass = ''
-	if ( pageClass == 'terms-conditions-single-post' ) {
-		moreClass = 'white-background'
-	}
 	return (
 	  <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
 		<Head>
@@ -40,11 +39,13 @@ export default function Page( {pageData, cnbMediaData} ) {
 		  <meta name="twitter:image:width" content="1200" />
 		  <meta name="twitter:image:height" content="640" />
 		</Head>
-		<div className={`main-wrap page ${pageClass} ${moreClass}`}>
+		<div className={`main-wrap page ${pageClass} ${backgroundClass}`}>
 			{(() => {
 				switch(pageClass) {
 					case 'two-column-template-page':
 						return <TwoColumnTemp data={page} />
+					case 'special-offer-template':
+						return <SpecialOffer data={page} />
 					default:
 						return (
 							<Container>
