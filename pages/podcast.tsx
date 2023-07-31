@@ -42,7 +42,7 @@ export default function VipPodcastPage({ pageData }) {
       </Head>
       <div className={`main-wrap page white-background ${pageClass}`}>
         <Container>
-            <Podcast />
+          <Podcast />
         </Container>
       </div>
     </Layout>
