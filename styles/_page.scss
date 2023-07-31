@@ -1,9 +1,42 @@
-main .main-wrap.page {
-    h1 {
-        text-transform: uppercase;
+body main {
+    .page-content {
+        color: #fff;
+
+        .main-wrap {
+            background-image: url(../public/images/container-bg.png);
+            background-repeat: no-repeat;
+            background-position: top left;
+            background-size: initial;
+            padding: 40px 0;
+
+            &.page h1 {
+                text-transform: uppercase;
+            }
+            &.clay-buck-app-page {
+                padding: 0 0 40px;
+            }
+            &.white-background {
+                background-color: #fff;
+                color: #000;
+
+                ul.breadcrumbs li {
+                    color: #b28e2a;
+                    a { color: #b28e2a; }
+                    &.active {
+                        a { color: #000; }
+                        &::before {
+                            display: block;
+                            content: '|';
+                            position: absolute;
+                            left: 8px;
+                            color: #000;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
-
 body .two-columns-template {
     .banner {
         margin-bottom: 80px;

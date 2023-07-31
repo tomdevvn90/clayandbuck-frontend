@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styles from './styles/podcast.module.css'
+import PodcastsVipPlayer from "../podcasts-vip-player";
 
 export default function Podcast() {
     const [filterDate, setFilterDate] = useState(null);
@@ -14,7 +15,8 @@ export default function Podcast() {
     const [ podcastsNum, setPodcastsNum ] = useState(20)
     const [ showLoadMoreBtn, setLoadMoreBtn ] = useState(true)
     const [ headingText, setHeadingText ] = useState('Latest Podcasts')
-    const [ messageText, setMessageText ] = useState('Something went wrong! Please try again.')
+    const [ messageText, setMessageText ] = useState('')
+    const [ cnbLoading, setCnbLoading ] = useState(true)
 
     const user_email = 'luke@bigwigmonster.com'
     const user_pass = 'password'
@@ -22,8 +24,11 @@ export default function Podcast() {
     let headers = { "Authorization": "Basic " + author_basic }
 
     useEffect( () => {
+        setCnbLoading(true)
+
         if ( filterDate !== null ) { 
             setLoadMoreBtn(false)
+            setPodcasts(null)
 
             // Filter podcasts by date
             const fDate = new Date(filterDate)
@@ -34,28 +39,27 @@ export default function Podcast() {
 
             setHeadingText(`Podcasts on ${fMonth}/${fDay}/${fYear}`)
             fetch( `https://services.premierenetworks.com/podcast/${filterDateFm}/clayandbuck.xml`, { headers } )
-                    .then( res => res.text())
-                    .then( res => { 
-                        if ( res.includes('"status":"ERROR"') ) {
-                            setPodcasts(null)
-                            setMessageText ( JSON.parse(res).data.message )
-                        } else {
-                            parseString(res, function (err, result) {
-                                const podcastsJson = (result.rss.channel[0])?.item ?? {}
-                                if ( podcastsJson ) {
-                                    setPodcasts(podcastsJson)
-                                } else {
-                                    setMessageText('There were no podcast episodes available for this date.')
-                                    setPodcasts(null)
-                                }
-                            })
-                        }
-                    } ) 
-                    .catch(err => {
-                        console.log(err)
-                        setMessageText('Something went wrong! Please try again.')
-                        setPodcasts(null)
-                    })
+                .then( res => res.text())
+                .then( res => { 
+                    if ( res.includes('"status":"ERROR"') ) {
+                        setMessageText ( JSON.parse(res).data.message )
+                    } else {
+                        parseString(res, function (err, result) {
+                            const podcastsJson = (result.rss.channel[0])?.item ?? {}
+                            if ( podcastsJson && podcastsJson.length > 0 ) {
+                                setPodcasts(podcastsJson)
+                            } else {
+                                setMessageText('There were no podcast episodes available for this date.')
+                            }
+                        })
+                    }
+                    setCnbLoading(false)
+                } ) 
+                .catch(err => {
+                    console.log(err)
+                    setMessageText('Something went wrong! Please try again.')
+                    setCnbLoading(false)
+                })
         } else {
             // Load all podcasts
             setHeadingText('Latest Podcasts')
@@ -70,7 +74,7 @@ export default function Podcast() {
                         } else {
                             parseString(res, function (err, result) {
                                 const podcastsJson = (result.rss.channel[0])?.item ?? {}
-                                if ( podcastsJson ) {
+                                if ( podcastsJson && podcastsJson.length > 0 ) {
                                     setAllPodcasts(podcastsJson)
                                     setPodcasts(podcastsJson.slice(0, podcastsNum))
                                 } else {
@@ -80,15 +84,18 @@ export default function Podcast() {
                                 }
                             })
                         }
+                        setCnbLoading(false)
                     } ) 
                     .catch(err => {
                         console.log(err)
                         setMessageText('Something went wrong! Please try again.')
                         setPodcasts(null)
                         setLoadMoreBtn(false)
+                        setCnbLoading(false)
                     })
             } else {
                 setPodcasts(allPodcasts.slice(0, podcastsNum))
+                setCnbLoading(false)
             }
         }
         return () => {}
@@ -109,6 +116,7 @@ export default function Podcast() {
                     <h2 className={styles.filter_title}>{headingText}</h2>
                     <div className={styles.search_by_date}>
                         <DatePicker
+                            popperPlacement="bottom-end"
                             className={styles.podcasts_by_date}
                             selected={filterDate}
                             placeholderText="Search by date"
@@ -120,10 +128,13 @@ export default function Podcast() {
                 </div>
 
                 <div className={styles.vip_pc_playlist}>    
+                    { cnbLoading && (
+                        <div className="cnb-spinner-loading"></div>
+                    )}
+
                     { (! podcasts) && (
                         <h2 className={styles.error_msg}>{messageText}</h2>
-                        )
-                    }
+                    )}
 
                     { podcasts && podcasts.length > 0 && podcasts.map( (pc, index) => {
                             return <PodcastItem key={index} podItem={pc} styles={styles} />
@@ -137,6 +148,10 @@ export default function Podcast() {
                     )}
                 </div>
             </div>
+
+            {/* { podcasts && podcasts.length > 0 && (
+                <PodcastsVipPlayer data={podcasts} />
+            )} */}
         </div>
     )
 }

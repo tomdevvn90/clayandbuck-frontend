@@ -50,14 +50,6 @@
     background-color: rgb(128 128 128 / 20%);
     outline: 1px solid;
 }
-.song_info.active-song-container {
-  background-color: rgb(128 128 128 / 20%);
-  outline: 1px solid;
-}
-.song_info:hover .bot_row,
-.song_info.active-song-container .bot_row {
-  border-color: transparent;
-}
 .song_info .top_row {
     display: flex;
     align-items: flex-start;
@@ -88,36 +80,10 @@
     font-weight: bold;
     letter-spacing: 0.01rem;
 }
-.song_info p.full-desc {
-    display: none
-}
 .song_info .bot_row {
     margin-top: 8px;
     padding-bottom: 12px;
     border-bottom: 1px solid rgb(255 255 255 / 20%);
-}
-.song_info div.playlist-song-meta {
-    float: left;
-    margin-left: 15px;
-    width: calc( 100% - 80px );
-}
-.song_info div.playlist-song-meta span.playlist-song-name {
-    color: #414344;
-    font-size: 16px;
-    display: block;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.song_info div.playlist-song-meta span.playlist-artist-album {
-    color: #AAAFB3;
-    font-size: 14px;
-    display: block;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 .download_btn svg {
     width: 25px;
@@ -179,10 +145,6 @@
     color: #2C2C2C;
     font-weight: 400;
 }
-.vip_podcast_list .song_info div.playlist-song-meta span.playlist-song-name {
-    color: #FFFF;
-    font-size: 18px;
-}
 .load_more__pc_wrap {
     display: flex;
     justify-content: center;
@@ -204,7 +166,17 @@
     font-size: 1rem;
     line-height: 1.5;
 }
+@media (max-width: 991px) {
+    .vip_podcast_list .filter_title {
+        font-size: 24px;
+    }
+}
 @media (max-width: 599px) {
+    .vip_podcast_list {
+        padding: 10px;
+        margin: 40px -15px 0;
+        width: calc(100% + 30px);
+    }
     .download_btn svg {
         width: 20px;
         height: 20px;
@@ -220,12 +192,12 @@
         flex-direction: column-reverse;
         margin-bottom: 20px;
     }
-    .vip_podcast_list .filter-title {
+    .vip_podcast_list .filter_title {
         width: 100%;
         text-align: center;
         font-size: 20px;
     }
-    .vip_podcast_list .search-by-date {
+    .vip_podcast_list .search_by_date {
         width: 100%;
         margin-bottom: 10px;
     }
@@ -235,7 +207,7 @@
     .song_info .title_box h2 {
         font-size: 18px;
     }
-    .song_info .image {
+    .song_info img {
         width: 48px;
     }
     .song_info .title_box {
