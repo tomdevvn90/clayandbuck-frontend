@@ -1,14 +1,14 @@
-import AudioImage from './AudioImage'
-import styles from './PlaylistItem.module.css'
-import React from 'react'
-import Title from './Title'
-import StartDate from './StartDate'
-import Duration from './Duration'
+import AudioImage from "./AudioImage";
+import styles from "./PlaylistItem.module.css";
+import React from "react";
+import Title from "./Title";
+import StartDate from "./StartDate";
+import Duration from "./Duration";
 
 const PlaylistItem = (props) => {
   return (
     <div
-      className={props.className == 'active' ? styles.active : styles.track}
+      className={props.className == "active" ? styles.active : styles.track}
       data-key={props.data_key}
       audio-src={props.src}
       title={props.title}
@@ -23,7 +23,7 @@ const PlaylistItem = (props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PlaylistItem
+export default PlaylistItem;

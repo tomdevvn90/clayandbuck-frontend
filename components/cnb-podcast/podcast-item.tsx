@@ -1,31 +1,27 @@
-import { useContext } from "react";
+import { decodeLink } from "../../utils/global-functions";
 
 export default function PodcastItem({ podItem, styles, ...rest }) {
-  const mediaUrl = podItem.enclosure[0].$.url;
   return (
-    <div
-      className={styles.podcast_item}
-      data-song-index="0"
-      data-media-url={mediaUrl}
-      {...rest}
-    >
+    <div className={styles.podcast_item} {...rest}>
       <div className={styles.song_info}>
         <div className={styles.top_row}>
-          <img src={podItem.image[0]} alt="" />
+          <img src={podItem.imageUrl} alt="" />
           <div className={styles.title_box}>
-            <h2>{podItem.title[0]}</h2>
-            <p className={styles.date_time}>
-              {podItem.pubDate[0].slice(0, 17)}
-            </p>
+            <h2>{podItem.title}</h2>
+            <p className={styles.date_time}>{podItem.startDate}</p>
           </div>
         </div>
 
         <div className={styles.bot_row}>
-          <p>{podItem.description[0]}</p>
+          <p>{podItem.description}</p>
         </div>
       </div>
 
-      <a href={mediaUrl} target="_blank" className={styles.download_btn}>
+      <a
+        href={decodeLink(podItem.mediaUrl)}
+        target="_blank"
+        className={styles.download_btn}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           shapeRendering="geometricPrecision"

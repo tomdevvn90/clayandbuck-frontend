@@ -1,27 +1,25 @@
 import Link from "next/link";
 import PodcastItem from "./podcast-item";
 import DatePicker from "react-datepicker";
+import { PodcastsContext } from "../../contexts/PodcastsContext";
+import { PodcastProps } from "../../lib/constants";
 import { parseString } from "xml2js";
 import { useContext, useEffect, useState } from "react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./styles/podcast.module.css";
-import PodcastsVipPlayer from "../podcasts-vip-player";
-import { PodcastContext } from "../../contexts/Podcast";
 
 export default function Podcast() {
-  const podcastCtx = useContext(PodcastContext);
+  const PodcastsCtx = useContext(PodcastsContext);
 
   const [filterDate, setFilterDate] = useState(null);
   const [allPodcasts, setAllPodcasts] = useState(null);
-  const [podcasts, setPodcasts] = useState(null);
+  const [podcasts, setPodcasts] = useState<PodcastProps[]>([]);
   const [podcastsNum, setPodcastsNum] = useState(20);
   const [showLoadMoreBtn, setLoadMoreBtn] = useState(true);
   const [headingText, setHeadingText] = useState("Latest Podcasts");
   const [messageText, setMessageText] = useState("");
   const [cnbLoading, setCnbLoading] = useState(true);
-
-  const [isAddedPodcast, setIsAddedPodcast] = useState(false);
 
   const user_email = "luke@bigwigmonster.com";
   const user_pass = "password";
@@ -32,9 +30,6 @@ export default function Podcast() {
     setCnbLoading(true);
 
     if (filterDate !== null) {
-      setLoadMoreBtn(false);
-      setPodcasts(null);
-
       // Filter podcasts by date
       const fDate = new Date(filterDate);
       let fDay = fDate.getDate() < 10 ? `0${fDate.getDate()}` : fDate.getDate();
@@ -44,6 +39,9 @@ export default function Podcast() {
       const filterDateFm = `${fYear}/${fMonth}/${fDay}`;
 
       setHeadingText(`Podcasts on ${fMonth}/${fDay}/${fYear}`);
+      setLoadMoreBtn(false);
+      setPodcasts([]);
+
       fetch(
         `https://services.premierenetworks.com/podcast/${filterDateFm}/clayandbuck.xml`,
         { headers }
@@ -54,9 +52,10 @@ export default function Podcast() {
             setMessageText(JSON.parse(res).data.message);
           } else {
             parseString(res, function (err, result) {
-              const podcastsJson = result.rss.channel[0]?.item ?? {};
-              if (podcastsJson && podcastsJson.length > 0) {
-                setPodcasts(podcastsJson);
+              const podcastsJson = result.rss.channel[0]?.item ?? [];
+              const podcastsData = handlePodcastData(podcastsJson);
+              if (podcastsData && podcastsData.length > 0) {
+                setPodcasts(podcastsData);
               } else {
                 setMessageText(
                   "There were no podcast episodes available for this date."
@@ -67,7 +66,6 @@ export default function Podcast() {
           setCnbLoading(false);
         })
         .catch((err) => {
-          console.log(err);
           setMessageText("Something went wrong! Please try again.");
           setCnbLoading(false);
         });
@@ -82,17 +80,18 @@ export default function Podcast() {
           .then((res) => res.text())
           .then((res) => {
             if (res.includes('"status":"ERROR"')) {
-              setPodcasts(null);
+              setPodcasts([]);
               setMessageText(JSON.parse(res).data.message);
             } else {
               parseString(res, function (err, result) {
-                const podcastsJson = result.rss.channel[0]?.item ?? {};
-                if (podcastsJson && podcastsJson.length > 0) {
-                  setAllPodcasts(podcastsJson);
-                  setPodcasts(podcastsJson.slice(0, podcastsNum));
+                const podcastsJson = result.rss.channel[0]?.item ?? [];
+                const podcastsData = handlePodcastData(podcastsJson);
+                if (podcastsData && podcastsData.length > 0) {
+                  setAllPodcasts(podcastsData);
+                  setPodcasts(podcastsData.slice(0, podcastsNum));
                 } else {
                   setMessageText("Something went wrong! Please try again.");
-                  setPodcasts(null);
+                  setPodcasts([]);
                   setLoadMoreBtn(false);
                 }
               });
@@ -100,16 +99,14 @@ export default function Podcast() {
             setCnbLoading(false);
           })
           .catch((err) => {
-            console.log(err);
             setMessageText("Something went wrong! Please try again.");
-            setPodcasts(null);
+            setPodcasts([]);
             setLoadMoreBtn(false);
             setCnbLoading(false);
           });
       } else {
         setPodcasts(allPodcasts.slice(0, podcastsNum));
         setCnbLoading(false);
-        // setIsAddedPodcast(false);
       }
     }
     return () => {};
@@ -147,26 +144,26 @@ export default function Podcast() {
         <div className={styles.vip_pc_playlist}>
           {cnbLoading && <div className="cnb-spinner-loading"></div>}
 
-          {!podcasts && <h2 className={styles.error_msg}>{messageText}</h2>}
+          {podcasts.length == 0 && !cnbLoading && messageText && (
+            <h2 className={styles.error_msg}>{messageText}</h2>
+          )}
 
-          {podcasts &&
-            podcasts.length > 0 &&
-            podcasts.map((pc, index) => {
+          {podcasts.length > 0 &&
+            podcasts.map((pc: PodcastProps, index: number) => {
               return (
                 <PodcastItem
                   key={index}
                   podItem={pc}
                   styles={styles}
                   onClick={() => {
-                    // if (isAddedPodcast) return;
-                    // podcastCtx.setPodcasts([...podcasts]);
-                    // setIsAddedPodcast(true);
+                    PodcastsCtx.setPodcasts([...podcasts]);
+                    PodcastsCtx.setCurTrack(index);
                   }}
                 />
               );
             })}
 
-          {podcasts && podcasts.length > 0 && showLoadMoreBtn && (
+          {podcasts.length > 0 && showLoadMoreBtn && (
             <div className={styles.load_more__pc_wrap}>
               <button onClick={() => setPodcastsNum(podcastsNum + 20)}>
                 Load more
@@ -175,10 +172,25 @@ export default function Podcast() {
           )}
         </div>
       </div>
-
-      {/* { podcasts && podcasts.length > 0 && (
-                <PodcastsVipPlayer data={podcasts} />
-            )} */}
     </div>
   );
+}
+
+function handlePodcastData(podcastJson) {
+  if (podcastJson.length > 0) {
+    let podcastData: PodcastProps[] = [];
+    podcastJson.map((pc) => {
+      podcastData.push({
+        title: pc.title[0],
+        duration: "",
+        description: pc.description[0],
+        mediaUrl: pc.enclosure[0].$.url,
+        startDate: pc.pubDate[0].slice(0, 17),
+        imageUrl: pc.image[0],
+      });
+    });
+    return podcastData;
+  } else {
+    return [];
+  }
 }

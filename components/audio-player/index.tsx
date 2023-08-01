@@ -1,5 +1,5 @@
 import styles from "./styles/Player.module.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 
 import PageTemplate from "./parts/PageTemplate";
 import PlayerTemplate from "./parts/PlayerTemplate";
@@ -31,38 +31,44 @@ import shuffleNoneBtn from "./icons/shuffle_none.png";
 import AudioImage from "./parts/AudioImage";
 import StartDate from "./parts/StartDate";
 import PlaylistToggle from "./parts/PlaylistToggle";
+import { decodeLink } from "../../utils/global-functions";
+import { PodcastsContext } from "../../contexts/PodcastsContext";
 
 const Player = ({
-    trackList,
-    includeTags = true,
-    includeSearch = true,
-    showPlaylist = true,
-    autoPlayNextTrack = true,
+  trackList,
+  includeTags = true,
+  includeSearch = true,
+  showPlaylist = true,
+  autoPlayNextTrack = true,
 }) => {
-    let playlist = [];
-    const [query, updateQuery] = useState("");
-    const [audio, setAudio] = useState(null);
-    const [active, setActive] = useState(false);
-    const [title, setTitle] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [length, setLength] = useState(0);
-    const [time, setTime] = useState(0);
-    const [playlistShowing, setPlaylistShowing] = useState(false)
-    const [slider, setSlider] = useState(1);
-    const [drag, setDrag] = useState(0);
-    const [volume, setVolume] = useState(0.8);
-    let [end, setEnd] = useState(0);
-    const [shuffled, setShuffled] = useState(false);
-    const [looped, setLooped] = useState(false);
-    const [filter, setFilter] = useState([]);
-    let [curTrack, setCurTrack] = useState(0);
+  let playlist = [];
+  const [query, updateQuery] = useState("");
+  const [audio, setAudio] = useState(null);
+  const [active, setActive] = useState(false);
+  const [title, setTitle] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [length, setLength] = useState(0);
+  const [time, setTime] = useState(0);
+  const [playlistShowing, setPlaylistShowing] = useState(false);
+  const [slider, setSlider] = useState(1);
+  const [drag, setDrag] = useState(0);
+  const [volume, setVolume] = useState(0.8);
+  let [end, setEnd] = useState(0);
+  const [shuffled, setShuffled] = useState(false);
+  const [looped, setLooped] = useState(false);
+  const [filter, setFilter] = useState([]);
+  // let [curTrack, setCurTrack] = useState(0);
 
-    // const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(11, 8);
-    const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(14, 5);
+  const PodcastCtx = useContext(PodcastsContext);
+
+  // const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(11, 8);
+  const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(14, 5);
 
   useEffect(() => {
-    const audio = new Audio(trackList[curTrack].mediaUrl);
+    const audio = new Audio(
+      decodeLink(trackList[PodcastCtx.curTrack].mediaUrl)
+    );
 
     const setAudioData = () => {
       setLength(audio.duration);
@@ -72,7 +78,9 @@ const Player = ({
     const setAudioTime = () => {
       const curTime = audio.currentTime;
       setTime(curTime);
-      setSlider(curTime ? parseFloat( ( (curTime * 100) / audio.duration).toFixed(1) ) : 0);
+      setSlider(
+        curTime ? parseFloat(((curTime * 100) / audio.duration).toFixed(1)) : 0
+      );
     };
 
     const setAudioVolume = () => setVolume(audio.volume);
@@ -85,9 +93,9 @@ const Player = ({
     audio.addEventListener("ended", setAudioEnd);
 
     setAudio(audio);
-    setTitle(trackList[curTrack].title);
-    setImageUrl(trackList[curTrack].imageUrl);
-    setStartDate(trackList[curTrack].startDate);
+    setTitle(trackList[PodcastCtx.curTrack].title);
+    setImageUrl(trackList[PodcastCtx.curTrack].imageUrl);
+    setStartDate(trackList[PodcastCtx.curTrack].startDate);
 
     return () => {
       audio.pause();
@@ -95,7 +103,7 @@ const Player = ({
   }, []);
 
   const tags = [];
-  if ( includeTags ) {
+  if (includeTags) {
     trackList.forEach((track) => {
       track.tags.forEach((tag) => {
         if (!tags.includes(tag)) {
@@ -104,7 +112,7 @@ const Player = ({
       });
     });
   }
-  
+
   const shufflePlaylist = (arr) => {
     if (arr.length === 1) return arr;
     const rand = Math.floor(Math.random() * arr.length);
@@ -153,26 +161,28 @@ const Player = ({
 
   useEffect(() => {
     if (audio != null) {
-      audio.src = trackList[curTrack].mediaUrl;
-      setTitle(trackList[curTrack].title);
-      setImageUrl(trackList[curTrack].imageUrl);
-      setStartDate(trackList[curTrack].startDate);
+      audio.src = decodeLink(trackList[PodcastCtx.curTrack].mediaUrl);
+      setTitle(trackList[PodcastCtx.curTrack].title);
+      setImageUrl(trackList[PodcastCtx.curTrack].imageUrl);
+      setStartDate(trackList[PodcastCtx.curTrack].startDate);
       play();
     }
-  }, [curTrack]);
+  }, [PodcastCtx.curTrack]);
 
   const previous = () => {
-    const index = playlist.indexOf(curTrack);
+    const index = playlist.indexOf(PodcastCtx.curTrack);
     index !== 0
-      ? setCurTrack((curTrack = playlist[index - 1]))
-      : setCurTrack((curTrack = playlist[playlist.length - 1]));
+      ? PodcastCtx.setCurTrack((PodcastCtx.curTrack = playlist[index - 1]))
+      : PodcastCtx.setCurTrack(
+          (PodcastCtx.curTrack = playlist[playlist.length - 1])
+        );
   };
 
   const next = () => {
-    const index = playlist.indexOf(curTrack);
+    const index = playlist.indexOf(PodcastCtx.curTrack);
     index !== playlist.length - 1
-      ? setCurTrack((curTrack = playlist[index + 1]))
-      : setCurTrack((curTrack = playlist[0]));
+      ? PodcastCtx.setCurTrack((PodcastCtx.curTrack = playlist[index + 1]))
+      : PodcastCtx.setCurTrack((PodcastCtx.curTrack = playlist[0]));
   };
 
   const shuffle = () => {
@@ -180,13 +190,13 @@ const Player = ({
   };
 
   const togglePlaylist = () => {
-    setPlaylistShowing( !playlistShowing )
-  }
+    setPlaylistShowing(!playlistShowing);
+  };
 
   const playlistItemClickHandler = (e) => {
     const num = Number(e.currentTarget.getAttribute("data-key"));
     const index = playlist.indexOf(num);
-    setCurTrack((curTrack = playlist[index]));
+    PodcastCtx.setCurTrack((PodcastCtx.curTrack = playlist[index]));
     play();
   };
 
@@ -195,8 +205,8 @@ const Player = ({
     if (isInitialFilter.current) {
       isInitialFilter.current = false;
     } else {
-      if (!playlist.includes(curTrack)) {
-        setCurTrack((curTrack = playlist[0]));
+      if (!playlist.includes(PodcastCtx.curTrack)) {
+        PodcastCtx.setCurTrack((PodcastCtx.curTrack = playlist[0]));
       }
     }
   }, [filter]);
@@ -213,14 +223,15 @@ const Player = ({
 
   return (
     <PageTemplate>
-
       {includeTags && (
         <TagsTemplate>
           {tags.map((tag, index) => {
             return (
               <TagItem
                 key={index}
-                className={ filter.length !== 0 && filter.includes(tag) ? "active" : "" }
+                className={
+                  filter.length !== 0 && filter.includes(tag) ? "active" : ""
+                }
                 tag={tag}
                 onClick={tagClickHandler}
               />
@@ -240,7 +251,7 @@ const Player = ({
       <PlayerTemplate>
         <div className={styles.image_title_time_wrapper}>
           <AudioImage imageUrl={imageUrl} />
-          
+
           <div className={styles.title_time}>
             <Title title={title} />
             <StartDate startDate={startDate} />
@@ -284,7 +295,6 @@ const Player = ({
               onTouchEnd={play}
             />
           </div>
-          
         </div>
 
         <div className={styles.playlist_wrapper}>
@@ -296,7 +306,6 @@ const Player = ({
           />
           <PlaylistToggle onClick={togglePlaylist} />
         </div>
-
       </PlayerTemplate>
 
       {showPlaylist && (
@@ -312,12 +321,12 @@ const Player = ({
                   playlist.push(index);
                   return (
                     <PlaylistItem
-                      className={curTrack === index ? "active" : ""}
+                      className={PodcastCtx.curTrack === index ? "active" : ""}
                       key={index}
                       data_key={index}
                       title={el.title}
                       imageUrl={el.imageUrl}
-                      src={el.mediaUrl}
+                      src={decodeLink(el.mediaUrl)}
                       startDate={el.startDate}
                       duration={el.duration}
                       onClick={playlistItemClickHandler}

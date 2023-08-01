@@ -1,23 +1,33 @@
-export const META_DESC = 'Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor.'
-export const HOME_OG_IMAGE_URL = '/public/home-og-image.png'
+export const META_DESC =
+  "Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor.";
+export const HOME_OG_IMAGE_URL = "/public/home-og-image.png";
 
-export const WP_REST_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_API_URL
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL
+export const WP_REST_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_API_URL;
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
 export async function fetcher<JSON = any>(
-    input: RequestInfo,
-    init?: RequestInit
-  ): Promise<JSON> {
-    const res = await fetch(input, init)
-    return res.json()
+  input: RequestInfo,
+  init?: RequestInit
+): Promise<JSON> {
+  const res = await fetch(input, init);
+  return res.json();
 }
 
 export interface recItemProps {
-  ratingPostBooks: string,
-  buyUrlPostBooks: string,
-  watchUrlPostBooks: string,
-  typePostBooks: string,
-  content: string,
-  title: string,
-  ftImage: string
+  ratingPostBooks: string;
+  buyUrlPostBooks: string;
+  watchUrlPostBooks: string;
+  typePostBooks: string;
+  content: string;
+  title: string;
+  ftImage: string;
+}
+
+export interface PodcastProps {
+  title: string;
+  duration: string;
+  description: string;
+  mediaUrl: string;
+  startDate: string;
+  imageUrl: string;
 }
