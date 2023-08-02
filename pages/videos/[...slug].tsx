@@ -28,16 +28,13 @@ export default function VideosPage({ pageData }) {
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
-  //   const mediaProps = JSON.parse(
-  //     '{"pwsHost":"services.premierenetworks.com","showSlug":"clay-and-buck","pageSlug":"videos","isAuthenticated":false, "groupSlug":"audio-clips", "episodeSlug":"you-need-to-hear-gad-saad-s-advice-on-how-to-find-happiness"}'
-  //   );
+  const slugParams = router.query.slug;
   const mediaProps: CnbMediaProps = {
-    groupSlug: null,
-    episodeSlug: null,
+    groupSlug: slugParams[0],
+    episodeSlug: slugParams[1],
     pageSlug: "videos",
     isAuthenticated: false,
   };
-
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>
@@ -63,7 +60,6 @@ export default function VideosPage({ pageData }) {
               <li className="active">Media</li>
             </ul>
           </div>
-
           <CnbMediaApp {...mediaProps} />
         </Container>
       </div>

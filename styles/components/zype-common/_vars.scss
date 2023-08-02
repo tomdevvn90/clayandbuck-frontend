@@ -1,4 +1,3 @@
-
 // base font size that overrides bootstrap's $font-size-base
 $base-font-size: 10;
 $base-font-px: #{$base-font-size}px;
@@ -18,92 +17,88 @@ $mobile-breakpoint: 1060px;
 // use map-get($mapname, key)
 
 $urls: (
-  staticdomain: "flint-img.iheart.com"
+  staticdomain: "flint-img.iheart.com",
 );
 
 $fonts: (
   default: "Lato, Helvetica, Arial, sans-serif",
   accent: "Merriweather, serif",
-  ihr: "'Helvetica Neue', Helvetica, Arial, sans-serif"
+  ihr: "'Helvetica Neue', Helvetica, Arial, sans-serif",
 );
 
 $colors: (
   fpo: #ffdfff,
   fpo2: #0783bc,
-  black: #27292D,
+  black: #27292d,
   medium: #717277,
-  hrdivider: #C5CDD2,
-  black2: #3F4447,
-  ltgray: #C5CDD2,
+  hrdivider: #c5cdd2,
+  black2: #3f4447,
+  ltgray: #c5cdd2,
   iheart: #c6002b,
   flpink: #ef69a8,
   white: #fff,
-  ltblack: #3F4447,
-  silver: #C5CDD2,
-  ltblue: #68C8D5,
-  gray: #717277
+  ltblack: #3f4447,
+  silver: #c5cdd2,
+  ltblue: #68c8d5,
+  gray: #717277,
 );
 
 $palettes: (
   red: (
-    600: #C6002B,
-    500: #CD212E,
-    400: #E22C3A,
-    300: #F4747C,
-    200: #F79096,
-    100: #F4ADB1
+    600: #c6002b,
+    500: #cd212e,
+    400: #e22c3a,
+    300: #f4747c,
+    200: #f79096,
+    100: #f4adb1,
   ),
   orange: (
-    600: #CC8838,
-    500: #DA994D,
-    400: #EDB574,
-    300: #F2C086,
-    200: #F7CA94,
-    100: #F5D2A9
+    600: #cc8838,
+    500: #da994d,
+    400: #edb574,
+    300: #f2c086,
+    200: #f7ca94,
+    100: #f5d2a9,
   ),
   green: (
-    600: #46815A,
-    500: #62AA7B,
-    400: #78D297,
-    300: #8BDEA7,
-    200: #9CE2B4,
-    100: #ACE7C0
+    600: #46815a,
+    500: #62aa7b,
+    400: #78d297,
+    300: #8bdea7,
+    200: #9ce2b4,
+    100: #ace7c0,
   ),
   blue: (
     600: #267883,
-    500: #509DA7,
-    400: #60BAC6,
-    300: #68C8D5,
-    200: #84DAE5,
-    100: #A3E2EB
+    500: #509da7,
+    400: #60bac6,
+    300: #68c8d5,
+    200: #84dae5,
+    100: #a3e2eb,
   ),
   purple: (
-    600: #5B34CC,
-    500: #6B44DA,
-    400: #7D5AE0,
-    300: #8B6AE9,
-    200: #A488F3,
-    100: #BBA6F8
+    600: #5b34cc,
+    500: #6b44da,
+    400: #7d5ae0,
+    300: #8b6ae9,
+    200: #a488f3,
+    100: #bba6f8,
   ),
   grey: (
-    600: #27292D,
-    500: #3F4447,
+    600: #27292d,
+    500: #3f4447,
     400: #717277,
-    300: #C5CDD2,
-    200: #E6EAED,
-    100: #F6F8F9
-  )
+    300: #c5cdd2,
+    200: #e6eaed,
+    100: #f6f8f9,
+  ),
 );
 
 $zindexes: (
   panelbody: 1,
   panelshadow: 2,
-  panellink: 3
+  panellink: 3,
 );
-
-$gallery-control-left-image: "../../../assets/img/gallery/nav-left.png";
-$gallery-control-right-image: "../../../assets/img/gallery/nav-right.png";
-$gallery-height: 478px;
 
 $station-livebar-zindex: 9990;
 $legal-notice-zindex: 9991;
