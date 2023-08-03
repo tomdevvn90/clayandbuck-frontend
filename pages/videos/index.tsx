@@ -1,14 +1,18 @@
+import dynamic from "next/dynamic";
 import React from "react";
 import Head from "next/head";
 import ErrorPage from "next/error";
 import Container from "../../components/container";
 import Layout from "../../components/layout/layout";
-import CnbMediaApp from "../../components/cnb-media/CnbMediaApp";
 import { getPageData } from "../../lib/graphql-api";
 import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
 import { SITE_URL } from "../../lib/constants";
-import { CnbMediaProps } from "../../components/cnb-media/helpers/interfaces";
+
+// import CnbMediaApp from "../../components/cnb-media";
+const CnbMediaApp = dynamic(() => import("../../components/cnb-media"), {
+  ssr: false,
+});
 
 export default function VideosPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
@@ -27,16 +31,6 @@ export default function VideosPage({ pageData }) {
   const fullHead = ParseHtmlToReact(seo.fullHead);
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
-
-  //   const mediaProps = JSON.parse(
-  //     '{"pwsHost":"services.premierenetworks.com","showSlug":"clay-and-buck","pageSlug":"videos","isAuthenticated":false, "groupSlug":"audio-clips", "episodeSlug":"you-need-to-hear-gad-saad-s-advice-on-how-to-find-happiness"}'
-  //   );
-  const mediaProps: CnbMediaProps = {
-    groupSlug: null,
-    episodeSlug: null,
-    pageSlug: "videos",
-    isAuthenticated: false,
-  };
 
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
@@ -63,8 +57,7 @@ export default function VideosPage({ pageData }) {
               <li className="active">Media</li>
             </ul>
           </div>
-
-          <CnbMediaApp {...mediaProps} />
+          <CnbMediaApp />
         </Container>
       </div>
     </Layout>

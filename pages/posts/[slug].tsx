@@ -1,33 +1,37 @@
 // import { GetStaticPaths, GetStaticProps } from 'next'
-import ErrorPage from 'next/error'
-import Head from 'next/head'
-import Container from '../../components/container'
-import PostBody from '../../components/post/post-body'
-import MoreStories from '../../components/post/more-stories'
-import PostHeader from '../../components/post/post-header'
-import Layout from '../../components/layout/layout'
-import PostTitle from '../../components/post/post-title'
-import BreadCrumb from '../../components/post/post-breadcrumb'
-import Sidebar from '../../components/sidebar'
-import { useRouter } from 'next/router'
-import { getPostAndMorePosts } from '../../lib/graphql-api'
-import { ParseHtmlToReact } from '../../utils/parse-html-to-react'
-import { SITE_URL } from '../../lib/constants'
+import dynamic from "next/dynamic";
+import ErrorPage from "next/error";
+import Head from "next/head";
+import Container from "../../components/container";
+import PostBody from "../../components/post/post-body";
+import MoreStories from "../../components/post/more-stories";
+import PostHeader from "../../components/post/post-header";
+import Layout from "../../components/layout/layout";
+import PostTitle from "../../components/post/post-title";
+import BreadCrumb from "../../components/post/post-breadcrumb";
+import { useRouter } from "next/router";
+import { getPostAndMorePosts } from "../../lib/graphql-api";
+import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
+import { SITE_URL } from "../../lib/constants";
+
+// import Sidebar from "../../components/sidebar";
+const Sidebar = dynamic(() => import("../../components/sidebar"), {
+  ssr: false,
+});
 
 export default function Post({ post, headerMenu, footerMenu, posts }) {
-  
-  const router = useRouter()
+  const router = useRouter();
   if (!router.isFallback && !post?.slug) {
-    return <ErrorPage statusCode={404} />
+    return <ErrorPage statusCode={404} />;
   }
-  const { seo } = post
+  const { seo } = post;
   const fullHead = ParseHtmlToReact(seo.fullHead);
-  const cleanPath = router.asPath.split('#')[0].split('?')[0];
-  const canonicalUrl = `${SITE_URL}` + (router.asPath === '/' ? '' : cleanPath);
+  const cleanPath = router.asPath.split("#")[0].split("?")[0];
+  const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
-  const morePosts = posts?.edges
+  const morePosts = posts?.edges;
   return (
-    <Layout headerMenu={headerMenu} footerMenu={footerMenu} >
+    <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <div className="main-wrap post white-background">
         <Container>
           {router.isFallback ? (
@@ -37,7 +41,10 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
               <Head>
                 {fullHead}
                 <link rel="canonical" href={canonicalUrl} />
-                <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"></meta>
+                <meta
+                  name="robots"
+                  content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+                ></meta>
                 <meta name="twitter:image" content={post.seoTwitterThumb} />
                 <meta name="twitter:image:width" content="1200" />
                 <meta name="twitter:image:height" content="640" />
@@ -45,44 +52,47 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
 
               <BreadCrumb />
 
-              <div className='main-content'>
-                <div className='post-content-wrap'>
-                  <PostHeader title={post.title} coverImage={post.featuredImage} 
+              <div className="main-content">
+                <div className="post-content-wrap">
+                  <PostHeader
+                    title={post.title}
+                    coverImage={post.featuredImage}
                     featureImageUrl={post.featureImageUrl}
                     featureImageTab={post.featureImageTab}
                     featuredVideosPost={post.featuredVideosPost}
-                    date={post.date} author={post.author} categories={post.categories}
+                    date={post.date}
+                    author={post.author}
+                    categories={post.categories}
                   />
                   <PostBody content={post.content} />
                   {/* <footer>
                     {post.tags.edges.length > 0 && <Tags tags={post.tags} />}
                   </footer> */}
                 </div>
-                
-                <Sidebar></Sidebar>
+
+                <Sidebar />
               </div>
 
               {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-
             </>
           )}
         </Container>
       </div>
     </Layout>
-  )
+  );
 }
 
-export const getServerSideProps = async ( { params } ) => {
-  const data = await getPostAndMorePosts(params?.slug)
+export const getServerSideProps = async ({ params }) => {
+  const data = await getPostAndMorePosts(params?.slug);
   return {
     props: {
       post: data.post,
       headerMenu: data.headerMenu,
       footerMenu: data.footerMenu,
       posts: data.posts,
-    }
-  }
-}
+    },
+  };
+};
 
 // export const getStaticProps: GetStaticProps = async ({
 //   params,

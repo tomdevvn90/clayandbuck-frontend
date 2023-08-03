@@ -1,5 +1,5 @@
-import PodcastsPlayer from "../components/podcasts-player";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
 import { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { PodcastsContext } from "../contexts/PodcastsContext";
@@ -9,6 +9,11 @@ config.autoAddCss = false;
 
 import "../styles/main.scss";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+
+// import PodcastsPlayer from "../components/podcasts-player";
+const PodcastsPlayer = dynamic(() => import("../components/podcasts-player"), {
+  ssr: false,
+});
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [podcasts, setPodcasts] = useState<PodcastProps[]>([]);
