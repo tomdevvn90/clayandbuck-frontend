@@ -1,4 +1,3 @@
-import React from "react";
 import Head from "next/head";
 import ErrorPage from "next/error";
 import Container from "../components/container";
@@ -42,9 +41,9 @@ export default function TermsConditionsPage({ pageData }) {
       </Head>
       <div className={`main-wrap page white-background ${pageClass}`}>
         <Container>
-          <OneTrustContent 
-             id="otnotice-e4bc39c0-f218-4288-bd46-fdaff1783a58" 
-             jsonLink="https://privacyportal-cdn.onetrust.com/3546d798-21cd-434d-b031-f8701f4d2f21/privacy-notices/e4bc39c0-f218-4288-bd46-fdaff1783a58.json" 
+          <OneTrustContent
+            id="otnotice-e4bc39c0-f218-4288-bd46-fdaff1783a58"
+            jsonLink="https://privacyportal-cdn.onetrust.com/3546d798-21cd-434d-b031-f8701f4d2f21/privacy-notices/e4bc39c0-f218-4288-bd46-fdaff1783a58.json"
           />
         </Container>
       </div>

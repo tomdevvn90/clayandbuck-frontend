@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PodcastItem from "./podcast-item";
 import DatePicker from "react-datepicker";
+import { getCookie } from "cookies-next";
 import { PodcastsContext } from "../../contexts/PodcastsContext";
 import { PodcastProps } from "../../lib/constants";
 import { parseString } from "xml2js";
@@ -127,7 +128,7 @@ export default function Podcast() {
 
       <div className={styles.vip_podcast_list}>
         <div className={styles.filter_block}>
-          <h2 className={styles.filter_title}>{headingText}</h2>
+          <h2>{headingText}</h2>
           <div className={styles.search_by_date}>
             <DatePicker
               popperPlacement="bottom-end"
@@ -145,7 +146,7 @@ export default function Podcast() {
           {cnbLoading && <div className="cnb-spinner-loading"></div>}
 
           {podcasts.length == 0 && !cnbLoading && messageText && (
-            <h2 className={styles.error_msg}>{messageText}</h2>
+            <h3 className={styles.error_msg}>{messageText}</h3>
           )}
 
           {podcasts.length > 0 &&

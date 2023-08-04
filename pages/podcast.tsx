@@ -1,13 +1,19 @@
-import React from "react";
 import Head from "next/head";
 import ErrorPage from "next/error";
 import Container from "../components/container";
 import Layout from "../components/layout/layout";
+import dynamic from "next/dynamic";
+import RequireLogin from "../components/require-login";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
-import Podcast from "../components/cnb-podcast";
+import { getCookie } from "cookies-next";
+
+// import Podcast from "../components/cnb-podcast";
+const Podcast = dynamic(() => import("../components/cnb-podcast"), {
+  ssr: false,
+});
 
 export default function VipPodcastPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
@@ -27,6 +33,7 @@ export default function VipPodcastPage({ pageData }) {
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
+  const accessToken = true; //getCookie("ACCESS_TOKEN");
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>
@@ -41,9 +48,7 @@ export default function VipPodcastPage({ pageData }) {
         <meta name="twitter:image:height" content="640" />
       </Head>
       <div className={`main-wrap page white-background ${pageClass}`}>
-        <Container>
-          <Podcast />
-        </Container>
+        <Container>{accessToken ? <Podcast /> : <RequireLogin />}</Container>
       </div>
     </Layout>
   );

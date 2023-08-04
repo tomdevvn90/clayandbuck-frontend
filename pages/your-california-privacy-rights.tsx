@@ -1,4 +1,3 @@
-import React from "react";
 import Head from "next/head";
 import ErrorPage from "next/error";
 import Container from "../components/container";
@@ -42,9 +41,9 @@ export default function CaliforniaPrivacyRightsPage({ pageData }) {
       </Head>
       <div className={`main-wrap page white-background ${pageClass}`}>
         <Container>
-          <OneTrustContent 
-              id="otnotice-e793553f-90ff-43e8-8f5f-1b974af65076" 
-              jsonLink="https://privacyportal-cdn.onetrust.com/3546d798-21cd-434d-b031-f8701f4d2f21/privacy-notices/e793553f-90ff-43e8-8f5f-1b974af65076.json" 
+          <OneTrustContent
+            id="otnotice-e793553f-90ff-43e8-8f5f-1b974af65076"
+            jsonLink="https://privacyportal-cdn.onetrust.com/3546d798-21cd-434d-b031-f8701f4d2f21/privacy-notices/e793553f-90ff-43e8-8f5f-1b974af65076.json"
           />
         </Container>
       </div>
