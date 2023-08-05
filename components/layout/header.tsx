@@ -105,7 +105,7 @@ export default function Header({ headerMenu }) {
 
       {openLogAccModal && (
         <LoginAccountModal
-          onClick={() => setOpenLogAccModal(!openLogAccModal)}
+          handleCloseModal={() => setOpenLogAccModal(!openLogAccModal)}
         />
       )}
     </>

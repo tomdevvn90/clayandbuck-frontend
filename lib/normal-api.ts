@@ -34,9 +34,7 @@ export async function getHomePageData() {
  * Get Sidebar Widget
  */
 export async function getSidebarWidget(sidebar_id: string) {
-  const data = await fetchAPINormal(
-    `/wp-json/wp/v2/widgets?sidebar=${sidebar_id}`
-  );
+  const data = await fetchAPINormal(`/wp-json/wp/v2/widgets?sidebar=${sidebar_id}`);
   return data;
 }
 /**
@@ -46,11 +44,7 @@ export async function getSidebarWidget(sidebar_id: string) {
  * @param excludeStories
  * @returns
  */
-export async function getTopStories(
-  crPage: number,
-  perPage: number,
-  excludeStories: string
-) {
+export async function getTopStories(crPage: number, perPage: number, excludeStories: string) {
   const data = await fetchAPINormal(
     `/v2/top-stories/?crPage=${crPage}&perPage=${perPage}&excludeStories=${excludeStories}`
   );
@@ -64,14 +58,14 @@ export async function getTopStories(
  * @param excludeStories
  * @returns
  */
-export async function getRecsData(
-  crPage: number,
-  perPage: number,
-  excludeBooks: string = "",
-  typeRec: string = ""
-) {
+export async function getRecsData(crPage: number, perPage: number, excludeBooks: string = "", typeRec: string = "") {
   const data = await fetchAPINormal(
     `/v2/books-movies/?crPage=${crPage}&perPage=${perPage}&excludeBooks=${excludeBooks}&type=${typeRec}`
   );
+  return data;
+}
+
+export async function getLoginData(username: string, password: string) {
+  const data = await fetchAPINormal(`/v2/subscriber/login/?username=${username}&password=${password}`);
   return data;
 }

@@ -6,7 +6,7 @@ import LoginForm from "./forms/login";
 import ForgotPasswordForm from "./forms/forgot-password";
 import GetPasswordHintForm from "./forms/password-hint";
 
-export default function LoginModal() {
+export default function LoginModal({ handleCloseModal }) {
   const [isLogin, setIsLogin] = useState(true);
   const [isForgot, setIsForgot] = useState(false);
   const [isHint, setIsHint] = useState(false);
@@ -15,7 +15,7 @@ export default function LoginModal() {
       <Image src={CnbLogoImg} width={90} height={90} alt="Clay and Buck" />
 
       <div className="login-box-content">
-        {isLogin && <LoginForm />}
+        {isLogin && <LoginForm handleCloseModal={handleCloseModal} />}
 
         {isForgot && <ForgotPasswordForm />}
 
@@ -23,9 +23,7 @@ export default function LoginModal() {
       </div>
 
       <div className="login-box-footer">
-        <Link href="/optout/">
-          Do Not Sell or Share My Personal Information
-        </Link>
+        <Link href="/optout/">Do Not Sell or Share My Personal Information</Link>
         <Link href="/cnb-sign-up/">Become a C&B VIP Subscriber</Link>
       </div>
     </div>
