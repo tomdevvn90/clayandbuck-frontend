@@ -8,7 +8,6 @@ import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
-import { getCookie } from "cookies-next";
 
 // import Podcast from "../components/cnb-podcast";
 const Podcast = dynamic(() => import("../components/cnb-podcast"), {
@@ -24,9 +23,7 @@ export default function VipPodcastPage({ pageData }) {
 
   const { headerMenu, footerMenu } = pageData;
   const { templateName } = page?.template ?? "";
-  const pageClass = templateName
-    ? templateName.toLowerCase().replace(" ", "-")
-    : "";
+  const pageClass = templateName ? templateName.toLowerCase().replace(" ", "-") : "";
 
   const { seo } = page;
   const fullHead = ParseHtmlToReact(seo.fullHead);

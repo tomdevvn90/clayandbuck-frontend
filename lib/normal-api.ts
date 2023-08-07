@@ -65,7 +65,28 @@ export async function getRecsData(crPage: number, perPage: number, excludeBooks:
   return data;
 }
 
+/**
+ * Get Login Data
+ * @param username
+ * @param password
+ * @returns
+ */
 export async function getLoginData(username: string, password: string) {
   const data = await fetchAPINormal(`/v2/subscriber/login/?username=${username}&password=${password}`);
+  return data;
+}
+
+/**
+ * Get Password Hint
+ * @param username
+ * @param password
+ * @returns
+ */
+export async function getPasswordHintData(recaptchaKey: string, email: string) {
+  const emailEncode = encodeURIComponent(email);
+  const recaptchaKeyEncode = encodeURIComponent(recaptchaKey);
+  const data = await fetchAPINormal(
+    `/v2/subscriber/get-hint/?email=${emailEncode}&recaptchaToken=${recaptchaKeyEncode}`
+  );
   return data;
 }

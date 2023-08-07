@@ -25,7 +25,7 @@ const LoginAccountModal = dynamic(() => import("../login-account-modal"), {
 
 export default function Header({ headerMenu }) {
   const [menuStatus, setMenuStatus] = useState(false);
-  const [loginAccountTxt, setLoginAccountTxt] = useState("Login");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [openLogAccModal, setOpenLogAccModal] = useState(false);
 
   const menuList = headerMenu?.edges;
@@ -37,8 +37,8 @@ export default function Header({ headerMenu }) {
   };
 
   useEffect(() => {
-    const accessToken = getCookie("ACCESS_TOKEN");
-    if (accessToken) setLoginAccountTxt("Account");
+    const accessToken = getCookie("STYXKEY_ACCESS_TOKEN");
+    if (accessToken) setIsLoggedIn(true);
   }, []);
 
   return (
@@ -48,18 +48,8 @@ export default function Header({ headerMenu }) {
       <header className="site-header">
         <div className="container">
           <div className="site-branding">
-            <Link
-              href="/"
-              className="custom-logo-link"
-              rel="home"
-              aria-current="page"
-            >
-              <Image
-                src={logo_img}
-                width={150}
-                height={80}
-                alt="Clay and Buck"
-              ></Image>
+            <Link href="/" className="custom-logo-link" rel="home" aria-current="page">
+              <Image src={logo_img} width={150} height={80} alt="Clay and Buck"></Image>
             </Link>
           </div>
 
@@ -67,10 +57,7 @@ export default function Header({ headerMenu }) {
             <NoticeAndSocials />
             <div className={`menu-list ${hideMenu}`}>
               <ul>
-                {menuList &&
-                  menuList.map(({ node }, index) => (
-                    <MenuItem key={index} item={node}></MenuItem>
-                  ))}
+                {menuList && menuList.map(({ node }, index) => <MenuItem key={index} item={node}></MenuItem>)}
                 <li>
                   <span className="search-btn">
                     <FontAwesomeIcon icon={faSearch} style={{}} />
@@ -84,17 +71,9 @@ export default function Header({ headerMenu }) {
           </div>
 
           <div className="secs-menu">
-            <button
-              className="login-btn"
-              onClick={() => setOpenLogAccModal(true)}
-            >
-              <Image
-                src={white_mini_logo}
-                width={28}
-                height={28}
-                alt=""
-              ></Image>
-              <span>{loginAccountTxt}</span>
+            <button className="login-btn" onClick={() => setOpenLogAccModal(true)}>
+              <Image src={white_mini_logo} width={28} height={28} alt=""></Image>
+              <span>{isLoggedIn ? "Account" : "Login"}</span>
             </button>
             <span className="toggle-menu" onClick={toggleMenuHeader}>
               <FontAwesomeIcon icon={faBars} style={{}} />
@@ -105,6 +84,8 @@ export default function Header({ headerMenu }) {
 
       {openLogAccModal && (
         <LoginAccountModal
+          isLoggedIn={isLoggedIn}
+          changeLogInStt={() => setIsLoggedIn(!isLoggedIn)}
           handleCloseModal={() => setOpenLogAccModal(!openLogAccModal)}
         />
       )}

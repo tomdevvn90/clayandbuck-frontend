@@ -1,7 +1,6 @@
 import Link from "next/link";
 import PodcastItem from "./podcast-item";
 import DatePicker from "react-datepicker";
-import { getCookie } from "cookies-next";
 import { PodcastsContext } from "../../contexts/PodcastsContext";
 import { PodcastProps } from "../../lib/constants";
 import { parseString } from "xml2js";
@@ -34,8 +33,7 @@ export default function Podcast() {
       // Filter podcasts by date
       const fDate = new Date(filterDate);
       let fDay = fDate.getDate() < 10 ? `0${fDate.getDate()}` : fDate.getDate();
-      let fMonth =
-        fDate.getMonth() < 10 ? `0${fDate.getMonth() + 1}` : fDate.getMonth();
+      let fMonth = fDate.getMonth() < 10 ? `0${fDate.getMonth() + 1}` : fDate.getMonth();
       let fYear = fDate.getFullYear();
       const filterDateFm = `${fYear}/${fMonth}/${fDay}`;
 
@@ -43,10 +41,7 @@ export default function Podcast() {
       setLoadMoreBtn(false);
       setPodcasts([]);
 
-      fetch(
-        `https://services.premierenetworks.com/podcast/${filterDateFm}/clayandbuck.xml`,
-        { headers }
-      )
+      fetch(`https://services.premierenetworks.com/podcast/${filterDateFm}/clayandbuck.xml`, { headers })
         .then((res) => res.text())
         .then((res) => {
           if (res.includes('"status":"ERROR"')) {
@@ -58,9 +53,7 @@ export default function Podcast() {
               if (podcastsData && podcastsData.length > 0) {
                 setPodcasts(podcastsData);
               } else {
-                setMessageText(
-                  "There were no podcast episodes available for this date."
-                );
+                setMessageText("There were no podcast episodes available for this date.");
               }
             });
           }
@@ -117,9 +110,7 @@ export default function Podcast() {
     <div>
       <div className={styles.vip_podcast_content}>
         <h1>VIP Commercial Free Podcast</h1>
-        <p>
-          You can listen to the podcasts or download the file to your device.
-        </p>
+        <p>You can listen to the podcasts or download the file to your device.</p>
 
         <Link className={styles.podcast_feed_link} href="/podcast-feed">
           Podcast feed
@@ -145,9 +136,7 @@ export default function Podcast() {
         <div className={styles.vip_pc_playlist}>
           {cnbLoading && <div className="cnb-spinner-loading"></div>}
 
-          {podcasts.length == 0 && !cnbLoading && messageText && (
-            <h3 className={styles.error_msg}>{messageText}</h3>
-          )}
+          {podcasts.length == 0 && !cnbLoading && messageText && <h3 className={styles.error_msg}>{messageText}</h3>}
 
           {podcasts.length > 0 &&
             podcasts.map((pc: PodcastProps, index: number) => {
@@ -166,9 +155,7 @@ export default function Podcast() {
 
           {podcasts.length > 0 && showLoadMoreBtn && (
             <div className={styles.load_more__pc_wrap}>
-              <button onClick={() => setPodcastsNum(podcastsNum + 20)}>
-                Load more
-              </button>
+              <button onClick={() => setPodcastsNum(podcastsNum + 20)}>Load more</button>
             </div>
           )}
         </div>

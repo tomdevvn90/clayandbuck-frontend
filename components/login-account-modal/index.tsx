@@ -1,12 +1,10 @@
-import { getCookie } from "cookies-next";
 import { useRef } from "react";
 import LoginModal from "./login";
 import AccountModal from "./account";
 import useEscapeKey from "../../hooks/useEscapeKey";
 import useOutsideClick from "../../hooks/useOutsideClick";
 
-export default function LoginAccountModal({ handleCloseModal }) {
-  const accessToken = getCookie("ACCESS_TOKEN");
+export default function LoginAccountModal({ isLoggedIn, changeLogInStt, handleCloseModal }) {
   const outSideRef = useRef(null);
 
   useEscapeKey(handleCloseModal);
@@ -15,7 +13,11 @@ export default function LoginAccountModal({ handleCloseModal }) {
     <div className="login-account-modal">
       <div className="modal-wrap">
         <div className="modal-content" ref={outSideRef}>
-          {accessToken ? <AccountModal /> : <LoginModal handleCloseModal={handleCloseModal} />}
+          {isLoggedIn ? (
+            <AccountModal changeLogInStt={changeLogInStt} handleCloseModal={handleCloseModal} />
+          ) : (
+            <LoginModal changeLogInStt={changeLogInStt} />
+          )}
 
           <button title="Close (Esc)" type="button" className="close-modal" onClick={handleCloseModal}>
             ×

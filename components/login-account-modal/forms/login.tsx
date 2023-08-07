@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import { getLoginData } from "../../../lib/normal-api";
+import { setCookieLoginInfo } from "../../../utils/global-functions";
 
-export default function LoginForm({ handleCloseModal }) {
+export default function LoginForm({ changeLogInStt, showForgotForm, showHintForm }) {
   const [errorMessages, setErrorMessages] = useState("");
   const [useNameClass, setUseNameClass] = useState("");
   const [passwordClass, setPasswordClass] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -35,17 +37,34 @@ export default function LoginForm({ handleCloseModal }) {
       return false;
     }
 
+    setIsLoading(true);
+
     const loginData = await getLoginData(userName, password);
-    console.log(loginData);
+    //console.log(loginData);
 
     if (loginData.success) {
+      const loginInfo = loginData.login_info;
+
+      setCookieLoginInfo(
+        loginInfo.access_token,
+        loginInfo.user_email,
+        password,
+        loginInfo.user_subscribed,
+        loginInfo.cancel_at_period_end,
+        loginInfo.user_privacy_optout
+      );
+
       setIsLoggedIn(true);
-      setTimeout(handleCloseModal, 1500);
+      setIsLoading(false);
+      changeLogInStt();
+      // setTimeout(handleCloseModal, 1500);
     } else {
       setErrorMessages(loginData.error_message);
+      setIsLoading(false);
     }
   };
 
+  const btnClass = isLoading ? "btn-submit loading" : "btn-submit";
   return (
     <div className="cnb-login-form">
       <h2>Log In</h2>
@@ -55,9 +74,9 @@ export default function LoginForm({ handleCloseModal }) {
         </p>
       )}
 
-      {errorMessages && <p className="error-msg">{errorMessages}</p>}
+      {/* {isLoggedIn && <p className="success-msg">You are successfully logged in</p>} */}
 
-      {isLoggedIn && <p className="success-msg">You are successfully logged in</p>}
+      {errorMessages && <p className="error-msg">{errorMessages}</p>}
 
       {!isLoggedIn && (
         <div className="form-wrap">
@@ -74,7 +93,7 @@ export default function LoginForm({ handleCloseModal }) {
             </div>
             <div className="form-group">
               <label htmlFor="cnb-password">
-                Password <a href="#"> Get Hint</a>
+                Password <a onClick={showHintForm}>Get Hint</a>
               </label>
               <input
                 type="password"
@@ -84,9 +103,11 @@ export default function LoginForm({ handleCloseModal }) {
                 placeholder="Enter your password"
               />
             </div>
-            <button type="submit">Log In</button>
+            <button type="submit" className={btnClass}>
+              {isLoading ? <span className="cnb-spinner-loading"></span> : <span>Log In</span>}
+            </button>
           </form>
-          <a href="#" className="forgot-password-link">
+          <a className="forgot-password-link" onClick={showForgotForm}>
             Forgot password?
           </a>
         </div>
