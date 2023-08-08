@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { getForgotPasswordData } from "../../../lib/normal-api";
 
 export default function ForgotPasswordForm({ showLoginForm }) {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -21,19 +22,27 @@ export default function ForgotPasswordForm({ showLoginForm }) {
     if (!cnbEmail) {
       setErrorMessages(`Please enter a valid email.`);
       setEmailClass("error");
+      setIsLoading(false);
+      return false;
+    }
+
+    if (!executeRecaptcha) {
+      console.log("Execute recaptcha not yet available");
+      setErrorMessages(`Something went wrong. Please try again!`);
+      setIsLoading(false);
       return false;
     }
 
     const grecaptchaToken = await executeRecaptcha("forgot_password");
     if (grecaptchaToken) {
-      // const hintData = await getPasswordHintData(grecaptchaToken, cnbEmail);
-      // if (hintData.success) {
-      //   setIsSuccess(true);
-      //   setIsLoading(false);
-      // } else {
-      //   setErrorMessages(hintData.error_message);
-      //   setIsLoading(false);
-      // }
+      const hintData = await getForgotPasswordData(grecaptchaToken, cnbEmail);
+      if (hintData.success) {
+        setIsSuccess(true);
+        setIsLoading(false);
+      } else {
+        setErrorMessages(hintData.error_message);
+        setIsLoading(false);
+      }
     }
   };
 

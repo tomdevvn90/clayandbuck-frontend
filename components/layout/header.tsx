@@ -41,6 +41,14 @@ export default function Header({ headerMenu }) {
     if (accessToken) setIsLoggedIn(true);
   }, []);
 
+  useEffect(() => {
+    if (openLogAccModal) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [openLogAccModal]);
+
   return (
     <>
       <DownloadApp />

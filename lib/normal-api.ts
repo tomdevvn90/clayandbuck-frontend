@@ -72,7 +72,9 @@ export async function getRecsData(crPage: number, perPage: number, excludeBooks:
  * @returns
  */
 export async function getLoginData(username: string, password: string) {
-  const data = await fetchAPINormal(`/v2/subscriber/login/?username=${username}&password=${password}`);
+  const useNameEncode = encodeURIComponent(username);
+  const passwordEncode = encodeURIComponent(password);
+  const data = await fetchAPINormal(`/v2/subscriber/login/?username=${useNameEncode}&password=${passwordEncode}`);
   return data;
 }
 
@@ -88,5 +90,26 @@ export async function getPasswordHintData(recaptchaKey: string, email: string) {
   const data = await fetchAPINormal(
     `/v2/subscriber/get-hint/?email=${emailEncode}&recaptchaToken=${recaptchaKeyEncode}`
   );
+  return data;
+}
+
+/**
+ * Get Forgot Password
+ * @param username
+ * @param password
+ * @returns
+ */
+export async function getForgotPasswordData(recaptchaKey: string, email: string) {
+  const emailEncode = encodeURIComponent(email);
+  const recaptchaKeyEncode = encodeURIComponent(recaptchaKey);
+  const data = await fetchAPINormal(
+    `/v2/subscriber/forgot-password/?email=${emailEncode}&recaptchaToken=${recaptchaKeyEncode}`
+  );
+  return data;
+}
+
+export async function getAccountInfo(accessToken: string) {
+  const accessTokenEncode = encodeURIComponent(accessToken);
+  const data = await fetchAPINormal(`/v2/subscriber/account-info/?accessToken=${accessTokenEncode}`);
   return data;
 }

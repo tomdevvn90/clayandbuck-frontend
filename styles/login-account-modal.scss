@@ -75,6 +75,14 @@
     }
   }
 
+  .cnb-spinner-loading {
+    margin: 0px auto;
+    width: 40px;
+    height: 40px;
+    background: conic-gradient(rgba(0, 0, 0, 0) 10%, #b2922c);
+    display: block;
+  }
+
   .form-group {
     margin-bottom: 16px;
 
@@ -117,21 +125,10 @@
       -ms-user-select: none;
       user-select: none;
 
-      .cnb-spinner-loading {
-        margin: 0px auto;
-        width: 40px;
-        height: 40px;
-        background: conic-gradient(rgba(0, 0, 0, 0) 10%, #b2922c);
-        display: none;
-      }
       &.loading {
         background-color: transparent !important;
         border-color: transparent !important;
         pointer-events: none !important;
-
-        .cnb-spinner-loading {
-          display: block;
-        }
       }
     }
   }
@@ -196,8 +193,7 @@
     }
   }
 
-  .login-box,
-  .account-box {
+  .login-box {
     width: 420px;
     min-height: 604px;
     background-color: #fff;
@@ -232,7 +228,7 @@
         line-height: 20px;
         text-align: center;
         color: red;
-        background: #f6f8f9;
+        background: rgb(218 223 227 / 40%);
         border-radius: 6px;
         min-height: 48px;
         padding: 12px;
@@ -248,5 +244,129 @@
         margin: 0 auto 24px;
       }
     }
+  }
+
+  .account-box {
+    width: 640px;
+    min-height: 700px;
+    margin: 0px auto;
+    background: #fff;
+    position: relative;
+
+    + .close-modal {
+      color: #fff;
+      width: 80px;
+      height: 60px;
+      line-height: 60px;
+      font-size: 40px;
+      font-weight: normal;
+    }
+
+    .loading-wrapper {
+      position: absolute;
+      width: 100%;
+      height: calc(100% - 100px);
+      display: flex;
+      align-items: center;
+
+      .cnb-spinner-loading {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    .acc-head {
+      background: #fff;
+      padding: 20px 0px;
+      border-bottom: 2px solid #e6eaed;
+      margin: 0 40px;
+      font-family: $secondary-font;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 20px;
+      color: #000000;
+
+      h2 {
+        font-family: $secondary-font;
+        font-weight: bold;
+        font-size: 32px;
+        line-height: 32px;
+      }
+      p {
+        margin: 0;
+      }
+    }
+    .row-info {
+      background: #fff;
+      padding: 20px 0px;
+      margin: 0px 40px;
+      position: relative;
+      border-bottom: 2px solid #e6eaed;
+
+      &.gift-cnb {
+        padding-bottom: 32px;
+      }
+      .btn-editable {
+        position: absolute;
+        cursor: pointer;
+        top: 25px;
+        right: 0px;
+        font-family: $secondary-font;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 16px;
+        border: 1px solid #27292d;
+        padding: 5px 20px;
+        border-radius: 8px;
+        background-color: #fff;
+        display: inline-block;
+        color: #212529;
+        text-align: center;
+        vertical-align: middle;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+          box-shadow 0.15s ease-in-out;
+
+        &:hover {
+          border-color: #b28e2a;
+          color: #fff;
+          background: #b28e2a;
+          box-shadow: none;
+          text-decoration: none;
+        }
+        &.disabled {
+          background-color: #dadfe3 !important;
+          border-color: #dadfe3 !important;
+          color: #a9afb2 !important;
+          pointer-events: none !important;
+        }
+      }
+      h3 {
+        font-family: $secondary-font;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 28px;
+        color: #000000;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        font-size: 16px;
+        line-height: 24px;
+        color: #000;
+        margin: 0;
+      }
+    }
+  }
+
+  .account-edit-box {
+    padding-bottom: 30px;
+    margin: 0 40px;
+  }
+
+  .header-part {
+    position: relative;
+    padding: 5px 0;
+    text-align: center;
+    background: #232323;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
   }
 }
