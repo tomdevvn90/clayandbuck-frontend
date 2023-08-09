@@ -41,7 +41,11 @@ export default function GetPasswordHintForm({ showLoginForm }) {
         setPassHint(hintData.hint);
         setIsLoading(false);
       } else {
-        setErrorMessages(hintData.error_message);
+        if (hintData.error_message) {
+          setErrorMessages(hintData.error_message);
+        } else {
+          setErrorMessages("Something went wrong. Please try again!");
+        }
         setIsLoading(false);
       }
     }

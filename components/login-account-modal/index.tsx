@@ -10,20 +10,23 @@ export default function LoginAccountModal({ isLoggedIn, changeLogInStt, handleCl
   useEscapeKey(handleCloseModal);
   useOutsideClick(handleCloseModal, outSideRef);
   return (
-    <div className="login-account-modal">
-      <div className="modal-wrap">
-        <div className="modal-content" ref={outSideRef}>
-          {isLoggedIn ? (
-            <AccountModal changeLogInStt={changeLogInStt} handleCloseModal={handleCloseModal} />
-          ) : (
-            <LoginModal changeLogInStt={changeLogInStt} />
-          )}
+    <>
+      <div className="modal-overlay-bg"></div>
+      <div className="login-account-modal">
+        <div className="modal-wrap">
+          <div className="modal-content" ref={outSideRef}>
+            {isLoggedIn ? (
+              <AccountModal changeLogInStt={changeLogInStt} handleCloseModal={handleCloseModal} />
+            ) : (
+              <LoginModal changeLogInStt={changeLogInStt} />
+            )}
 
-          <button title="Close (Esc)" type="button" className="close-modal" onClick={handleCloseModal}>
-            ×
-          </button>
+            <button title="Close (Esc)" type="button" className="close-modal" onClick={handleCloseModal}>
+              ×
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

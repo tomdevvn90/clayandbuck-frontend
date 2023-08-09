@@ -3,7 +3,7 @@ import { useState } from "react";
 import { getLoginData } from "../../../lib/normal-api";
 import { setCookieLoginInfo } from "../../../utils/global-functions";
 
-export default function LoginForm({ changeLogInStt, showForgotForm, showHintForm }) {
+export default function LoginForm({ className, changeLogInStt, showForgotForm, showHintForm }) {
   const [errorMessages, setErrorMessages] = useState("");
   const [useNameClass, setUseNameClass] = useState("");
   const [passwordClass, setPasswordClass] = useState("");
@@ -32,7 +32,7 @@ export default function LoginForm({ changeLogInStt, showForgotForm, showHintForm
       return false;
     }
     if (!password) {
-      setErrorMessages(`Password are empty.`);
+      setErrorMessages(`Password is empty.`);
       setPasswordClass("error");
       return false;
     }
@@ -59,14 +59,18 @@ export default function LoginForm({ changeLogInStt, showForgotForm, showHintForm
       changeLogInStt();
       // setTimeout(handleCloseModal, 1500);
     } else {
-      setErrorMessages(loginData.error_message);
+      if (loginData.error_message) {
+        setErrorMessages(loginData.error_message);
+      } else {
+        setErrorMessages("Something went wrong. Please try again!");
+      }
       setIsLoading(false);
     }
   };
 
   const btnClass = isLoading ? "btn-submit loading" : "btn-submit";
   return (
-    <div className="cnb-login-form">
+    <div className={`cnb-login-form ${className}`}>
       <h2>Log In</h2>
       {!isLoggedIn && (
         <p>

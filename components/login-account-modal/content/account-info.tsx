@@ -3,72 +3,47 @@ import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import { getAccountInfo } from "../../../lib/normal-api";
 
-export default function AccountInfo({ logOutHandle, showChangeEmailPassword }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [passHint, setPassHint] = useState("");
-  const [planText, setPlanText] = useState("");
-  const [nextBill, setNextBill] = useState("");
-  const [billingName, setBillingName] = useState("");
-  const [billingAddress, setBillingAddress] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
-
-  useEffect(() => {
-    const getAccInfo = async () => {
-      const accessToken = getCookie("STYXKEY_ACCESS_TOKEN").toString();
-      const accInfoRes = await getAccountInfo(accessToken);
-
-      if (accInfoRes) {
-        setUserName(accInfoRes.name);
-        setPassHint(accInfoRes.password_hint);
-        setUserEmail(accInfoRes.email);
-
-        const subscriptions = accInfoRes.subscription_plans[0];
-        if (subscriptions) {
-          if (subscriptions.plan_name) {
-            setPlanText(subscriptions.plan_name);
-            if (subscriptions.amount > 0)
-              setPlanText(`${subscriptions.plan_name} for $${subscriptions.amount} (Auto-Renewal)`);
-          }
-          let crDate = new Date();
-          crDate.setDate(crDate.getDate() + subscriptions.days_remaining);
-          const month: string = new Intl.DateTimeFormat("en-US", { month: "long" }).format(crDate);
-          setNextBill(`${month} ${crDate.getDate()}, ${crDate.getFullYear()}`);
-        }
-        const billingInfo = accInfoRes.billing_info;
-        if (billingInfo) {
-          const billingAddr = billingInfo.address;
-          const paymentMethod = billingInfo.paymentMethod;
-          if (billingInfo.firstName) {
-            setBillingName(`${billingInfo.firstName} ${billingInfo.lastName}`);
-          }
-          if (billingAddr.street1) {
-            setBillingAddress(
-              `${billingAddr.street1}, ${billingAddr.city}, ${billingAddr.region}, ${billingAddr.postalCode}, ${billingAddr.country}`
-            );
-          }
-          if (paymentMethod.cardType) {
-            setPaymentMethod(`${paymentMethod.cardType} ending ${paymentMethod.lastFour}`);
-          }
-        }
-        setIsLoading(false);
+export default function AccountInfo({ accountInfo, logOutHandle, showChangeEmailPassword, showUpdateBillingInfo }) {
+  let planText = "";
+  let nextBill = "";
+  let billingName = "";
+  let billingAddress = "";
+  let paymentMethod = "";
+  if (accountInfo) {
+    const subscriptions = accountInfo.subscription_plans[0];
+    if (subscriptions) {
+      if (subscriptions.plan_name) {
+        planText = subscriptions.plan_name;
+        if (subscriptions.amount > 0)
+          planText = `${subscriptions.plan_name} for $${subscriptions.amount} (Auto-Renewal)`;
       }
-    };
-    getAccInfo();
-    return () => {};
-  }, []);
+      let crDate = new Date();
+      crDate.setDate(crDate.getDate() + subscriptions.days_remaining);
+      const month: string = new Intl.DateTimeFormat("en-US", { month: "long" }).format(crDate);
+      nextBill = `${month} ${crDate.getDate()}, ${crDate.getFullYear()}`;
+    }
+    const billingInfo = accountInfo.billing_info;
+    if (billingInfo) {
+      const billingAddr = billingInfo.address;
+      const paymentMeth = billingInfo.paymentMethod;
+      if (billingInfo.firstName) {
+        billingName = `${billingInfo.firstName} ${billingInfo.lastName}`;
+      }
+      if (billingAddr.street1) {
+        billingAddress = `${billingAddr.street1}, ${billingAddr.city}, ${billingAddr.region}, ${billingAddr.postalCode}, ${billingAddr.country}`;
+      }
+      if (paymentMeth.cardType) {
+        paymentMethod = `${paymentMeth.cardType} ending ${paymentMeth.lastFour}`;
+      }
+    }
+  }
 
-  return isLoading ? (
-    <div className="loading-wrapper">
-      <div className="cnb-spinner-loading"></div>
-    </div>
-  ) : (
+  return (
     <div className="account-info-box">
       <div className="acc-head">
         <h2>My Account</h2>
         <p>
-          You’re logged in as <strong>{userName ? userName : userEmail}</strong>{" "}
+          You’re logged in as <strong>{accountInfo.name ? accountInfo.name : accountInfo.email}</strong>{" "}
           <a className="cnb-logout-link" onClick={logOutHandle}>
             Log Out
           </a>
@@ -81,17 +56,24 @@ export default function AccountInfo({ logOutHandle, showChangeEmailPassword }) {
           </button>
           <h3>Login</h3>
           <p>
-            <strong>Email:</strong> {userEmail}
+            <strong>Email:</strong> {accountInfo.email}
           </p>
           <p>
             <strong>Password:</strong> ********
           </p>
           <p>
-            <strong>Password Hint:</strong> {passHint}
+            <strong>Password Hint:</strong> {accountInfo.password_hint}
           </p>
         </div>
         <div className="row-info">
-          <button className={paymentMethod ? `btn-editable` : `btn-editable disabled`}>Edit</button>
+          {paymentMethod ? (
+            <button className="btn-editable" onClick={showUpdateBillingInfo}>
+              Edit
+            </button>
+          ) : (
+            <button className="btn-editable disabled">Edit</button>
+          )}
+
           <h3>Billing Information</h3>
           {billingName || billingAddress || paymentMethod ? (
             <>

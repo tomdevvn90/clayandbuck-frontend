@@ -44,9 +44,12 @@ export default function LoginModal({ changeLogInStt }) {
         </div>
 
         <div className="login-box-content">
-          {isLogin && (
-            <LoginForm changeLogInStt={changeLogInStt} showForgotForm={showForgotForm} showHintForm={showHintForm} />
-          )}
+          <LoginForm
+            className={!isLogin ? "hide" : ""}
+            changeLogInStt={changeLogInStt}
+            showForgotForm={showForgotForm}
+            showHintForm={showHintForm}
+          />
 
           {isForgot && <ForgotPasswordForm showLoginForm={showLoginForm} />}
 

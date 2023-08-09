@@ -1,41 +1,35 @@
+.modal-overlay-bg {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100001;
+  overflow: hidden;
+  position: absolute;
+  background: #0b0b0b;
+  opacity: 0.5;
+  filter: alpha(opacity=80);
+}
 .login-account-modal {
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 100000;
+  z-index: 9999999;
+  overflow: auto;
   position: fixed;
   outline: none !important;
   -webkit-backface-visibility: hidden;
 
-  &::before {
-    content: "";
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 100001;
-    overflow: hidden;
-    position: absolute;
-    background: #0b0b0b;
-    opacity: 0.5;
-    filter: alpha(opacity=80);
-  }
-
   .modal-wrap {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: 100002;
-    padding: 0 8px;
+    padding: 32px 8px 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    min-height: 100%;
 
     .modal-content {
       position: relative;
@@ -133,6 +127,13 @@
     }
   }
 
+  hr {
+    border: 0;
+    margin: 30px 0;
+    height: 2px;
+    background: #e6eaed;
+  }
+
   .forgot-password-link,
   .back-link {
     font-family: $secondary-font;
@@ -149,11 +150,12 @@
   input[type="password"],
   input[type="email"],
   input[type="phone"],
-  input[type="number"] {
+  input[type="number"],
+  select {
     font-family: $secondary-font;
     width: 100%;
     height: 48px;
-    background: #ffffff;
+    background-color: #ffffff;
     border: 2px solid #a9afb2;
     box-sizing: border-box;
     border-radius: 6px;
@@ -170,6 +172,46 @@
     }
     &.error {
       border-color: red;
+    }
+  }
+
+  h2 {
+    font-family: $secondary-font;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+    color: #000;
+    margin: 16px 0 10px;
+  }
+  p {
+    font-family: $secondary-font;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000;
+    margin: 0.9em 0 1.2em;
+
+    &.error-msg,
+    &.success-msg {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: center;
+      color: red;
+      background: rgb(218 223 227 / 40%);
+      border-radius: 6px;
+      min-height: 48px;
+      padding: 12px;
+    }
+    &.success-msg {
+      color: #46815a;
+    }
+    &.password-hint {
+      font-size: 16px;
+    }
+    &.pw-hint-note {
+      max-width: 290px;
+      margin: 0 auto 24px;
     }
   }
 
@@ -193,6 +235,10 @@
     }
   }
 
+  .cnb-login-form.hide {
+    display: none;
+  }
+
   .login-box {
     width: 420px;
     min-height: 604px;
@@ -204,46 +250,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    h2 {
-      font-family: $secondary-font;
-      font-weight: bold;
-      font-size: 20px;
-      line-height: 23px;
-      color: #000;
-      margin: 16px 0 10px;
-    }
-    p {
-      font-family: $secondary-font;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 24px;
-      color: #000;
-      margin: 0.9em 0 1.2em;
-
-      &.error-msg,
-      &.success-msg {
-        font-weight: 700;
-        font-size: 14px;
-        line-height: 20px;
-        text-align: center;
-        color: red;
-        background: rgb(218 223 227 / 40%);
-        border-radius: 6px;
-        min-height: 48px;
-        padding: 12px;
-      }
-      &.success-msg {
-        color: #46815a;
-      }
-      &.password-hint {
-        font-size: 16px;
-      }
-      &.pw-hint-note {
-        max-width: 290px;
-        margin: 0 auto 24px;
-      }
-    }
   }
 
   .account-box {
@@ -275,6 +281,41 @@
       }
     }
 
+    .btn-editable {
+      position: absolute;
+      cursor: pointer;
+      top: 25px;
+      right: 0px;
+      font-family: $secondary-font;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 16px;
+      border: 1px solid #27292d;
+      padding: 5px 20px;
+      border-radius: 8px;
+      background-color: #fff;
+      display: inline-block;
+      color: #212529;
+      text-align: center;
+      vertical-align: middle;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
+
+      &:hover {
+        border-color: #b28e2a;
+        color: #fff;
+        background: #b28e2a;
+        box-shadow: none;
+        text-decoration: none;
+      }
+      &.disabled {
+        background-color: #dadfe3 !important;
+        border-color: #dadfe3 !important;
+        color: #a9afb2 !important;
+        pointer-events: none !important;
+      }
+    }
+
     .acc-head {
       background: #fff;
       padding: 20px 0px;
@@ -287,8 +328,6 @@
       color: #000000;
 
       h2 {
-        font-family: $secondary-font;
-        font-weight: bold;
         font-size: 32px;
         line-height: 32px;
       }
@@ -306,40 +345,6 @@
       &.gift-cnb {
         padding-bottom: 32px;
       }
-      .btn-editable {
-        position: absolute;
-        cursor: pointer;
-        top: 25px;
-        right: 0px;
-        font-family: $secondary-font;
-        font-weight: 700;
-        font-size: 14px;
-        line-height: 16px;
-        border: 1px solid #27292d;
-        padding: 5px 20px;
-        border-radius: 8px;
-        background-color: #fff;
-        display: inline-block;
-        color: #212529;
-        text-align: center;
-        vertical-align: middle;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
-          box-shadow 0.15s ease-in-out;
-
-        &:hover {
-          border-color: #b28e2a;
-          color: #fff;
-          background: #b28e2a;
-          box-shadow: none;
-          text-decoration: none;
-        }
-        &.disabled {
-          background-color: #dadfe3 !important;
-          border-color: #dadfe3 !important;
-          color: #a9afb2 !important;
-          pointer-events: none !important;
-        }
-      }
       h3 {
         font-family: $secondary-font;
         font-weight: 700;
@@ -353,6 +358,33 @@
         line-height: 24px;
         color: #000;
         margin: 0;
+
+        &.billing-not-found-msg {
+          font-family: $secondary-font;
+          font-weight: 700;
+          font-size: 14px;
+          line-height: 20px;
+          text-align: left;
+          color: #fc5205;
+          background: #f6f8f9;
+          border-radius: 6px;
+          padding: 14px 10px;
+        }
+      }
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="phone"],
+    input[type="number"],
+    select {
+      color: #495057;
+    }
+    p {
+      margin: 0;
+
+      &.error-msg {
+        margin-top: 10px;
       }
     }
   }
@@ -360,6 +392,147 @@
   .account-edit-box {
     padding-bottom: 30px;
     margin: 0 40px;
+
+    p.success-msg {
+      margin: 30px 0;
+    }
+
+    .change-row {
+      background: #fff;
+      padding-bottom: 20px;
+
+      &.location,
+      &.plan-confirm {
+        border-bottom: 2px solid #e6eaed;
+        padding-bottom: 10px;
+      }
+    }
+    h2 {
+      font-size: 24px;
+      line-height: 32px;
+      margin-bottom: 10px;
+      margin-top: 0;
+    }
+    h3 {
+      font-family: $secondary-font;
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 32px;
+      color: #000000;
+      margin-bottom: 15px;
+    }
+    p:not(.success-msg):not(.error-msg) {
+      line-height: 20px;
+      color: #000000;
+    }
+    .payment-details {
+      padding: 20px 0px;
+      margin: 0 0 20px;
+      position: relative;
+      border-bottom: 2px solid #e6eaed;
+      h2 {
+        font-size: 20px;
+        line-height: 32px;
+      }
+      p {
+        line-height: 24px !important;
+      }
+      .btn-editable {
+        width: auto;
+        height: auto;
+        margin: 0;
+        letter-spacing: normal;
+        top: 20px;
+      }
+    }
+    .cnb-update-credit-card {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #e6eaed;
+
+      .credit-card-area {
+        border: 2px solid #a9afb2;
+        border-radius: 6px;
+        display: flex;
+
+        input[type="text"] {
+          display: block;
+          width: 100%;
+          padding: 0.375rem 0;
+          margin-bottom: 0;
+          font-size: 1rem;
+          line-height: 1.5;
+          color: #212529;
+          background-color: transparent;
+          border: solid transparent;
+          border-width: 1px 0;
+
+          &.card-num {
+            flex: 0 0 66.666667%;
+            max-width: 66.666667%;
+            padding-left: 15px;
+          }
+          &.card-exp-date,
+          &.card-cvv {
+            flex: 0 0 16.666667%;
+            max-width: 16.666667%;
+          }
+          &:focus,
+          &:active {
+            outline: none;
+            border: none;
+          }
+        }
+      }
+    }
+
+    .name-fields {
+      display: flex;
+
+      > div {
+        flex: 0 0 50%;
+        max-width: 50%;
+
+        &.first-name {
+          padding-right: 0.25rem;
+        }
+        &.last-name {
+          padding-left: 0.25rem;
+        }
+      }
+    }
+    .addr-1 {
+      margin-bottom: 0.5rem;
+    }
+    .city-state-postcode {
+      display: flex;
+
+      .city {
+        flex: 0 0 41.666667%;
+        max-width: 41.666667%;
+        padding-right: 0.25rem;
+      }
+      .state {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+      }
+      .post-code {
+        flex: 0 0 25%;
+        max-width: 25%;
+        padding-left: 0.25rem;
+      }
+    }
+  }
+
+  .update-billing-form {
+    label {
+      font-size: 14px;
+      line-height: 16px;
+      color: #27292d;
+    }
   }
 
   .header-part {
@@ -368,5 +541,21 @@
     text-align: center;
     background: #232323;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
+  }
+  .back-to-acc-info {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 24px;
+    font-family: $secondary-font;
+    font-weight: 400;
+    color: #b2922c;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 24px 0 16px;
+
+    svg {
+      margin-right: 8px;
+    }
   }
 }
