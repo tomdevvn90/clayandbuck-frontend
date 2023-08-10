@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import ChangeEmailPassword from "./content/change-email-password";
 import UpdateBillingInfo from "./forms/update-billing-info";
 import { getCookie } from "cookies-next";
-import { getAccountInfo } from "../../lib/normal-api";
+import { getAccountInfo, getLogoutData } from "../../lib/normal-api";
 
 export default function AccountModal({ changeLogInStt, handleCloseModal }) {
   const [isAccInfo, setIsAccInfo] = useState(true);
@@ -15,10 +15,17 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
   const [isLoading, setIsLoading] = useState(true);
   const [accountInfo, setAccountInfo] = useState({});
 
-  const logOutHandle = () => {
+  const logOutHandle = async () => {
+    const accessToken = getCookie("STYXKEY_ACCESS_TOKEN").toString();
+
     deleteCookieLoginInfo();
     changeLogInStt();
     handleCloseModal();
+
+    if (accessToken) {
+      const logoutData = await getLogoutData(accessToken);
+      //console.log(logoutData);
+    }
   };
 
   const showAccInfo = () => {
@@ -42,10 +49,13 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
   useEffect(() => {
     const getAccInfo = async () => {
       const accessToken = getCookie("STYXKEY_ACCESS_TOKEN").toString();
-      const accInfoRes = await getAccountInfo(accessToken);
-      console.log(accInfoRes);
-      if (accInfoRes) {
-        setAccountInfo(accInfoRes);
+      if (accessToken) {
+        const accInfoRes = await getAccountInfo(accessToken);
+        if (Object.keys(accInfoRes).length > 0) {
+          setAccountInfo(accInfoRes);
+        }
+        setIsLoading(false);
+      } else {
         setIsLoading(false);
       }
     };
@@ -65,7 +75,11 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
         </div>
       )}
 
-      {isAccInfo && !isLoading && (
+      {Object.keys(accountInfo).length == 0 && !isLoading && (
+        <p className="error-msg big-error-msg">Something went wrong. Please reload page and try again!</p>
+      )}
+
+      {isAccInfo && Object.keys(accountInfo).length > 0 && !isLoading && (
         <AccountInfo
           accountInfo={accountInfo}
           logOutHandle={logOutHandle}

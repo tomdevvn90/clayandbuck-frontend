@@ -29,3 +29,19 @@ export interface PodcastProps {
   startDate: string;
   imageUrl: string;
 }
+
+export interface BillingInfoProps {
+  accessToken: string;
+  country: string;
+  updateCard: string;
+  cardNum: string;
+  cardExp: string;
+  cardCvv: string;
+  firstName: string;
+  lastName: string;
+  addr1: string;
+  addr2: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}

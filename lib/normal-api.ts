@@ -1,4 +1,4 @@
-import { WP_REST_API_URL } from "./constants";
+import { BillingInfoProps, WP_REST_API_URL } from "./constants";
 
 /**
  * Fetch data by REST API
@@ -67,6 +67,15 @@ export async function getLoginData(username: string, password: string) {
 }
 
 /**
+ * Get Logout Data
+ */
+export async function getLogoutData(accessToken: string) {
+  const accessTokenEn = encodeURIComponent(btoa(accessToken));
+  const data = await fetchAPINormal(`/v2/subscriber/logout/?accessToken=${accessTokenEn}`);
+  return data;
+}
+
+/**
  * Get Password Hint
  */
 export async function getPasswordHintData(recaptchaKey: string, email: string) {
@@ -120,6 +129,30 @@ export async function changePassword(email: string, crPassword: string, newPassw
   const hintPasswordEn = encodeURIComponent(hintPassword);
   const data = await fetchAPINormal(
     `/v2/subscriber/change-password/?email=${emailEn}&crPassword=${crPasswordEn}&newPassword=${newPasswordEn}&hintPassword=${hintPasswordEn}`
+  );
+  return data;
+}
+
+/**
+ * Update Billing Info
+ */
+export async function updateBillingInfo(billInfoProp: BillingInfoProps) {
+  const accessToken = encodeURIComponent(btoa(billInfoProp.accessToken));
+  const country = encodeURIComponent(billInfoProp.country);
+  const updateCard = encodeURIComponent(billInfoProp.updateCard);
+  const cardNum = encodeURIComponent(billInfoProp.cardNum);
+  const cardExp = encodeURIComponent(billInfoProp.cardExp);
+  const cardCvv = encodeURIComponent(billInfoProp.cardCvv);
+  const firstName = encodeURIComponent(billInfoProp.firstName);
+  const lastName = encodeURIComponent(billInfoProp.lastName);
+  const addr1 = encodeURIComponent(billInfoProp.addr1);
+  const addr2 = encodeURIComponent(billInfoProp.addr2);
+  const city = encodeURIComponent(billInfoProp.city);
+  const state = encodeURIComponent(billInfoProp.state);
+  const zipCode = encodeURIComponent(billInfoProp.zipCode);
+
+  const data = await fetchAPINormal(
+    `/v2/subscriber/update-billing/?accessToken=${accessToken}&country=${country}&updateCard=${updateCard}&cardNum=${cardNum}&cardExp=${cardExp}&cardCvv=${cardCvv}&firstName=${firstName}&lastName=${lastName}&addr1=${addr1}&addr2=${addr2}&city=${city}&state=${state}&zipCode=${zipCode}`
   );
   return data;
 }

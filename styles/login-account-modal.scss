@@ -386,6 +386,11 @@
       &.error-msg {
         margin-top: 10px;
       }
+      &.big-error-msg {
+        margin: 40px 0;
+        background: transparent;
+        font-size: 16px;
+      }
     }
   }
 
@@ -430,6 +435,10 @@
       margin: 0 0 20px;
       position: relative;
       border-bottom: 2px solid #e6eaed;
+
+      &.show-edit-card {
+        display: none;
+      }
       h2 {
         font-size: 20px;
         line-height: 32px;
@@ -450,7 +459,11 @@
       margin-bottom: 20px;
       padding-bottom: 20px;
       border-bottom: 2px solid #e6eaed;
+      display: none;
 
+      &.show-edit-card {
+        display: block;
+      }
       .credit-card-area {
         border: 2px solid #a9afb2;
         border-radius: 6px;

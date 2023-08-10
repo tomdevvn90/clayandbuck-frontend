@@ -1,14 +1,13 @@
 import Link from "next/link";
-import { getCookie } from "cookies-next";
-import { useEffect, useState } from "react";
-import { getAccountInfo } from "../../../lib/normal-api";
 
-export default function AccountInfo({ accountInfo, logOutHandle, showChangeEmailPassword, showUpdateBillingInfo }) {
+export default function AccountInfo(props) {
+  const { accountInfo, logOutHandle, showChangeEmailPassword, showUpdateBillingInfo } = props;
   let planText = "";
   let nextBill = "";
   let billingName = "";
   let billingAddress = "";
   let paymentMethod = "";
+
   if (accountInfo) {
     const subscriptions = accountInfo.subscription_plans[0];
     if (subscriptions) {
