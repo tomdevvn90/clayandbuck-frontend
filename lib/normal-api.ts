@@ -13,66 +13,74 @@ async function fetchAPINormal(url: string) {
 }
 
 /**
+ * Fetch data by REST API with method POST
+ */
+async function fetchAPIPost(url: string, bodyParams) {
+  try {
+    const response = await fetch(`${WP_REST_API_URL}${url}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bodyParams),
+    });
+    return await response.json();
+  } catch (e) {
+    console.error("Error while fetching PWS API:", e);
+  }
+}
+
+/**
  * Get Podcasts data
  */
 export async function getPodcastsData() {
-  const data = await fetchAPINormal(`/v2/podcasts-player/`);
-  return data;
+  return await fetchAPINormal(`/v2/podcasts-player/`);
 }
 
 /**
  * Get data for Homepage
  */
 export async function getHomePageData() {
-  const data = await fetchAPINormal(`/v2/home-data/`);
-  return data;
+  return await fetchAPINormal(`/v2/home-data/`);
 }
 
 /**
  * Get Sidebar Widget
  */
 export async function getSidebarWidget(sidebar_id: string) {
-  const data = await fetchAPINormal(`/wp-json/wp/v2/widgets?sidebar=${sidebar_id}`);
-  return data;
+  return await fetchAPINormal(`/wp-json/wp/v2/widgets?sidebar=${sidebar_id}`);
 }
 
 /**
  * Get Top Stories
  */
 export async function getTopStories(crPage: number, perPage: number, excludeStories: string) {
-  const data = await fetchAPINormal(
-    `/v2/top-stories/?crPage=${crPage}&perPage=${perPage}&excludeStories=${excludeStories}`
-  );
-  return data;
+  return await fetchAPINormal(`/v2/top-stories/?crPage=${crPage}&perPage=${perPage}&excludeStories=${excludeStories}`);
 }
 
 /**
  * Get Books Movies
  */
 export async function getRecsData(crPage: number, perPage: number, excludeBooks: string = "", typeRec: string = "") {
-  const data = await fetchAPINormal(
-    `/v2/books-movies/?crPage=${crPage}&perPage=${perPage}&excludeBooks=${excludeBooks}&type=${typeRec}`
+  const typeRecE = encodeURIComponent(typeRec);
+  return await fetchAPINormal(
+    `/v2/books-movies/?crPage=${crPage}&perPage=${perPage}&excludeBooks=${excludeBooks}&type=${typeRecE}`
   );
-  return data;
 }
 
 /**
  * Get Login Data
  */
 export async function getLoginData(username: string, password: string) {
-  const useNameEn = encodeURIComponent(username);
-  const passwordEn = encodeURIComponent(btoa(password));
-  const data = await fetchAPINormal(`/v2/subscriber/login/?username=${useNameEn}&password=${passwordEn}`);
-  return data;
+  return await fetchAPIPost(`/v2/subscriber/login/`, { username, password });
 }
 
 /**
  * Get Logout Data
  */
 export async function getLogoutData(accessToken: string) {
-  const accessTokenEn = encodeURIComponent(btoa(accessToken));
-  const data = await fetchAPINormal(`/v2/subscriber/logout/?accessToken=${accessTokenEn}`);
-  return data;
+  const accessTokenEn = encodeURIComponent(accessToken);
+  return await fetchAPINormal(`/v2/subscriber/logout/?accessToken=${accessTokenEn}`);
 }
 
 /**
@@ -81,8 +89,7 @@ export async function getLogoutData(accessToken: string) {
 export async function getPasswordHintData(recaptchaKey: string, email: string) {
   const emailEn = encodeURIComponent(email);
   const recaptchaKeyEn = encodeURIComponent(recaptchaKey);
-  const data = await fetchAPINormal(`/v2/subscriber/get-hint/?email=${emailEn}&recaptchaToken=${recaptchaKeyEn}`);
-  return data;
+  return await fetchAPINormal(`/v2/subscriber/get-hint/?email=${emailEn}&recaptchaToken=${recaptchaKeyEn}`);
 }
 
 /**
@@ -91,68 +98,39 @@ export async function getPasswordHintData(recaptchaKey: string, email: string) {
 export async function getForgotPasswordData(recaptchaKey: string, email: string) {
   const emailEn = encodeURIComponent(email);
   const recaptchaKeyEn = encodeURIComponent(recaptchaKey);
-  const data = await fetchAPINormal(
-    `/v2/subscriber/forgot-password/?email=${emailEn}&recaptchaToken=${recaptchaKeyEn}`
-  );
-  return data;
+  return await fetchAPINormal(`/v2/subscriber/forgot-password/?email=${emailEn}&recaptchaToken=${recaptchaKeyEn}`);
 }
 
 /**
  * get Account Info
  */
 export async function getAccountInfo(accessToken: string) {
-  const accessTokenEn = encodeURIComponent(btoa(accessToken));
-  const data = await fetchAPINormal(`/v2/subscriber/account-info/?accessToken=${accessTokenEn}`);
-  return data;
+  const accessTokenEn = encodeURIComponent(accessToken);
+  return await fetchAPINormal(`/v2/subscriber/account-info/?accessToken=${accessTokenEn}`);
 }
 
 /**
  * Change email
  */
 export async function changeEmail(newEmail: string, password: string, currentEmail: string) {
-  const newEmailEn = encodeURIComponent(newEmail);
-  const passwordEn = encodeURIComponent(btoa(password));
-  const currentEmailEn = encodeURIComponent(currentEmail);
-  const data = await fetchAPINormal(
-    `/v2/subscriber/change-email/?newEmail=${newEmailEn}&password=${passwordEn}&currentEmail=${currentEmailEn}`
-  );
-  return data;
+  return await fetchAPIPost(`/v2/subscriber/change-email/`, { newEmail, password, currentEmail });
 }
 
 /**
  * Change password
  */
 export async function changePassword(email: string, crPassword: string, newPassword: string, hintPassword: string) {
-  const emailEn = encodeURIComponent(email);
-  const crPasswordEn = encodeURIComponent(btoa(crPassword));
-  const newPasswordEn = encodeURIComponent(btoa(newPassword));
-  const hintPasswordEn = encodeURIComponent(hintPassword);
-  const data = await fetchAPINormal(
-    `/v2/subscriber/change-password/?email=${emailEn}&crPassword=${crPasswordEn}&newPassword=${newPasswordEn}&hintPassword=${hintPasswordEn}`
-  );
-  return data;
+  return await fetchAPIPost(`/v2/subscriber/change-password/`, {
+    email,
+    crPassword,
+    newPassword,
+    hintPassword,
+  });
 }
 
 /**
  * Update Billing Info
  */
 export async function updateBillingInfo(billInfoProp: BillingInfoProps) {
-  const accessToken = encodeURIComponent(btoa(billInfoProp.accessToken));
-  const country = encodeURIComponent(billInfoProp.country);
-  const updateCard = encodeURIComponent(billInfoProp.updateCard);
-  const cardNum = encodeURIComponent(billInfoProp.cardNum);
-  const cardExp = encodeURIComponent(billInfoProp.cardExp);
-  const cardCvv = encodeURIComponent(billInfoProp.cardCvv);
-  const firstName = encodeURIComponent(billInfoProp.firstName);
-  const lastName = encodeURIComponent(billInfoProp.lastName);
-  const addr1 = encodeURIComponent(billInfoProp.addr1);
-  const addr2 = encodeURIComponent(billInfoProp.addr2);
-  const city = encodeURIComponent(billInfoProp.city);
-  const state = encodeURIComponent(billInfoProp.state);
-  const zipCode = encodeURIComponent(billInfoProp.zipCode);
-
-  const data = await fetchAPINormal(
-    `/v2/subscriber/update-billing/?accessToken=${accessToken}&country=${country}&updateCard=${updateCard}&cardNum=${cardNum}&cardExp=${cardExp}&cardCvv=${cardCvv}&firstName=${firstName}&lastName=${lastName}&addr1=${addr1}&addr2=${addr2}&city=${city}&state=${state}&zipCode=${zipCode}`
-  );
-  return data;
+  return await fetchAPIPost(`/v2/subscriber/update-billing/`, billInfoProp);
 }

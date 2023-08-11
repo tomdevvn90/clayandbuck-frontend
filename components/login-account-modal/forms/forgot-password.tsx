@@ -64,7 +64,7 @@ export default function ForgotPasswordForm({ showLoginForm }) {
           <label htmlFor="cnb-forgot-email">Email</label>
           <input
             type="email"
-            className={`form-control ${emailClass}`}
+            className={emailClass}
             id="cnb-forgot-email"
             name="cnb_email"
             placeholder="Enter your email"

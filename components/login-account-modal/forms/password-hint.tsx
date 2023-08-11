@@ -64,13 +64,7 @@ export default function GetPasswordHintForm({ showLoginForm }) {
         <form onSubmit={handleSubmit} className="get-hint-form">
           <div className="form-group">
             <label htmlFor="cnb-email">Email</label>
-            <input
-              type="email"
-              className={`form-control ${emailClass}`}
-              id="cnb-email"
-              name="cnb_email"
-              placeholder="Enter your email"
-            />
+            <input type="email" className={emailClass} id="cnb-email" name="cnb_email" placeholder="Enter your email" />
           </div>
           <button type="submit" className={btnClass}>
             {isLoading ? <span className="cnb-spinner-loading"></span> : <span>Get Password Hint</span>}

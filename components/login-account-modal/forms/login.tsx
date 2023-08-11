@@ -39,7 +39,7 @@ export default function LoginForm({ className, changeLogInStt, showForgotForm, s
 
     setIsLoading(true);
 
-    const loginData = await getLoginData(userName, password);
+    const loginData = await getLoginData(userName, btoa(password));
     //console.log(loginData);
 
     if (loginData.success) {
@@ -89,7 +89,7 @@ export default function LoginForm({ className, changeLogInStt, showForgotForm, s
               <label htmlFor="cnb-user-name">Email</label>
               <input
                 type="text"
-                className={`form-control ${useNameClass}`}
+                className={useNameClass}
                 id="cnb-user-name"
                 name="cnb_user_name"
                 placeholder="Enter your email"
@@ -101,7 +101,7 @@ export default function LoginForm({ className, changeLogInStt, showForgotForm, s
               </label>
               <input
                 type="password"
-                className={`form-control ${passwordClass}`}
+                className={passwordClass}
                 id="cnb-password"
                 name="cnb_password"
                 placeholder="Enter your password"

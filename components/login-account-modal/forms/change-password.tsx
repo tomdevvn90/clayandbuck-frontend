@@ -60,7 +60,7 @@ export default function ChangePasswordForm() {
 
     setIsLoading(true);
 
-    const changePasswordData = await changePassword(currentEmail, crPassword, newPassword, hintPassword);
+    const changePasswordData = await changePassword(currentEmail, btoa(crPassword), btoa(newPassword), hintPassword);
     // console.log(changePasswordData);
 
     if (changePasswordData.success) {
@@ -97,7 +97,7 @@ export default function ChangePasswordForm() {
             <label htmlFor="cnb-current-password">Current Password</label>
             <input
               type="password"
-              className={`form-control ${crPasswordClass}`}
+              className={crPasswordClass}
               id="cnb-current-password"
               name="cnb_current_password"
               aria-describedby="emailHelp"
@@ -105,18 +105,13 @@ export default function ChangePasswordForm() {
           </div>
           <div className="form-group">
             <label htmlFor="cnb-new-password">New Password</label>
-            <input
-              type="password"
-              className={`form-control ${newPasswordClass}`}
-              id="cnb-new-password"
-              name="cnb_new_password"
-            />
+            <input type="password" className={newPasswordClass} id="cnb-new-password" name="cnb_new_password" />
           </div>
           <div className="form-group">
             <label htmlFor="cnb-password-hint">Password Hint</label>
             <input
               type="text"
-              className={`form-control ${hintPasswordClass}`}
+              className={hintPasswordClass}
               id="cnb-password-hint"
               name="cnb_password_hint"
               aria-describedby="emailHelp"

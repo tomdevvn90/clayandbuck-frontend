@@ -4,7 +4,7 @@ import { getCookie } from "cookies-next";
 import { cnbCheckZipCodeMatchStateForCA, cnbGetStateByZipCodeForUS } from "../../../utils/global-functions";
 import { updateBillingInfo } from "../../../lib/normal-api";
 
-export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
+export default function UpdateBillingInfo({ refreshAccInfo, accountInfo, showAccInfo }) {
   const billingInfo = accountInfo.billing_info;
   const billingAddr = billingInfo.address;
   const paymentMethod = billingInfo.paymentMethod;
@@ -14,26 +14,38 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
   const cardNum = `${paymentMethod.firstSix}${paymentMethod.lastFour}${lastTwoCardNum}`;
   const expYear = paymentMethod.expYear.toString().substr(2, 2);
   const cardExpDate = `${paymentMethod.expMonth}/${expYear}`;
-  const addrCountry = billingAddr.country;
-  const addrState = billingAddr.region;
-  const firstName = billingInfo.firstName;
-  const lastName = billingInfo.lastName;
 
   const [errorMessages, setErrorMessages] = useState("");
   const [showEditCardFields, setShowEditCardFields] = useState("");
-  const [crCountry, setCrCountry] = useState(addrCountry);
+  const [crCountry, setCrCountry] = useState(billingAddr.country);
   const [updateCard, setUpdateCard] = useState("");
-  const [useEmailClass, setUseEmailClass] = useState("");
-  const [passwordClass, setPasswordClass] = useState("");
+  const [countryClass, setCountryClass] = useState("");
+  const [cardInfoClass, setCardInfoClass] = useState("");
+  const [firstNameClass, setFirstNameClass] = useState("");
+  const [lastNameClass, setLastNameClass] = useState("");
+  const [addr1Class, setAddr1Class] = useState("");
+  const [cityClass, setCityClass] = useState("");
+  const [stateClass, setStateClass] = useState("");
+  const [zipCodeClass, setZipCodeClass] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSuccess(false);
     setErrorMessages("");
+    setUpdateCard("");
+    setCountryClass("");
+    setCardInfoClass("");
+    setFirstNameClass("");
+    setLastNameClass("");
+    setAddr1Class("");
+    setCityClass("");
+    setStateClass("");
+    setZipCodeClass("");
+
     const accessToken = getCookie("STYXKEY_ACCESS_TOKEN").toString();
     const eventTarget = event.target;
-
     const country = eventTarget.cnb_country.value;
     const cardNum = eventTarget.cnb_card_num.value;
     const cardExp = eventTarget.cnb_card_exp.value;
@@ -53,62 +65,71 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
     }
     if (!country) {
       setErrorMessages("Please enter your Country.");
+      setCountryClass("error");
       return false;
     }
     if (cardNum != cardNum || cardExpDate != cardExp) {
       if (!cardNum) {
         setErrorMessages("Please enter your Card number.");
+        setCardInfoClass("error");
         return false;
       }
       if (!cardExp) {
         setErrorMessages("Please enter your Card expired date.");
+        setCardInfoClass("error");
         return false;
       }
       if (!cardCvv) {
         setErrorMessages("Please enter your Card CVV.");
+        setCardInfoClass("error");
         return false;
       }
       if (cardCvv.length > 4) {
         setErrorMessages("Card CVV is invalid.");
+        setCardInfoClass("error");
         return false;
       }
       setUpdateCard("true");
     }
     if (!firstName) {
       setErrorMessages("Please enter your First name.");
+      setFirstNameClass("error");
       return false;
     }
     if (!lastName) {
       setErrorMessages("Please enter your Last name.");
+      setLastNameClass("error");
       return false;
     }
     if (!addr1) {
       setErrorMessages("Please enter your Address 1.");
+      setAddr1Class("error");
       return false;
     }
     if (!city) {
       setErrorMessages("Please enter your City.");
+      setCityClass("error");
       return false;
     }
     if (!state) {
       setErrorMessages("Please enter your State/Province.");
+      setStateClass("error");
       return false;
     }
     if (!zipCode) {
       setErrorMessages("Please enter your Zip Code.");
+      setZipCodeClass("error");
       return false;
     }
-    if (country == "US") {
-      if (cnbGetStateByZipCodeForUS(zipCode) != state) {
-        setErrorMessages("Zip Code is not correct with State.");
-        return false;
-      }
+    if (country == "US" && cnbGetStateByZipCodeForUS(zipCode) != state) {
+      setErrorMessages("Zip Code is not correct with State.");
+      setZipCodeClass("error");
+      return false;
     }
-    if (country == "CA") {
-      if (!cnbCheckZipCodeMatchStateForCA(state, zipCode)) {
-        setErrorMessages("Zip Code is not correct with State.");
-        return false;
-      }
+    if (country == "CA" && !cnbCheckZipCodeMatchStateForCA(state, zipCode)) {
+      setErrorMessages("Zip Code is not correct with State.");
+      setZipCodeClass("error");
+      return false;
     }
 
     const billFields = {
@@ -126,19 +147,30 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
       state,
       zipCode,
     };
+    setIsLoading(true);
 
     console.log(billFields);
     const updateBillRes = await updateBillingInfo(billFields);
     console.log(updateBillRes);
+
+    if (updateBillRes.success) {
+      //console.log(updateBillRes);
+      setIsSuccess(true);
+      setIsLoading(false);
+      refreshAccInfo();
+    } else {
+      if (updateBillRes.error_message) {
+        setErrorMessages(updateBillRes.error_message);
+      } else {
+        setErrorMessages("Something went wrong. Please try again!");
+      }
+      setIsLoading(false);
+    }
   };
 
   const btnClass = isLoading ? "btn-submit loading" : "btn-submit";
-  return isLoading ? (
-    <div className="loading-wrapper">
-      <div className="cnb-spinner-loading"></div>
-    </div>
-  ) : (
-    <div className="account-edit-box">
+  return (
+    <div className="account-edit-box update-billing">
       <div>
         <a className="back-to-acc-info" onClick={showAccInfo}>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -153,9 +185,11 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
       <div className="change-row">
         <h2>Update Billing Info</h2>
 
-        <p>Need to change your billing info? Enter your new billing info below</p>
-
-        {isSuccess && <p className="success-msg">Your account has been successfully updated</p>}
+        {isSuccess ? (
+          <p className="success-msg">Your account has been successfully updated</p>
+        ) : (
+          <p>Need to change your billing info? Enter your new billing info below</p>
+        )}
 
         {errorMessages && <p className="error-msg">{errorMessages}</p>}
       </div>
@@ -164,9 +198,9 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
           <div className="form-group">
             <label htmlFor="cnb-country">Select your location</label>
             <select
-              className="form-control"
+              className={countryClass}
               name="cnb_country"
-              defaultValue={addrCountry}
+              defaultValue={billingAddr.country}
               onChange={(e) => setCrCountry(e.target.value)}
             >
               <option value="US">United States</option>
@@ -176,7 +210,7 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
         </div>
 
         <div className={`cnb-update-credit-card ${showEditCardFields}`}>
-          <div className="credit-card-area">
+          <div className={`credit-card-area ${cardInfoClass}`}>
             <input
               type="text"
               className="card-num"
@@ -210,7 +244,7 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
           <h2>Payment Details</h2>
           <p>
             <strong>Name: </strong>
-            {`${firstName} ${lastName}`}
+            {`${billingInfo.firstName} ${billingInfo.lastName}`}
           </p>
           <p>
             <strong>Address: </strong>
@@ -227,10 +261,10 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
             <label htmlFor="cnb-first-name">First Name</label>
             <input
               type="text"
-              className="form-control"
+              className={firstNameClass}
               id="cnb-first-name"
               name="cnb_first_name"
-              defaultValue={firstName}
+              defaultValue={billingInfo.firstName}
               placeholder="Enter first name"
             />
           </div>
@@ -238,10 +272,10 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
             <label htmlFor="cnb-last-name">Last Name</label>
             <input
               type="text"
-              className="form-control"
+              className={lastNameClass}
               id="cnb-last-name"
               name="cnb_last_name"
-              defaultValue={lastName}
+              defaultValue={billingInfo.lastName}
               placeholder="Enter last name"
             />
           </div>
@@ -250,26 +284,20 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
           <label htmlFor="cnb-addr-1">Billing Address </label>
           <input
             type="text"
-            className="form-control addr-1"
+            className={`addr-1 ${addr1Class}`}
             id="cnb-addr-1"
             name="cnb_addr_1"
             defaultValue={billingAddr.street1}
             placeholder="Address line 1"
           />
-          <input
-            type="text"
-            className="form-control"
-            name="cnb_addr_2"
-            defaultValue={billingAddr.street2}
-            placeholder="Address line 2"
-          />
+          <input type="text" name="cnb_addr_2" defaultValue={billingAddr.street2} placeholder="Address line 2" />
         </div>
         <div className="city-state-postcode">
           <div className="form-group city">
             <label htmlFor="cnb-city">City</label>
             <input
               type="text"
-              className="form-control"
+              className={cityClass}
               id="cnb-city"
               name="cnb_city"
               defaultValue={billingAddr.city}
@@ -278,7 +306,7 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
           </div>
           <div className="form-group state">
             <label htmlFor="cnb-state">State/Province</label>
-            <select className="form-control" id="cnb-state" name="cnb_state" defaultValue={addrState}>
+            <select className={stateClass} id="cnb-state" name="cnb_state" defaultValue={billingAddr.region}>
               {cnbRenderCountryStates(crCountry)}
             </select>
           </div>
@@ -286,7 +314,7 @@ export default function UpdateBillingInfo({ accountInfo, showAccInfo }) {
             <label htmlFor="cnb-zip-code">Zip</label>
             <input
               type="text"
-              className="form-control"
+              className={zipCodeClass}
               id="cnb-zip-code"
               name="cnb_zip_code"
               defaultValue={billingAddr.postalCode}

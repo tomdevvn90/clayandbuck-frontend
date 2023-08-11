@@ -14,6 +14,7 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
   const [isUpdateBillingInfo, setIsUpdateBillingInfo] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [accountInfo, setAccountInfo] = useState({});
+  const [refreshAccInfo, setRefreshAccInfo] = useState(false);
 
   const logOutHandle = async () => {
     const accessToken = getCookie("STYXKEY_ACCESS_TOKEN").toString();
@@ -46,6 +47,10 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
     setIsUpdateBillingInfo(true);
   };
 
+  const handleRefreshAccInfo = () => {
+    setRefreshAccInfo(true);
+  };
+
   useEffect(() => {
     const getAccInfo = async () => {
       const accessToken = getCookie("STYXKEY_ACCESS_TOKEN").toString();
@@ -61,7 +66,7 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
     };
     getAccInfo();
     return () => {};
-  }, []);
+  }, [refreshAccInfo]);
 
   return (
     <div className="account-box">
@@ -90,7 +95,9 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
 
       {isChangeEmailPassword && !isLoading && <ChangeEmailPassword showAccInfo={showAccInfo} />}
 
-      {isUpdateBillingInfo && !isLoading && <UpdateBillingInfo accountInfo={accountInfo} showAccInfo={showAccInfo} />}
+      {isUpdateBillingInfo && !isLoading && (
+        <UpdateBillingInfo refreshAccInfo={handleRefreshAccInfo} accountInfo={accountInfo} showAccInfo={showAccInfo} />
+      )}
     </div>
   );
 }

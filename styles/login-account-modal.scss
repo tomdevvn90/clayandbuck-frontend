@@ -402,6 +402,10 @@
       margin: 30px 0;
     }
 
+    &.update-billing p.success-msg {
+      margin: 0;
+    }
+
     .change-row {
       background: #fff;
       padding-bottom: 20px;
@@ -468,6 +472,10 @@
         border: 2px solid #a9afb2;
         border-radius: 6px;
         display: flex;
+
+        &.error {
+          border-color: red;
+        }
 
         input[type="text"] {
           display: block;

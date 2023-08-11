@@ -41,7 +41,7 @@ export default function ChangeEmailForm() {
 
     setIsLoading(true);
 
-    const changeEmailData = await changeEmail(userEmail, password, currentEmail);
+    const changeEmailData = await changeEmail(userEmail, btoa(password), currentEmail);
     // console.log(changeEmailData);
 
     if (changeEmailData.success) {
@@ -85,7 +85,7 @@ export default function ChangeEmailForm() {
             <label htmlFor="cnb-new-email">Email address</label>
             <input
               type="email"
-              className={`form-control ${useEmailClass}`}
+              className={useEmailClass}
               id="cnb-new-email"
               name="cnb_new_email"
               aria-describedby="emailHelp"
@@ -93,7 +93,7 @@ export default function ChangeEmailForm() {
           </div>
           <div className="form-group">
             <label htmlFor="cnb-password">Password</label>
-            <input type="password" className={`form-control ${passwordClass}`} id="cnb-password" name="cnb_password" />
+            <input type="password" className={passwordClass} id="cnb-password" name="cnb_password" />
           </div>
           <button type="submit" className={btnClass}>
             {isLoading ? <span className="cnb-spinner-loading"></span> : <span>Update</span>}

@@ -30,7 +30,7 @@ export default function VipPodcastPage({ pageData }) {
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
-  const accessToken = true; //getCookie("ACCESS_TOKEN");
+  const accessToken = true; //getCookie("STYXKEY_ACCESS_TOKEN");
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>
