@@ -42,6 +42,13 @@ export const setCookieLoginInfo = (
 };
 
 /**
+ * Set a cookie
+ */
+export const setACookieF = (cookieKey: string, cookieValue: string) => {
+  setCookie(cookieKey, cookieValue, { maxAge: 864000 }); // 864000 is 10 days
+};
+
+/**
  * Delete Cookie Login Info
  */
 export const deleteCookieLoginInfo = () => {
@@ -51,6 +58,13 @@ export const deleteCookieLoginInfo = () => {
   deleteCookie("STYXKEY_USER_SUBSCRIBED");
   deleteCookie("STYXKEY_USER_CANCELLED_SUBS");
   deleteCookie("STYXKEY_USER_PRIVACY_OPTOUT");
+};
+
+/**
+ * Delete a cookie
+ */
+export const deleteACookieF = (cookieKey: string) => {
+  deleteCookie(cookieKey);
 };
 
 /**

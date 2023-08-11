@@ -7,11 +7,13 @@ import ChangeEmailPassword from "./content/change-email-password";
 import UpdateBillingInfo from "./forms/update-billing-info";
 import { getCookie } from "cookies-next";
 import { getAccountInfo, getLogoutData } from "../../lib/normal-api";
+import UpdateSubscription from "./forms/update-subscription";
 
 export default function AccountModal({ changeLogInStt, handleCloseModal }) {
   const [isAccInfo, setIsAccInfo] = useState(true);
   const [isChangeEmailPassword, setIsChangeEmailPassword] = useState(false);
   const [isUpdateBillingInfo, setIsUpdateBillingInfo] = useState(false);
+  const [isUpdateSubscription, setIsUpdateSubscription] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [accountInfo, setAccountInfo] = useState({});
   const [refreshAccInfo, setRefreshAccInfo] = useState(false);
@@ -33,22 +35,32 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
     setIsAccInfo(true);
     setIsChangeEmailPassword(false);
     setIsUpdateBillingInfo(false);
+    setIsUpdateSubscription(false);
   };
 
   const showChangeEmailPassword = () => {
     setIsAccInfo(false);
     setIsChangeEmailPassword(true);
     setIsUpdateBillingInfo(false);
+    setIsUpdateSubscription(false);
   };
 
   const showUpdateBillingInfo = () => {
     setIsAccInfo(false);
     setIsChangeEmailPassword(false);
     setIsUpdateBillingInfo(true);
+    setIsUpdateSubscription(false);
+  };
+
+  const showUpdateSubscription = () => {
+    setIsAccInfo(false);
+    setIsChangeEmailPassword(false);
+    setIsUpdateBillingInfo(false);
+    setIsUpdateSubscription(true);
   };
 
   const handleRefreshAccInfo = () => {
-    setRefreshAccInfo(true);
+    setRefreshAccInfo(!refreshAccInfo);
   };
 
   useEffect(() => {
@@ -90,6 +102,7 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
           logOutHandle={logOutHandle}
           showChangeEmailPassword={showChangeEmailPassword}
           showUpdateBillingInfo={showUpdateBillingInfo}
+          showUpdateSubscription={showUpdateSubscription}
         />
       )}
 
@@ -97,6 +110,10 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
 
       {isUpdateBillingInfo && !isLoading && (
         <UpdateBillingInfo refreshAccInfo={handleRefreshAccInfo} accountInfo={accountInfo} showAccInfo={showAccInfo} />
+      )}
+
+      {isUpdateSubscription && !isLoading && (
+        <UpdateSubscription refreshAccInfo={handleRefreshAccInfo} accountInfo={accountInfo} showAccInfo={showAccInfo} />
       )}
     </div>
   );

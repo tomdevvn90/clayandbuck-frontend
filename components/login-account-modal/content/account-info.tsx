@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export default function AccountInfo(props) {
-  const { accountInfo, logOutHandle, showChangeEmailPassword, showUpdateBillingInfo } = props;
+  const { accountInfo, logOutHandle, showChangeEmailPassword, showUpdateBillingInfo, showUpdateSubscription } = props;
   let planText = "";
   let nextBill = "";
   let billingName = "";
@@ -92,11 +92,13 @@ export default function AccountInfo(props) {
         </div>
         <div className="row-info">
           {planText || nextBill ? (
-            <button className="btn-editable">Edit</button>
+            <button className="btn-editable" onClick={showUpdateSubscription}>
+              Edit
+            </button>
           ) : (
-            <a href="CNB_SUBSCRIPTION_URL" className="btn-editable">
+            <Link href="/cnb-subscription/" className="btn-editable">
               Subscribe
-            </a>
+            </Link>
           )}
 
           <h3>Subscriptions</h3>

@@ -134,3 +134,17 @@ export async function changePassword(email: string, crPassword: string, newPassw
 export async function updateBillingInfo(billInfoProp: BillingInfoProps) {
   return await fetchAPIPost(`/v2/subscriber/update-billing/`, billInfoProp);
 }
+
+/**
+ * Cancel Subscription
+ */
+export async function cancelSubscriptionPlan(accessToken: string, subsId: string) {
+  return await fetchAPIPost(`/v2/subscriber/cancel-subscription/`, { accessToken, subsId });
+}
+
+/**
+ * Cancel Subscription
+ */
+export async function reactiveSubscriptionPlan(accessToken: string, subsId: string) {
+  return await fetchAPIPost(`/v2/subscriber/reactive-subscription/`, { accessToken, subsId });
+}
