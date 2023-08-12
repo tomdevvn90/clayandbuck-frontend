@@ -565,6 +565,20 @@
       p.error-msg {
         margin: 0 0 20px;
       }
+      .btn-editable {
+        &.loading {
+          background-color: transparent !important;
+          border-color: transparent !important;
+          pointer-events: none !important;
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
+        }
+
+        .cnb-spinner-loading {
+          width: 30px;
+          height: 30px;
+        }
+      }
     }
   }
 

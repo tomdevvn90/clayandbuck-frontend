@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useState } from "react";
 import CancelSubscription from "./cancel-subscription";
+import { useState } from "react";
 import { getCookie } from "cookies-next";
 import { reactiveSubscriptionPlan } from "../../../lib/normal-api";
 import { deleteACookieF } from "../../../utils/global-functions";
@@ -67,6 +67,7 @@ export default function UpdateSubscription({ refreshAccInfo, accountInfo, showAc
     }
   };
 
+  const reactiveBtnClass = isReactiveLoading ? "btn-editable loading" : "btn-editable";
   return (
     <div className="account-edit-box">
       <div>
@@ -207,16 +208,25 @@ export default function UpdateSubscription({ refreshAccInfo, accountInfo, showAc
           </form>
 
           <div className="active-cancel-subs">
-            {subscriptions.cancel_at_period_end ? (
+            {subscriptions.cancel_at_period_end || isReactiveSuccess ? (
               <>
-                <button id="cnb-reactive-subs" className="btn-editable">
-                  {isReactiveLoading ? <span className="cnb-spinner-loading"></span> : <span>Reactivate</span>}
-                </button>
+                {!isReactiveSuccess && (
+                  <button className={reactiveBtnClass} onClick={handleReactiveSubs}>
+                    {isReactiveLoading ? <span className="cnb-spinner-loading"></span> : <span>Reactivate</span>}
+                  </button>
+                )}
                 <h3>Reactivate Subscription</h3>
-                <p>
-                  Re-subscribing allows you to access C&B VIP after the current billing cycle. Your subscription will be
-                  set to auto-renew.
-                </p>
+
+                {reactiveErrorMessages && <p className="error-msg">{reactiveErrorMessages}</p>}
+
+                {isReactiveSuccess ? (
+                  <p className="success-msg">Your account has been successfully reactivated.</p>
+                ) : (
+                  <p>
+                    Re-subscribing allows you to access C&B VIP after the current billing cycle. Your subscription will
+                    be set to auto-renew.
+                  </p>
+                )}
               </>
             ) : (
               <>
