@@ -1,7 +1,7 @@
 import Link from "next/link";
 import PodcastItem from "./podcast-item";
 import DatePicker from "react-datepicker";
-import { PodcastsContext } from "../../contexts/PodcastsContext";
+import { GlobalsContext } from "../../contexts/GlobalsContext";
 import { PodcastProps } from "../../lib/constants";
 import { parseString } from "xml2js";
 import { useContext, useEffect, useState } from "react";
@@ -9,8 +9,8 @@ import { useContext, useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./styles/podcast.module.css";
 
-export default function Podcast() {
-  const PodcastsCtx = useContext(PodcastsContext);
+export default function Podcast({ requireObj }) {
+  const GlobalsCtx = useContext(GlobalsContext);
 
   const [filterDate, setFilterDate] = useState(null);
   const [allPodcasts, setAllPodcasts] = useState(null);
@@ -21,9 +21,9 @@ export default function Podcast() {
   const [messageText, setMessageText] = useState("");
   const [cnbLoading, setCnbLoading] = useState(true);
 
-  const user_email = "luke@bigwigmonster.com";
-  const user_pass = "password";
-  const author_basic = btoa(user_email + ":" + user_pass);
+  const { userEmailCk, userPassCk } = requireObj;
+  const userPass = atob(userPassCk);
+  const author_basic = btoa(`${userEmailCk}:${userPass}`);
   let headers = { Authorization: "Basic " + author_basic };
 
   useEffect(() => {
@@ -112,7 +112,7 @@ export default function Podcast() {
         <h1>VIP Commercial Free Podcast</h1>
         <p>You can listen to the podcasts or download the file to your device.</p>
 
-        <Link className={styles.podcast_feed_link} href="/podcast-feed">
+        <Link className={styles.podcast_feed_link} href="/podcast-feed/">
           Podcast feed
         </Link>
       </div>
@@ -146,8 +146,8 @@ export default function Podcast() {
                   podItem={pc}
                   styles={styles}
                   onClick={() => {
-                    PodcastsCtx.setPodcasts([...podcasts]);
-                    PodcastsCtx.setCurTrack(index);
+                    GlobalsCtx.setPodcasts([...podcasts]);
+                    GlobalsCtx.setCurTrack(index);
                   }}
                 />
               );

@@ -35,7 +35,7 @@ export const setCookieLoginInfo = (
 ) => {
   setCookie("STYXKEY_ACCESS_TOKEN", btoa(access_token), { maxAge: 864000 }); // 864000 is 10 days
   setCookie("STYXKEY_USER_EMAIL", user_email, { maxAge: 864000 });
-  setCookie("STYXKEY_USER_PASSWORD", password, { maxAge: 864000 });
+  setCookie("STYXKEY_USER_PASSWORD", btoa(password), { maxAge: 864000 });
   setCookie("STYXKEY_USER_SUBSCRIBED", user_subscribed, { maxAge: 864000 });
   setCookie("STYXKEY_USER_CANCELLED_SUBS", cancel_at_period_end, { maxAge: 864000 });
   setCookie("STYXKEY_USER_PRIVACY_OPTOUT", user_privacy_optout, { maxAge: 864000 });

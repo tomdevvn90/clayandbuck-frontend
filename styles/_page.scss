@@ -490,15 +490,7 @@ body .podcast-feed-page {
   .cnb-copy-link {
     padding: 10px 20px;
     margin: 10px 0 20px;
-    background: linear-gradient(
-      268deg,
-      #f8e16b 0%,
-      #f8e16b 8%,
-      #f2da66 20%,
-      #e3c958 46%,
-      #cbac41 75%,
-      #b28e2a 100%
-    );
+    background: linear-gradient(268deg, #f8e16b 0%, #f8e16b 8%, #f2da66 20%, #e3c958 46%, #cbac41 75%, #b28e2a 100%);
     color: #000;
     text-decoration: underline;
     display: block;
@@ -529,5 +521,41 @@ body .podcast-feed-page {
 body .main-wrap.podcast {
   .cnb-spinner-loading {
     margin-top: 80px;
+  }
+}
+
+body .require-subs-only-wrap {
+  text-align: center;
+  padding: 48px 0;
+
+  button.btn {
+    font-size: 18px;
+    box-shadow: none;
+    padding: 8px 16px;
+    border: none;
+    margin: 10px 10px 0;
+  }
+  a.cnb-btn {
+    margin: 10px 10px 0 10px;
+    font-size: 18px;
+    text-transform: none;
+    box-shadow: none;
+    border: none;
+    padding: 8px 16px;
+  }
+  h2 {
+    font-weight: 600;
+  }
+  p {
+    font-size: 18px;
+    margin: 0 0 16px;
+  }
+  @media screen and (max-width: 600px) {
+    h2 {
+      font-size: 24px;
+    }
+    p {
+      font-size: 16px;
+    }
   }
 }

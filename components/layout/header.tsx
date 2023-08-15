@@ -5,10 +5,11 @@ import logo_img from "../../public/images/clay-and-buck-logo.png";
 import white_mini_logo from "../../public/images/white-mini-logo.png";
 import MenuItem from "../menu-item";
 import NoticeAndSocials from "./notice-and-socials";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
 import { getCookie } from "cookies-next";
+import { GlobalsContext } from "../../contexts/GlobalsContext";
 
 // import DownloadApp from "./download-app";
 const DownloadApp = dynamic(() => import("./download-app"), {
@@ -25,8 +26,6 @@ const LoginAccountModal = dynamic(() => import("../login-account-modal"), {
 
 export default function Header({ headerMenu }) {
   const [menuStatus, setMenuStatus] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [openLogAccModal, setOpenLogAccModal] = useState(false);
 
   const menuList = headerMenu?.edges;
   if (menuList) menuList.sort((a, b) => a.node.order - b.node.order);
@@ -36,18 +35,15 @@ export default function Header({ headerMenu }) {
     setMenuStatus(!menuStatus);
   };
 
-  useEffect(() => {
-    const accessToken = getCookie("STYXKEY_ACCESS_TOKEN");
-    if (accessToken) setIsLoggedIn(true);
-  }, []);
+  const GlobalsCtx = useContext(GlobalsContext);
 
   useEffect(() => {
-    if (openLogAccModal) {
+    if (GlobalsCtx.openLoginModal) {
       document.body.classList.add("overflow-hidden");
     } else {
       document.body.classList.remove("overflow-hidden");
     }
-  }, [openLogAccModal]);
+  }, [GlobalsCtx.openLoginModal]);
 
   return (
     <>
@@ -79,9 +75,9 @@ export default function Header({ headerMenu }) {
           </div>
 
           <div className="secs-menu">
-            <button className="login-btn" onClick={() => setOpenLogAccModal(true)}>
+            <button className="login-btn" onClick={() => GlobalsCtx.setOpenLoginModal(true)}>
               <Image src={white_mini_logo} width={28} height={28} alt=""></Image>
-              <span>{isLoggedIn ? "Account" : "Login"}</span>
+              <span>{GlobalsCtx.isLoggedIn ? "Account" : "Login"}</span>
             </button>
             <span className="toggle-menu" onClick={toggleMenuHeader}>
               <FontAwesomeIcon icon={faBars} style={{}} />
@@ -90,11 +86,10 @@ export default function Header({ headerMenu }) {
         </div>
       </header>
 
-      {openLogAccModal && (
+      {GlobalsCtx.openLoginModal && (
         <LoginAccountModal
-          isLoggedIn={isLoggedIn}
-          changeLogInStt={() => setIsLoggedIn(!isLoggedIn)}
-          handleCloseModal={() => setOpenLogAccModal(!openLogAccModal)}
+          isLoggedIn={GlobalsCtx.isLoggedIn}
+          handleCloseModal={() => GlobalsCtx.setOpenLoginModal(false)}
         />
       )}
     </>

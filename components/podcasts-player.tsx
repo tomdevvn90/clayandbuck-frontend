@@ -1,18 +1,14 @@
 import { useContext } from "react";
-import { PodcastsContext } from "../contexts/PodcastsContext";
+import { GlobalsContext } from "../contexts/GlobalsContext";
 import Player from "./audio-player";
 
 export default function PodcastsPlayer() {
-  const PodcastsCtx = useContext(PodcastsContext);
+  const GlobalsCtx = useContext(GlobalsContext);
 
   return (
     <div className="cnb-podcasts-player">
-      {PodcastsCtx.podcasts.length > 0 && (
-        <Player
-          trackList={PodcastsCtx.podcasts}
-          includeTags={false}
-          includeSearch={false}
-        />
+      {GlobalsCtx.podcasts.length > 0 && (
+        <Player trackList={GlobalsCtx.podcasts} includeTags={false} includeSearch={false} />
       )}
     </div>
   );

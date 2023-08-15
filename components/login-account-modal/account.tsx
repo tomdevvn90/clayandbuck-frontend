@@ -2,14 +2,15 @@ import { deleteCookieLoginInfo } from "../../utils/global-functions";
 import Image from "next/image";
 import headLogo from "../../public/images/cnb-subs-logo.png";
 import AccountInfo from "./content/account-info";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ChangeEmailPassword from "./content/change-email-password";
 import UpdateBillingInfo from "./forms/update-billing-info";
 import { getCookie } from "cookies-next";
 import { getAccountInfo, getLogoutData } from "../../lib/normal-api";
 import UpdateSubscription from "./forms/update-subscription";
+import { GlobalsContext } from "../../contexts/GlobalsContext";
 
-export default function AccountModal({ changeLogInStt, handleCloseModal }) {
+export default function AccountModal() {
   const [isAccInfo, setIsAccInfo] = useState(true);
   const [isChangeEmailPassword, setIsChangeEmailPassword] = useState(false);
   const [isUpdateBillingInfo, setIsUpdateBillingInfo] = useState(false);
@@ -18,12 +19,14 @@ export default function AccountModal({ changeLogInStt, handleCloseModal }) {
   const [accountInfo, setAccountInfo] = useState({});
   const [refreshAccInfo, setRefreshAccInfo] = useState(false);
 
+  const GlobalsCtx = useContext(GlobalsContext);
+
   const logOutHandle = async () => {
     const accessToken = getCookie("STYXKEY_ACCESS_TOKEN").toString();
 
     deleteCookieLoginInfo();
-    changeLogInStt();
-    handleCloseModal();
+    GlobalsCtx.setOpenLoginModal(false);
+    GlobalsCtx.setIsLoggedIn(false);
 
     if (accessToken) {
       const logoutData = await getLogoutData(accessToken);

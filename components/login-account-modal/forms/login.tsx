@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { getLoginData } from "../../../lib/normal-api";
 import { setCookieLoginInfo } from "../../../utils/global-functions";
+import { GlobalsContext } from "../../../contexts/GlobalsContext";
 
-export default function LoginForm({ className, changeLogInStt, showForgotForm, showHintForm }) {
+export default function LoginForm({ className, showForgotForm, showHintForm }) {
   const [errorMessages, setErrorMessages] = useState("");
   const [useNameClass, setUseNameClass] = useState("");
   const [passwordClass, setPasswordClass] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const GlobalCtx = useContext(GlobalsContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -54,9 +56,8 @@ export default function LoginForm({ className, changeLogInStt, showForgotForm, s
         loginInfo.user_privacy_optout
       );
 
-      setIsLoggedIn(true);
       setIsLoading(false);
-      changeLogInStt();
+      GlobalCtx.setIsLoggedIn(true);
       // setTimeout(handleCloseModal, 1500);
     } else {
       if (loginData.error_message) {
@@ -72,50 +73,46 @@ export default function LoginForm({ className, changeLogInStt, showForgotForm, s
   return (
     <div className={`cnb-login-form ${className}`}>
       <h2>Log In</h2>
-      {!isLoggedIn && (
-        <p>
-          Not a C&B VIP Member? <Link href="/cnb-sign-up/">Sign up</Link>
-        </p>
-      )}
+      <p>
+        Not a C&B VIP Member? <Link href="/cnb-sign-up/">Sign up</Link>
+      </p>
 
       {/* {isLoggedIn && <p className="success-msg">You are successfully logged in</p>} */}
 
       {errorMessages && <p className="error-msg">{errorMessages}</p>}
 
-      {!isLoggedIn && (
-        <div className="form-wrap">
-          <form onSubmit={handleSubmit} className="login-form">
-            <div className="form-group">
-              <label htmlFor="cnb-user-name">Email</label>
-              <input
-                type="text"
-                className={useNameClass}
-                id="cnb-user-name"
-                name="cnb_user_name"
-                placeholder="Enter your email"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="cnb-password">
-                Password <a onClick={showHintForm}>Get Hint</a>
-              </label>
-              <input
-                type="password"
-                className={passwordClass}
-                id="cnb-password"
-                name="cnb_password"
-                placeholder="Enter your password"
-              />
-            </div>
-            <button type="submit" className={btnClass}>
-              {isLoading ? <span className="cnb-spinner-loading"></span> : <span>Log In</span>}
-            </button>
-          </form>
-          <a className="forgot-password-link" onClick={showForgotForm}>
-            Forgot password?
-          </a>
-        </div>
-      )}
+      <div className="form-wrap">
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="cnb-user-name">Email</label>
+            <input
+              type="text"
+              className={useNameClass}
+              id="cnb-user-name"
+              name="cnb_user_name"
+              placeholder="Enter your email"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="cnb-password">
+              Password <a onClick={showHintForm}>Get Hint</a>
+            </label>
+            <input
+              type="password"
+              className={passwordClass}
+              id="cnb-password"
+              name="cnb_password"
+              placeholder="Enter your password"
+            />
+          </div>
+          <button type="submit" className={btnClass}>
+            {isLoading ? <span className="cnb-spinner-loading"></span> : <span>Log In</span>}
+          </button>
+        </form>
+        <a className="forgot-password-link" onClick={showForgotForm}>
+          Forgot password?
+        </a>
+      </div>
     </div>
   );
 }

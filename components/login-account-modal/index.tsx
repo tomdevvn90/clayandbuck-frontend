@@ -4,7 +4,7 @@ import AccountModal from "./account";
 import useEscapeKey from "../../hooks/useEscapeKey";
 import useOutsideClick from "../../hooks/useOutsideClick";
 
-export default function LoginAccountModal({ isLoggedIn, changeLogInStt, handleCloseModal }) {
+export default function LoginAccountModal({ isLoggedIn, handleCloseModal }) {
   const outSideRef = useRef(null);
 
   useEscapeKey(handleCloseModal);
@@ -15,11 +15,7 @@ export default function LoginAccountModal({ isLoggedIn, changeLogInStt, handleCl
       <div className="login-account-modal">
         <div className="modal-wrap">
           <div className="modal-content" ref={outSideRef}>
-            {isLoggedIn ? (
-              <AccountModal changeLogInStt={changeLogInStt} handleCloseModal={handleCloseModal} />
-            ) : (
-              <LoginModal changeLogInStt={changeLogInStt} />
-            )}
+            {isLoggedIn ? <AccountModal /> : <LoginModal />}
 
             <button title="Close (Esc)" type="button" className="close-modal" onClick={handleCloseModal}>
               ×

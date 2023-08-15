@@ -8,7 +8,7 @@ import GetPasswordHintForm from "./forms/password-hint";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { CNB_RECAPTCHA_KEY } from "../../lib/constants";
 
-export default function LoginModal({ changeLogInStt }) {
+export default function LoginModal() {
   const [isLogin, setIsLogin] = useState(true);
   const [isForgot, setIsForgot] = useState(false);
   const [isHint, setIsHint] = useState(false);
@@ -44,12 +44,7 @@ export default function LoginModal({ changeLogInStt }) {
         </div>
 
         <div className="login-box-content">
-          <LoginForm
-            className={!isLogin ? "hide" : ""}
-            changeLogInStt={changeLogInStt}
-            showForgotForm={showForgotForm}
-            showHintForm={showHintForm}
-          />
+          <LoginForm className={!isLogin ? "hide" : ""} showForgotForm={showForgotForm} showHintForm={showHintForm} />
 
           {isForgot && <ForgotPasswordForm showLoginForm={showLoginForm} />}
 

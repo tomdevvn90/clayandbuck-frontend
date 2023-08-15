@@ -32,7 +32,7 @@ import AudioImage from "./parts/AudioImage";
 import StartDate from "./parts/StartDate";
 import PlaylistToggle from "./parts/PlaylistToggle";
 import { decodeLink } from "../../utils/global-functions";
-import { PodcastsContext } from "../../contexts/PodcastsContext";
+import { GlobalsContext } from "../../contexts/GlobalsContext";
 
 const Player = ({
   trackList,
@@ -60,15 +60,13 @@ const Player = ({
   const [filter, setFilter] = useState([]);
   // let [curTrack, setCurTrack] = useState(0);
 
-  const PodcastCtx = useContext(PodcastsContext);
+  const GlobalsCtx = useContext(GlobalsContext);
 
   // const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(11, 8);
   const fmtMMSS = (s) => new Date(1000 * s).toISOString().substr(14, 5);
 
   useEffect(() => {
-    const audio = new Audio(
-      decodeLink(trackList[PodcastCtx.curTrack].mediaUrl)
-    );
+    const audio = new Audio(decodeLink(trackList[GlobalsCtx.curTrack].mediaUrl));
 
     const setAudioData = () => {
       setLength(audio.duration);
@@ -78,9 +76,7 @@ const Player = ({
     const setAudioTime = () => {
       const curTime = audio.currentTime;
       setTime(curTime);
-      setSlider(
-        curTime ? parseFloat(((curTime * 100) / audio.duration).toFixed(1)) : 0
-      );
+      setSlider(curTime ? parseFloat(((curTime * 100) / audio.duration).toFixed(1)) : 0);
     };
 
     const setAudioVolume = () => setVolume(audio.volume);
@@ -93,9 +89,9 @@ const Player = ({
     audio.addEventListener("ended", setAudioEnd);
 
     setAudio(audio);
-    setTitle(trackList[PodcastCtx.curTrack].title);
-    setImageUrl(trackList[PodcastCtx.curTrack].imageUrl);
-    setStartDate(trackList[PodcastCtx.curTrack].startDate);
+    setTitle(trackList[GlobalsCtx.curTrack].title);
+    setImageUrl(trackList[GlobalsCtx.curTrack].imageUrl);
+    setStartDate(trackList[GlobalsCtx.curTrack].startDate);
 
     return () => {
       audio.pause();
@@ -161,28 +157,26 @@ const Player = ({
 
   useEffect(() => {
     if (audio != null) {
-      audio.src = decodeLink(trackList[PodcastCtx.curTrack].mediaUrl);
-      setTitle(trackList[PodcastCtx.curTrack].title);
-      setImageUrl(trackList[PodcastCtx.curTrack].imageUrl);
-      setStartDate(trackList[PodcastCtx.curTrack].startDate);
+      audio.src = decodeLink(trackList[GlobalsCtx.curTrack].mediaUrl);
+      setTitle(trackList[GlobalsCtx.curTrack].title);
+      setImageUrl(trackList[GlobalsCtx.curTrack].imageUrl);
+      setStartDate(trackList[GlobalsCtx.curTrack].startDate);
       play();
     }
-  }, [PodcastCtx.curTrack]);
+  }, [GlobalsCtx.curTrack]);
 
   const previous = () => {
-    const index = playlist.indexOf(PodcastCtx.curTrack);
+    const index = playlist.indexOf(GlobalsCtx.curTrack);
     index !== 0
-      ? PodcastCtx.setCurTrack((PodcastCtx.curTrack = playlist[index - 1]))
-      : PodcastCtx.setCurTrack(
-          (PodcastCtx.curTrack = playlist[playlist.length - 1])
-        );
+      ? GlobalsCtx.setCurTrack((GlobalsCtx.curTrack = playlist[index - 1]))
+      : GlobalsCtx.setCurTrack((GlobalsCtx.curTrack = playlist[playlist.length - 1]));
   };
 
   const next = () => {
-    const index = playlist.indexOf(PodcastCtx.curTrack);
+    const index = playlist.indexOf(GlobalsCtx.curTrack);
     index !== playlist.length - 1
-      ? PodcastCtx.setCurTrack((PodcastCtx.curTrack = playlist[index + 1]))
-      : PodcastCtx.setCurTrack((PodcastCtx.curTrack = playlist[0]));
+      ? GlobalsCtx.setCurTrack((GlobalsCtx.curTrack = playlist[index + 1]))
+      : GlobalsCtx.setCurTrack((GlobalsCtx.curTrack = playlist[0]));
   };
 
   const shuffle = () => {
@@ -196,7 +190,7 @@ const Player = ({
   const playlistItemClickHandler = (e) => {
     const num = Number(e.currentTarget.getAttribute("data-key"));
     const index = playlist.indexOf(num);
-    PodcastCtx.setCurTrack((PodcastCtx.curTrack = playlist[index]));
+    GlobalsCtx.setCurTrack((GlobalsCtx.curTrack = playlist[index]));
     play();
   };
 
@@ -205,8 +199,8 @@ const Player = ({
     if (isInitialFilter.current) {
       isInitialFilter.current = false;
     } else {
-      if (!playlist.includes(PodcastCtx.curTrack)) {
-        PodcastCtx.setCurTrack((PodcastCtx.curTrack = playlist[0]));
+      if (!playlist.includes(GlobalsCtx.curTrack)) {
+        GlobalsCtx.setCurTrack((GlobalsCtx.curTrack = playlist[0]));
       }
     }
   }, [filter]);
@@ -229,9 +223,7 @@ const Player = ({
             return (
               <TagItem
                 key={index}
-                className={
-                  filter.length !== 0 && filter.includes(tag) ? "active" : ""
-                }
+                className={filter.length !== 0 && filter.includes(tag) ? "active" : ""}
                 tag={tag}
                 onClick={tagClickHandler}
               />
@@ -261,30 +253,16 @@ const Player = ({
         <div className={styles.buttons_progress_wrapper}>
           <div className={styles.buttons_wrapper}>
             <ButtonsBox>
-              <LoopCurrent
-                src={looped ? loopCurrentBtn : loopNoneBtn}
-                onClick={loop}
-              />
+              <LoopCurrent src={looped ? loopCurrentBtn : loopNoneBtn} onClick={loop} />
               <Previous src={previousBtn} onClick={previous} />
-              {active ? (
-                <Pause src={pauseBtn} onClick={pause} />
-              ) : (
-                <Play src={playBtn} onClick={play} />
-              )}
+              {active ? <Pause src={pauseBtn} onClick={pause} /> : <Play src={playBtn} onClick={play} />}
               <Next src={nextBtn} onClick={next} />
-              <Shuffle
-                src={shuffled ? shuffleAllBtn : shuffleNoneBtn}
-                onClick={shuffle}
-              />
+              <Shuffle src={shuffled ? shuffleAllBtn : shuffleNoneBtn} onClick={shuffle} />
             </ButtonsBox>
           </div>
 
           <div className={styles.progress_wrapper}>
-            <Time
-              time={`${!time ? "00:00" : fmtMMSS(time)}/${
-                !length ? "00:00" : fmtMMSS(length)
-              }`}
-            />
+            <Time time={`${!time ? "00:00" : fmtMMSS(time)}/${!length ? "00:00" : fmtMMSS(length)}`} />
             <Progress
               value={slider}
               onChange={(e) => {
@@ -313,15 +291,12 @@ const Player = ({
           {trackList
             // .sort((a, b) => (a.title > b.title ? 1 : -1))
             .map((el, index) => {
-              if (
-                filter.length === 0 ||
-                filter.some((filter) => el.tags.includes(filter))
-              ) {
+              if (filter.length === 0 || filter.some((filter) => el.tags.includes(filter))) {
                 if (el.title.toLowerCase().includes(query.toLowerCase())) {
                   playlist.push(index);
                   return (
                     <PlaylistItem
-                      className={PodcastCtx.curTrack === index ? "active" : ""}
+                      className={GlobalsCtx.curTrack === index ? "active" : ""}
                       key={index}
                       data_key={index}
                       title={el.title}
