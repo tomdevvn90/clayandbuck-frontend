@@ -1,15 +1,11 @@
 import * as React from "react";
 
-import {
-  ZypeConfigTab,
-  ZypeVideo,
-  ZypeCategory,
-  ZypeViewVideoResponse,
-} from "./ZypeMedia.types";
+import { ZypeConfigTab, ZypeVideo, ZypeCategory, ZypeViewVideoResponse } from "./ZypeMedia.types";
 import { ZypeTabsSkeleton } from "./ZypeTabsSkeleton.component";
 import { PwsMediaService } from "../service/pws-media.service";
 import { ZypePlayer } from "./ZypePlayer.component";
 import { ZypeTabs } from "./ZypeTabs.component";
+import { getCookie } from "cookies-next";
 // import { ZypeAd } from "./ZypeAd.component";
 
 interface ZypeMediaProps {
@@ -17,7 +13,6 @@ interface ZypeMediaProps {
   episodeSlug: string | null;
   groupSlug: string | null;
   mediaService: PwsMediaService;
-  isAuthenticated: boolean;
   pageSlug: string;
 }
 
@@ -54,40 +49,33 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
       return this.initializeTabs();
     }
 
-    let resp: ZypeViewVideoResponse | undefined =
-      await this.props.mediaService.getVideoBySlug(slug);
+    let resp: ZypeViewVideoResponse | undefined = await this.props.mediaService.getVideoBySlug(slug);
 
     if (!resp || !resp.video) {
       return this.initializeTabs();
     }
 
-    //if (!this.props.isAuthenticated && resp.video.subscriptionRequired) {
-    let isAuthenticated = document.cookie.includes("STYXKEY_ACCESS_TOKEN");
-    // if ( !isAuthenticated && resp.video.subscriptionRequired ) {
-    //     //return window.location.href = '/wp-login.php?redirect_to=' + window.location;
-    //     let loginLinkEl = document.querySelector('a[href="#cnb-login-modal"]');
-    //     if (loginLinkEl instanceof HTMLElement) {
-    //        loginLinkEl.click();
-    //     }
-    //     return;
-    // }
+    let isAuthenticated = getCookie("STYXKEY_ACCESS_TOKEN");
+
+    // Require login before view content
+    if (!isAuthenticated && resp.video.subscriptionRequired) {
+      let loginLinkEl = document.querySelector("button.login-btn");
+      if (loginLinkEl instanceof HTMLElement) {
+        loginLinkEl.click();
+      }
+      return;
+    }
 
     // Show subscription require modal if user not yet subscription
-    let userSubscribed = document.cookie.includes("STYXKEY_USER_SUBSCRIBED");
-    // if (!userSubscribed && isAuthenticated && resp.video.subscriptionRequired) {
-    //   let subsRequireLinkEl = document.getElementsByClassName(
-    //     "cnb-subs-require-md-link"
-    //   )[0];
-    //   if (subsRequireLinkEl instanceof HTMLElement) {
-    //     subsRequireLinkEl.click();
-    //   }
-    //   return;
-    // }
+    let userSubscribed = getCookie("STYXKEY_USER_SUBSCRIBED");
+    if (!userSubscribed && isAuthenticated && resp.video.subscriptionRequired) {
+      let subsModal = document.getElementById("require-subs-modal");
+      subsModal.classList.remove("hide");
+      return;
+    }
 
     // Show subscription reactivate modal if user cancelled subscription
-    let userCancelledSubs = document.cookie.includes(
-      "STYXKEY_USER_CANCELLED_SUBS"
-    );
+    let userCancelledSubs = getCookie("STYXKEY_USER_CANCELLED_SUBS");
     // if (
     //   userCancelledSubs &&
     //   isAuthenticated &&
@@ -104,10 +92,7 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
 
     this.pushVideoToHistory(resp.video, this.props.groupSlug);
 
-    this.setState(
-      { playerApiKey: resp.playerApiKey, curVideo: resp.video },
-      this.initializeTabs
-    );
+    this.setState({ playerApiKey: resp.playerApiKey, curVideo: resp.video }, this.initializeTabs);
   };
 
   initializeTabs = async () => {
@@ -115,9 +100,7 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
 
     this.setState({ loadingTabs: false });
     if (resp) {
-      const activeTabIdx = resp.tabs.findIndex(
-        (tab) => tab.slug === this.props.groupSlug
-      );
+      const activeTabIdx = resp.tabs.findIndex((tab) => tab.slug === this.props.groupSlug);
 
       let curTabVideos: ZypeVideo[] = [];
 
@@ -146,50 +129,39 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
     this.setState({ activeTab });
   };
 
-  setCurrentVideo = (
-    curVideo: ZypeVideo | null,
-    nextVideo: ZypeVideo | null = null
-  ) => {
+  setCurrentVideo = (curVideo: ZypeVideo | null, nextVideo: ZypeVideo | null = null) => {
     if (!curVideo) {
       return console.warn("Can't set curVideo to null");
     }
 
-    // if (!this.props.isAuthenticated && curVideo.subscriptionRequired) {
-    let isAuthenticated = document.cookie.includes("STYXKEY_ACCESS_TOKEN");
-    // if (!isAuthenticated && curVideo.subscriptionRequired) {
-    //   //return window.location.href = '/wp-login.php?redirect_to=' + window.location;
-    //   let loginLinkEl = document.querySelector('a[href="#cnb-login-modal"]');
-    //   if (loginLinkEl instanceof HTMLElement) {
-    //     loginLinkEl.click();
-    //   }
-    //   return;
-    // }
+    let isAuthenticated = getCookie("STYXKEY_ACCESS_TOKEN");
+
+    // Require login before view content
+    if (!isAuthenticated && curVideo.subscriptionRequired) {
+      let loginLinkEl = document.querySelector("button.login-btn");
+      if (loginLinkEl instanceof HTMLElement) {
+        loginLinkEl.click();
+      }
+      return;
+    }
 
     // Show subscription require modal if user not yet subscription
-    let userSubscribed = document.cookie.includes("STYXKEY_USER_SUBSCRIBED");
-    // if (!userSubscribed && isAuthenticated && curVideo.subscriptionRequired) {
-    //   let subsRequireLinkEl = document.getElementsByClassName(
-    //     "cnb-subs-require-md-link"
-    //   )[0];
-    //   if (subsRequireLinkEl instanceof HTMLElement) {
-    //     subsRequireLinkEl.click();
-    //   }
-    //   return;
-    // }
+    let userSubscribed = getCookie("STYXKEY_USER_SUBSCRIBED");
+    if (!userSubscribed && isAuthenticated && curVideo.subscriptionRequired) {
+      let subsModal = document.getElementById("require-subs-modal");
+      subsModal.classList.remove("hide");
+      return;
+    }
 
     // Show subscription reactivate modal if user cancelled subscription
-    let userCancelledSubs = document.cookie.includes(
-      "STYXKEY_USER_CANCELLED_SUBS"
-    );
-    // if (userCancelledSubs && isAuthenticated && curVideo.subscriptionRequired) {
-    //   let subsReactivateLinkEl = document.getElementsByClassName(
-    //     "cnb-subs-reactivate-md-link"
-    //   )[0];
-    //   if (subsReactivateLinkEl instanceof HTMLElement) {
-    //     subsReactivateLinkEl.click();
-    //   }
-    //   return;
-    // }
+    let userCancelledSubs = getCookie("STYXKEY_USER_CANCELLED_SUBS");
+    if (userCancelledSubs && isAuthenticated && curVideo.subscriptionRequired) {
+      let subsReactivateLinkEl = document.getElementsByClassName("cnb-subs-reactivate-md-link")[0];
+      if (subsReactivateLinkEl instanceof HTMLElement) {
+        subsReactivateLinkEl.click();
+      }
+      return;
+    }
 
     this.pushVideoToHistory(curVideo);
     this.setState({ curVideo }, () => this.setNextVideo(nextVideo));
@@ -201,37 +173,29 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
       return console.error("No current video to re-fetch");
     }
 
-    const res = await this.props.mediaService.getVideoBySlug(
-      this.state.curVideo.slug
-    );
+    const res = await this.props.mediaService.getVideoBySlug(this.state.curVideo.slug);
 
-    // if (!this.props.isAuthenticated && res?.video.subscriptionRequired) {
-    let isAuthenticated = document.cookie.includes("STYXKEY_ACCESS_TOKEN");
-    // if (!isAuthenticated && res?.video.subscriptionRequired) {
-    //   //return window.location.href = '/wp-login.php?redirect_to=' + window.location;
-    //   let loginLinkEl = document.querySelector('a[href="#cnb-login-modal"]');
-    //   if (loginLinkEl instanceof HTMLElement) {
-    //     loginLinkEl.click();
-    //   }
-    //   return;
-    // }
+    let isAuthenticated = getCookie("STYXKEY_ACCESS_TOKEN");
+
+    // Require login before view content
+    if (!isAuthenticated && res?.video.subscriptionRequired) {
+      let loginLinkEl = document.querySelector("button.login-btn");
+      if (loginLinkEl instanceof HTMLElement) {
+        loginLinkEl.click();
+      }
+      return;
+    }
 
     // Show subscription require modal if user not yet subscription
-    let userSubscribed = document.cookie.includes("STYXKEY_USER_SUBSCRIBED");
-    // if (!userSubscribed && isAuthenticated && res?.video.subscriptionRequired) {
-    //   let subsRequireLinkEl = document.getElementsByClassName(
-    //     "cnb-subs-require-md-link"
-    //   )[0];
-    //   if (subsRequireLinkEl instanceof HTMLElement) {
-    //     subsRequireLinkEl.click();
-    //   }
-    //   return;
-    // }
+    let userSubscribed = getCookie("STYXKEY_USER_SUBSCRIBED");
+    if (!userSubscribed && isAuthenticated && res?.video.subscriptionRequired) {
+      let subsModal = document.getElementById("require-subs-modal");
+      subsModal.classList.remove("hide");
+      return;
+    }
 
     // Show subscription reactivate modal if user cancelled subscription
-    let userCancelledSubs = document.cookie.includes(
-      "STYXKEY_USER_CANCELLED_SUBS"
-    );
+    let userCancelledSubs = getCookie("STYXKEY_USER_CANCELLED_SUBS");
     // if (
     //   userCancelledSubs &&
     //   isAuthenticated &&
@@ -263,9 +227,7 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
     }
 
     // const res = await this.props.mediaService.getNextVideo(this.state.curVideo.id);
-    const res = await this.props.mediaService.getNextVideo(
-      this.state.curVideo.publishedAt
-    );
+    const res = await this.props.mediaService.getNextVideo(this.state.curVideo.publishedAt);
 
     if (res) {
       return res.video;
@@ -299,11 +261,7 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
   getTabByCategories = (categories: ZypeCategory[]) =>
     this.state.tabs
       ? this.state.tabs.find((tab) =>
-          categories.some(
-            (c) =>
-              !!tab.categories[c.title] &&
-              c.value.some((v) => tab.categories[c.title] === v)
-          )
+          categories.some((c) => !!tab.categories[c.title] && c.value.some((v) => tab.categories[c.title] === v))
         )
       : null;
 
@@ -313,23 +271,15 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
       if (tab) {
         groupSlug = tab.slug;
       } else {
-        groupSlug = this.state.tabs
-          ? this.state.tabs[this.state.activeTab].slug
-          : null;
+        groupSlug = this.state.tabs ? this.state.tabs[this.state.activeTab].slug : null;
       }
     }
 
     if (!groupSlug) {
-      return console.debug(
-        "Can't add video to history - couldn't figure out the tab"
-      );
+      return console.debug("Can't add video to history - couldn't figure out the tab");
     }
 
-    window.history.pushState(
-      { video },
-      video.title,
-      `/${this.props.pageSlug}/${groupSlug}/${video.slug}/`
-    );
+    window.history.pushState({ video }, video.title, `/${this.props.pageSlug}/${groupSlug}/${video.slug}/`);
   };
 
   handleHistoryTravel() {

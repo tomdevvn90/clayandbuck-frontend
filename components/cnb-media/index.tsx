@@ -1,5 +1,6 @@
 import CnbMediaApp from "./CnbMediaApp";
 import { CnbMediaProps } from "./helpers/interfaces";
+import RequireSubsPopup from "./zype/require-subs-popup";
 
 export default function CnbMedia({ slugParams = null }) {
   const groupSlugP = Array.isArray(slugParams) ? slugParams[0] : null;
@@ -9,8 +10,13 @@ export default function CnbMedia({ slugParams = null }) {
     groupSlug: groupSlugP,
     episodeSlug: episodeSlugP,
     pageSlug: "videos",
-    isAuthenticated: false,
   };
 
-  return <CnbMediaApp {...mediaProps} />;
+  return (
+    <>
+      <CnbMediaApp {...mediaProps} />
+
+      <RequireSubsPopup />
+    </>
+  );
 }

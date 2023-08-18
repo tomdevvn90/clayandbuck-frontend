@@ -4,5 +4,4 @@ export interface CnbMediaProps {
   groupSlug: string | null;
   episodeSlug: string | null;
   pageSlug: string;
-  isAuthenticated: boolean;
 }
