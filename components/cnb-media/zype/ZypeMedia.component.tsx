@@ -76,19 +76,11 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
 
     // Show subscription reactivate modal if user cancelled subscription
     let userCancelledSubs = getCookie("STYXKEY_USER_CANCELLED_SUBS");
-    // if (
-    //   userCancelledSubs &&
-    //   isAuthenticated &&
-    //   resp.video.subscriptionRequired
-    // ) {
-    //   let subsReactivateLinkEl = document.getElementsByClassName(
-    //     "cnb-subs-reactivate-md-link"
-    //   )[0];
-    //   if (subsReactivateLinkEl instanceof HTMLElement) {
-    //     subsReactivateLinkEl.click();
-    //   }
-    //   return;
-    // }
+    if (userCancelledSubs && isAuthenticated && resp.video.subscriptionRequired) {
+      let subsModal = document.getElementById("cnb-subs-reactivate-modal");
+      subsModal.classList.remove("hide");
+      return;
+    }
 
     this.pushVideoToHistory(resp.video, this.props.groupSlug);
 
@@ -156,10 +148,8 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
     // Show subscription reactivate modal if user cancelled subscription
     let userCancelledSubs = getCookie("STYXKEY_USER_CANCELLED_SUBS");
     if (userCancelledSubs && isAuthenticated && curVideo.subscriptionRequired) {
-      let subsReactivateLinkEl = document.getElementsByClassName("cnb-subs-reactivate-md-link")[0];
-      if (subsReactivateLinkEl instanceof HTMLElement) {
-        subsReactivateLinkEl.click();
-      }
+      let subsModal = document.getElementById("cnb-subs-reactivate-modal");
+      subsModal.classList.remove("hide");
       return;
     }
 
@@ -196,19 +186,11 @@ export class ZypeMedia extends React.Component<ZypeMediaProps, ZypeMediaState> {
 
     // Show subscription reactivate modal if user cancelled subscription
     let userCancelledSubs = getCookie("STYXKEY_USER_CANCELLED_SUBS");
-    // if (
-    //   userCancelledSubs &&
-    //   isAuthenticated &&
-    //   res?.video.subscriptionRequired
-    // ) {
-    //   let subsReactivateLinkEl = document.getElementsByClassName(
-    //     "cnb-subs-reactivate-md-link"
-    //   )[0];
-    //   if (subsReactivateLinkEl instanceof HTMLElement) {
-    //     subsReactivateLinkEl.click();
-    //   }
-    //   return;
-    // }
+    if (userCancelledSubs && isAuthenticated && res?.video.subscriptionRequired) {
+      let subsModal = document.getElementById("cnb-subs-reactivate-modal");
+      subsModal.classList.remove("hide");
+      return;
+    }
 
     if (res) {
       this.setState({ curVideo: res.video });

@@ -1,5 +1,6 @@
 import CnbMediaApp from "./CnbMediaApp";
 import { CnbMediaProps } from "./helpers/interfaces";
+import RequireActiveSubsPopup from "./zype/require-active-subs-popup";
 import RequireSubsPopup from "./zype/require-subs-popup";
 
 export default function CnbMedia({ slugParams = null }) {
@@ -17,6 +18,7 @@ export default function CnbMedia({ slugParams = null }) {
       <CnbMediaApp {...mediaProps} />
 
       <RequireSubsPopup />
+      <RequireActiveSubsPopup />
     </>
   );
 }

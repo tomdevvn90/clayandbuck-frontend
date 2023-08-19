@@ -505,11 +505,23 @@ $active-tab-background-color: #06203a;
 
     h3 {
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 24px;
       margin-bottom: 12px;
     }
     p {
       margin-bottom: 12px;
+    }
+
+    @media screen and (max-width: 480px) {
+      padding: 40px 24px 24px;
+
+      h3 {
+        font-size: 20px;
+      }
+      p {
+        font-size: 15px;
+        margin-top: 10px;
+      }
     }
   }
   button.btn-submit {

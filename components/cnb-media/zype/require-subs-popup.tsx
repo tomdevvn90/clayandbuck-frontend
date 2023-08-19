@@ -3,7 +3,7 @@ import { GlobalsContext } from "../../../contexts/GlobalsContext";
 import useEscapeKey from "../../../hooks/useEscapeKey";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 
-export default function RequirePopup() {
+export default function RequireSubsPopup() {
   const GlobalsCtx = useContext(GlobalsContext);
   const outSideRef = useRef(null);
 
@@ -23,7 +23,7 @@ export default function RequirePopup() {
   return (
     <div id="require-subs-modal" className="subs-modal hide">
       <div className="modal-wrap" ref={outSideRef}>
-        <h3 className="heading-title">You don't have a valid subscription</h3>
+        <h3>You don't have a valid subscription</h3>
         <p>Please subscribe to access C&B VIP content</p>
         <button className="btn-submit" onClick={handleSubmit}>
           User Preferences
