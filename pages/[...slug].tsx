@@ -19,9 +19,7 @@ export default function Page({ pageData, cnbMediaData }) {
 
   const { headerMenu, footerMenu } = pageData;
   const { templateName } = page?.template ?? "";
-  const pageClass = templateName
-    ? templateName.toLowerCase().replaceAll(" ", "-")
-    : "";
+  const pageClass = templateName ? templateName.toLowerCase().replaceAll(" ", "-") : "";
 
   const { seo } = page;
   const fullHead = ParseHtmlToReact(seo.fullHead);
@@ -50,9 +48,7 @@ export default function Page({ pageData, cnbMediaData }) {
             case "special-offer-template":
               return <SpecialOffer data={page} />;
             default:
-              return (
-                <Container>{ParseHtmlToReact(page?.content ?? {})}</Container>
-              );
+              return <Container>{ParseHtmlToReact(page?.content ?? {})}</Container>;
           }
         })()}
       </div>

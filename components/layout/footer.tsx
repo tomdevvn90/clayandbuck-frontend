@@ -4,8 +4,8 @@ import MenuItem from "../menu-item";
 import dynamic from "next/dynamic";
 
 // import LeaderBoardBottomAds from '../ads/leaderboard-bottom-ads'
-const LeaderBoardBottomAds = dynamic( () => import("../ads/leaderboard-bottom-ads"), {
-    ssr: false,
+const LeaderBoardBottomAds = dynamic(() => import("../ads/leaderboard-bottom-ads"), {
+  ssr: false,
 });
 
 export default function Footer({ footerMenu }) {
@@ -25,9 +25,9 @@ export default function Footer({ footerMenu }) {
 
           <section className="copy-right-ss">
             <p>
-              The Clay Travis &amp; Buck Sexton Show - Copyright ©{" "}
-              <span className="year_copyright">{currentYear}</span> -{" "}
-              <a href="https://www.premierenetworks.com/" target="_blank" rel="noopener" >
+              The Clay Travis &amp; Buck Sexton Show - Copyright © <span className="year_copyright">{currentYear}</span>{" "}
+              -{" "}
+              <a href="https://www.premierenetworks.com/" target="_blank" rel="noopener">
                 Premiere Networks, Inc
               </a>
             </p>
@@ -35,10 +35,7 @@ export default function Footer({ footerMenu }) {
 
           <section className="bottom-menu-ss">
             <ul className="menu">
-              {menuList &&
-                menuList.map(({ node }, index) => (
-                  <MenuItem key={index} item={node}></MenuItem>
-                ))}
+              {menuList && menuList.map(({ node }, index) => <MenuItem key={index} item={node}></MenuItem>)}
             </ul>
           </section>
         </Container>

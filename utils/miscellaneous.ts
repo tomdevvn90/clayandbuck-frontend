@@ -1,4 +1,4 @@
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 /**
  * Sanitize markup or text when used inside dangerouslysetInnerHTML
@@ -7,8 +7,8 @@ import DOMPurify from 'dompurify';
  *
  * @return {string} Sanitized string
  */
-export const sanitize = ( content ) => {
-	return process.browser ? DOMPurify.sanitize( content ) : content;
+export const sanitize = (content) => {
+  return process.browser ? DOMPurify.sanitize(content) : content;
 };
 
 /**
@@ -19,6 +19,6 @@ export const sanitize = ( content ) => {
  *
  * @returns {string} Singular or plural from of text.
  */
-export const getSingularOrPluralText = ( count, text ) => {
+export const getSingularOrPluralText = (count, text) => {
   return 1 < count ? `${text}s` : text;
 };

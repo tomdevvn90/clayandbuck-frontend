@@ -16,9 +16,7 @@ export default function SignUpPage({ pageData }) {
 
   const { headerMenu, footerMenu } = pageData;
   const { templateName } = page?.template ?? "";
-  const pageClass = templateName
-    ? templateName.toLowerCase().replace(" ", "-")
-    : "";
+  const pageClass = templateName ? templateName.toLowerCase().replace(" ", "-") : "";
 
   // const { seo } = page
   // const fullHead = ParseHtmlToReact(seo.fullHead);

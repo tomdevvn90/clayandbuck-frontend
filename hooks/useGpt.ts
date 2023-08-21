@@ -5,9 +5,7 @@ import { SITE_URL } from "../lib/constants";
 export default function useGpt(id: string) {
   const devSite = !SITE_URL.includes("clayandbuck.com");
 
-  const status = useScript(
-    "https://securepubads.g.doubleclick.net/tag/js/gpt.js"
-  );
+  const status = useScript("https://securepubads.g.doubleclick.net/tag/js/gpt.js");
   const [intervalCount, setIntervalCount] = useState(0);
 
   const initAds = () => {
@@ -182,10 +180,7 @@ export default function useGpt(id: string) {
           .setTargeting("prntype", ["web"])
           .setTargeting("env", ["dev"]);
       } else {
-        window.googletag
-          .pubads()
-          .setTargeting("prngenre", ["conservative_talk"])
-          .setTargeting("prntype", ["web"]);
+        window.googletag.pubads().setTargeting("prngenre", ["conservative_talk"]).setTargeting("prntype", ["web"]);
       }
 
       window.googletag.pubads().collapseEmptyDivs();

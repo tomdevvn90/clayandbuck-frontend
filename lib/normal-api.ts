@@ -148,3 +148,10 @@ export async function cancelSubscriptionPlan(accessToken: string, subsId: string
 export async function reactiveSubscriptionPlan(accessToken: string, subsId: string) {
   return await fetchAPIPost(`/v2/subscriber/reactive-subscription/`, { accessToken, subsId });
 }
+
+/**
+ * Get Plans Info
+ */
+export async function getPlansInfo() {
+  return await fetchAPINormal(`/v2/subscriber/get-plans/`);
+}

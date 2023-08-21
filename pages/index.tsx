@@ -16,8 +16,7 @@ const Sidebar = dynamic(() => import("../components/sidebar"), {
 });
 
 export default function Index({ homePageData, pageData }) {
-  const { featuredPosts, topStories, excludeTopStories, quoteSliders } =
-    homePageData;
+  const { featuredPosts, topStories, excludeTopStories, quoteSliders } = homePageData;
   const { headerMenu, footerMenu } = pageData;
 
   const page = pageData?.pageBy ?? {};
@@ -42,11 +41,7 @@ export default function Index({ homePageData, pageData }) {
           <PlayButtonList />
           {featuredPosts && <FeaturedPosts ftPosts={featuredPosts} />}
           <div className="main-content">
-            <TopStories
-              tpStories={topStories}
-              exTopStories={excludeTopStories}
-              qtSliders={quoteSliders}
-            />
+            <TopStories tpStories={topStories} exTopStories={excludeTopStories} qtSliders={quoteSliders} />
             <Sidebar />
           </div>
         </Container>

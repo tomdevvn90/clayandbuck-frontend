@@ -12,21 +12,11 @@ export const ParseHtmlToReact = (htmlContent) => {
     {
       // Custom <a /> processing
       shouldProcessNode: (node) => {
-        return (
-          node.name === "a" &&
-          node.attribs.href &&
-          !isExternalLink(node.attribs.href) &&
-          !node.attribs.target
-        );
+        return node.name === "a" && node.attribs.href && !isExternalLink(node.attribs.href) && !node.attribs.target;
       },
       processNode: (node, children, index) => {
         return (
-          <Link
-            key={index}
-            href={node.attribs.href}
-            className={node.attribs.class}
-            target={node.attribs.target}
-          >
+          <Link key={index} href={node.attribs.href} className={node.attribs.class} target={node.attribs.target}>
             {children[0]}
           </Link>
         );
@@ -44,8 +34,7 @@ export const ParseHtmlToReact = (htmlContent) => {
       shouldProcessNode: (node) => {
         return true;
       },
-      processNode: new HtmlToReact.ProcessNodeDefinitions(React)
-        .processDefaultNode,
+      processNode: new HtmlToReact.ProcessNodeDefinitions(React).processDefaultNode,
     },
   ];
 

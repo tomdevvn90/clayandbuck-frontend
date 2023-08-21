@@ -23,6 +23,16 @@ export const decodeLink = (url: string) => {
 };
 
 /**
+ * Get plan interval text
+ */
+export const cnbGetPlanIntervalText = (interval: string) => {
+  if (interval.toLowerCase() == "annual") return "year";
+  if (interval.toLowerCase() == "monthly") return "month";
+
+  return interval.toLowerCase();
+};
+
+/**
  * Set Cookie Login Info
  */
 export const setCookieLoginInfo = (

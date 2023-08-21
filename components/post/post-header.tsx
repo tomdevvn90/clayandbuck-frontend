@@ -1,8 +1,8 @@
 // import Avatar from '../avatar'
-import Date from './date'
-import CoverImage from './cover-image'
-import Categories from '../categories'
-import PostTitle from './post-title'
+import Date from "./date";
+import CoverImage from "./cover-image";
+import Categories from "../categories";
+import PostTitle from "./post-title";
 
 export default function PostHeader({
   title,
@@ -14,7 +14,7 @@ export default function PostHeader({
   author,
   categories,
 }) {
-  const ftClass = (featuredVideosPost) ? 'featured-image has-video' : 'featured-image'
+  const ftClass = featuredVideosPost ? "featured-image has-video" : "featured-image";
   return (
     <>
       <PostTitle>{title}</PostTitle>
@@ -24,10 +24,13 @@ export default function PostHeader({
       </div> */}
 
       <div className={ftClass}>
-        <CoverImage title={title} coverImage={coverImage} 
-                    featureImageUrl={featureImageUrl}
-                    featureImageTab={featureImageTab}
-                    ftVideosPost={featuredVideosPost} />
+        <CoverImage
+          title={title}
+          coverImage={coverImage}
+          featureImageUrl={featureImageUrl}
+          featureImageTab={featureImageTab}
+          ftVideosPost={featuredVideosPost}
+        />
       </div>
 
       <div className="post-meta">
@@ -39,9 +42,8 @@ export default function PostHeader({
           <Date dateString={date} />
 
           {/* <Categories categories={categories} /> */}
-          
         </div>
       </div>
     </>
-  )
+  );
 }

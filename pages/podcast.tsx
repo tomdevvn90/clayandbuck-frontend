@@ -49,7 +49,6 @@ export default function VipPodcastPage({ pageData }) {
     userSubsCk,
     userCanSubsCk,
   };
-
   const noRequireSubs = !userEmailCk || !userPassCk || !userSubsCk || userCanSubsCk ? false : true;
 
   return (

@@ -21,18 +21,18 @@ export const fraHeaderFooter = `headerMenu: menuItems(where: {location: HEADER_M
         target
       }
     }
-  }`
+  }`;
 
-  export const fraAuthorFields = `fragment AuthorFields on User {
+export const fraAuthorFields = `fragment AuthorFields on User {
     name
     firstName
     lastName
     avatar {
       url
     }
-  }`
+  }`;
 
-  export const fraPostFields = `fragment PostFields on Post {
+export const fraPostFields = `fragment PostFields on Post {
     title
     excerpt
     slug
@@ -61,4 +61,4 @@ export const fraHeaderFooter = `headerMenu: menuItems(where: {location: HEADER_M
         }
       }
     }
-  }`
+  }`;
