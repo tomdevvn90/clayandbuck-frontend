@@ -61,7 +61,7 @@ export default function ChangeEmailForm() {
   return (
     <div className="change-email-form">
       <div className="change-row">
-        <h3>Change Email</h3>
+        <h2>Change Email</h2>
 
         {isSuccess ? (
           <p className="success-msg">

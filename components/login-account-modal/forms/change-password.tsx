@@ -80,7 +80,7 @@ export default function ChangePasswordForm() {
   return (
     <div className="change-password-form">
       <div className="change-row">
-        <h3>Change Password</h3>
+        <h2>Change Password</h2>
         {isSuccess ? (
           <p className="success-msg">Your account password has been successfully updated.</p>
         ) : (
