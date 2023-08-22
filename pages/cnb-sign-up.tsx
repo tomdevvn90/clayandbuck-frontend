@@ -7,8 +7,9 @@ import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
 import SignUp from "../components/sign-up";
+import { getPlansInfo } from "../lib/normal-api";
 
-export default function SignUpPage({ pageData }) {
+export default function SignUpPage({ pageData, plansInfo }) {
   const page = pageData?.pageBy ?? {};
   const router = useRouter();
   // if (!router.isFallback && !page?.slug) {
@@ -56,7 +57,7 @@ export default function SignUpPage({ pageData }) {
       </Head>
       <div className={`main-wrap page ${pageClass}`}>
         <Container>
-          <SignUp gift={false} />
+          <SignUp gift={false} plansInfo={plansInfo} />
         </Container>
       </div>
     </Layout>
@@ -67,7 +68,10 @@ export default function SignUpPage({ pageData }) {
 export async function getServerSideProps() {
   const pageData = await getPageData("/cnb-sign-up");
 
+  const plansInfoRes = await getPlansInfo();
+  const plansInfo = plansInfoRes.success ? plansInfoRes.plansInfo : [];
+
   return {
-    props: { pageData },
+    props: { pageData, plansInfo },
   };
 }

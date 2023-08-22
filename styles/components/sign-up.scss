@@ -88,5 +88,86 @@
       color: #b2922c !important;
       text-decoration: none;
     }
+    .form-group label,
+    .form-group-label {
+      font-family: $secondary-font;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 16px;
+      color: #27292d;
+      position: relative;
+      width: 100%;
+    }
+    .form-group-label {
+      margin-top: 8px;
+    }
+    .plan-radio {
+      input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+      }
+      .form-label {
+        background: #ffffff;
+        border: 2px solid #a9afb2;
+        box-sizing: border-box;
+        border-radius: 6px;
+        height: 64px;
+        font-size: 14px;
+        margin-bottom: 14px;
+        display: block;
+        width: 100%;
+        padding-top: 12px;
+        cursor: pointer;
+
+        &:before {
+          content: "";
+          background: #fff;
+          border: 2px solid #dadada;
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          position: absolute;
+          left: 14px;
+          top: 18px;
+          margin-right: 10px;
+          vertical-align: top;
+          text-align: center;
+          transition: all 250ms ease;
+          border-radius: 100%;
+        }
+      }
+      label {
+        position: relative;
+
+        strong {
+          display: block;
+          font-family: $secondary-font;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 16px;
+          color: #000000;
+          padding-left: 44px;
+        }
+        span {
+          padding-left: 44px;
+          display: block;
+          font-family: $secondary-font;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 16px;
+          color: #3f4447;
+          padding-top: 4px;
+        }
+      }
+      input[type="radio"]:checked + .form-label:before,
+      .form-label.checked:before {
+        background-color: #b2922c;
+        box-shadow: inset 0 0 0 3px #f4f4f4;
+        border: 2px solid #b2922c;
+      }
+      input[type="radio"]:checked + .form-label {
+        border: 2px solid #b2922c;
+      }
+    }
   }
 }

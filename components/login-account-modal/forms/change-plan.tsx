@@ -132,7 +132,7 @@ export default function ChangePlanForm({ accountInfo, hideCanReSubs, showUpdateB
                   const intervalCount = plan.interval_count;
                   const sText = intervalCount > 1 ? "s" : "";
                   const planInterval = cnbGetPlanIntervalText(plan.interval);
-                  const intervalText = `${intervalCount}  ${planInterval}${sText}`;
+                  const intervalText = `${intervalCount} ${planInterval}${sText}`;
                   const ckDisable = isCancelSubs || (isYearActive && planId != plan._id) ? true : false;
                   const ckChecked = planId == plan._id ? "checked" : "";
                   const wrapClass = ckDisable ? "plan-radio disabled" : "plan-radio";

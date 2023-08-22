@@ -2,8 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import LogoImg from "../../public/images/cb-vip-247.png";
 import TwoManImg from "../../public/images/two-man.png";
+import { cnbGetPlanIntervalText } from "../../utils/global-functions";
 
-export default function SignUp({ gift }) {
+export default function SignUp({ gift, plansInfo }) {
+  console.log(plansInfo);
   return (
     <div className="sign-up-wrap">
       <div className="subscribe-left">
@@ -90,22 +92,36 @@ export default function SignUp({ gift }) {
 								 <?php }
 								 } ?> */}
 
-              {/* <?php
-								 foreach (CNB_PLAN_INFO_LIST as $key => $plan) {
-										 if ( $plan['active'] && strpos($plan['recurly_code'], 'gift') === false ) {
-												 $s_text = ($plan['interval_count'] > 1) ? 's' : '';
-												 $plan_interval = cnb_get_plan_interval_text($plan['interval']);
-												 $interval_text = $plan['interval_count'] . ' ' . $plan_interval . $s_text;
-											 ?>
-												 <div class="plan-radio">
-													 <input class="form-check-input" type="radio" name="cnb_plan_id" id="cnb_plan_id_<?php echo $key+1; ?>" value="<?php echo $plan['_id']; ?>">
-													 <label class="form-check-label label" for="cnb_plan_id_<?php echo $key+1; ?>">
-														 <strong><?php echo $interval_text; ?> for $<?php echo $plan['amount']; ?></strong>
-														 <span>Auto-renews after <?php echo $interval_text; ?></span>
-													 </label>
-												 </div>
-								 <?php }
-								 } ?> */}
+              {plansInfo.length > 0 &&
+                plansInfo.map((plan, index) => {
+                  if (plan.active && plan.recurly_code.includes("gift") === false) {
+                    const intervalCount = plan.interval_count;
+                    const sText = intervalCount > 1 ? "s" : "";
+                    const planInterval = cnbGetPlanIntervalText(plan.interval);
+                    const intervalText = `${intervalCount} ${planInterval}${sText}`;
+
+                    return (
+                      <div key={index} className="plan-radio">
+                        <input
+                          className="form-checkbox"
+                          type="radio"
+                          name="cnb_plan_id"
+                          id={`cnb_plan_id_${index + 1}`}
+                          value={plan._id}
+                          // onChange={(e) => handlePlanChange(e, intervalText, plan.amount)}
+                        />
+                        <label className="form-label" htmlFor={`cnb_plan_id_${index + 1}`}>
+                          <strong>
+                            {intervalText} for ${plan.amount}
+                          </strong>
+                          <span>Auto-renews after {intervalText}</span>
+                        </label>
+                      </div>
+                    );
+                  } else {
+                    return "";
+                  }
+                })}
 
               <p className="error-msg"></p>
               <div className="btn-set-inline">
