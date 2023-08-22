@@ -27,9 +27,7 @@ export default function CancelSubscription({ refAccInfo, subsId }) {
 
     if (cancelSubsData.success) {
       setACookieF("STYXKEY_USER_CANCELLED_SUBS", "cancelled");
-
       setIsSuccess(true);
-      setIsLoading(false);
       refAccInfo();
     } else {
       if (cancelSubsData.error_message) {
@@ -37,8 +35,8 @@ export default function CancelSubscription({ refAccInfo, subsId }) {
       } else {
         setErrorMessages("Something went wrong. Please try again!");
       }
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   const btnClass = isLoading ? "btn-submit loading" : "btn-submit";

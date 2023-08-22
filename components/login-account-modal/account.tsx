@@ -116,7 +116,12 @@ export default function AccountModal() {
       )}
 
       {isUpdateSubscription && !isLoading && (
-        <UpdateSubscription refreshAccInfo={handleRefreshAccInfo} accountInfo={accountInfo} showAccInfo={showAccInfo} />
+        <UpdateSubscription
+          refreshAccInfo={handleRefreshAccInfo}
+          accountInfo={accountInfo}
+          showAccInfo={showAccInfo}
+          showUpdateBillingInfo={showUpdateBillingInfo}
+        />
       )}
     </div>
   );

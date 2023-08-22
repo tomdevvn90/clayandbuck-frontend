@@ -5,13 +5,12 @@ import { getCookie } from "cookies-next";
 import { reactiveSubscriptionPlan } from "../../../lib/normal-api";
 import { deleteACookieF } from "../../../utils/global-functions";
 
-export default function UpdateSubscription({ refreshAccInfo, accountInfo, showAccInfo }) {
+export default function UpdateSubscription({ refreshAccInfo, accountInfo, showAccInfo, showUpdateBillingInfo }) {
   const [showCancelSubs, setShowCancelSubs] = useState(false);
+  const [showCanReSubs, setShowCanReSubs] = useState(true);
   const [isReactiveLoading, setIsReactiveLoading] = useState(false);
   const [isReactiveSuccess, SetIsReactiveSuccess] = useState(false);
   const [reactiveErrorMessages, setReactiveErrorMessages] = useState("");
-
-  // console.log(accountInfo);
 
   const subscriptions = accountInfo.subscription_plans[0];
   const subsId = subscriptions._id;
@@ -33,7 +32,6 @@ export default function UpdateSubscription({ refreshAccInfo, accountInfo, showAc
     if (reactiveSubsData.success) {
       deleteACookieF("STYXKEY_USER_CANCELLED_SUBS");
       SetIsReactiveSuccess(true);
-      setIsReactiveLoading(false);
       refreshAccInfo();
     } else {
       if (reactiveSubsData.error_message) {
@@ -41,8 +39,8 @@ export default function UpdateSubscription({ refreshAccInfo, accountInfo, showAc
       } else {
         setReactiveErrorMessages("Something went wrong. Please try again!");
       }
-      setIsReactiveLoading(false);
     }
+    setIsReactiveLoading(false);
   };
 
   const reactiveBtnClass = isReactiveLoading ? "btn-editable loading" : "btn-editable";
@@ -59,47 +57,53 @@ export default function UpdateSubscription({ refreshAccInfo, accountInfo, showAc
           Back to Account Settings
         </a>
       </div>
+
       {!showCancelSubs && (
         <>
           <div className="change-plan-form">
-            <ChangePlanForm accountInfo={accountInfo} />
+            <ChangePlanForm
+              accountInfo={accountInfo}
+              hideCanReSubs={() => setShowCanReSubs(false)}
+              showUpdateBillingInfo={showUpdateBillingInfo}
+            />
           </div>
 
-          <div className="active-cancel-subs">
-            {subscriptions.cancel_at_period_end || isReactiveSuccess ? (
-              <>
-                {!isReactiveSuccess && (
-                  <button className={reactiveBtnClass} onClick={handleReactiveSubs}>
-                    {isReactiveLoading ? <span className="cnb-spinner-loading"></span> : <span>Reactivate</span>}
+          {showCanReSubs && (
+            <div className="active-cancel-subs">
+              {subscriptions.cancel_at_period_end || isReactiveSuccess ? (
+                <>
+                  {!isReactiveSuccess && (
+                    <button className={reactiveBtnClass} onClick={handleReactiveSubs}>
+                      {isReactiveLoading ? <span className="cnb-spinner-loading"></span> : <span>Reactivate</span>}
+                    </button>
+                  )}
+                  <h2>Reactivate Subscription</h2>
+
+                  {reactiveErrorMessages && <p className="error-msg">{reactiveErrorMessages}</p>}
+                  {isReactiveSuccess ? (
+                    <p className="success-msg">Your account has been successfully reactivated.</p>
+                  ) : (
+                    <p>
+                      Re-subscribing allows you to access C&B VIP after the current billing cycle. Your subscription
+                      will be set to auto-renew.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <>
+                  <button className="btn-editable" onClick={() => setShowCancelSubs(true)}>
+                    Cancel
                   </button>
-                )}
-                <h3>Reactivate Subscription</h3>
-
-                {reactiveErrorMessages && <p className="error-msg">{reactiveErrorMessages}</p>}
-
-                {isReactiveSuccess ? (
-                  <p className="success-msg">Your account has been successfully reactivated.</p>
-                ) : (
+                  <h2>Cancel Subscription</h2>
                   <p>
-                    Re-subscribing allows you to access C&B VIP after the current billing cycle. Your subscription will
-                    be set to auto-renew.
+                    Canceling your subscription allows you to access C&B VIP features through the end of your current
+                    billing cycle. After that, you won't be charged again, but you also won't be able to access C&B VIP
+                    features.
                   </p>
-                )}
-              </>
-            ) : (
-              <>
-                <button className="btn-editable" onClick={() => setShowCancelSubs(true)}>
-                  Cancel
-                </button>
-                <h3>Cancel Subscription</h3>
-                <p>
-                  Canceling your subscription allows you to access C&B VIP features through the end of your current
-                  billing cycle. After that, you won't be charged again, but you also won't be able to access C&B VIP
-                  features.
-                </p>
-              </>
-            )}
-          </div>
+                </>
+              )}
+            </div>
+          )}
         </>
       )}
 

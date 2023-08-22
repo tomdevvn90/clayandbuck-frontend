@@ -1,22 +1,28 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getPlansInfo } from "../../../lib/normal-api";
+import { changePlanSubs, getPlansInfo } from "../../../lib/normal-api";
 import { cnbGetPlanIntervalText } from "../../../utils/global-functions";
+import { getCookie } from "cookies-next";
 
-export default function ChangePlanForm({ accountInfo }) {
+export default function ChangePlanForm({ accountInfo, hideCanReSubs, showUpdateBillingInfo }) {
   const [plansInfo, setPlansInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showConfirmStep, setShowConfirmStep] = useState(false);
   const [activeConfirmBtn, setActiveConfirmBtn] = useState(false);
+  const [crIntervalTimeText, setCrIntervalTimeText] = useState("");
+  const [crIntervalPriceText, setCrIntervalPriceText] = useState("");
+  const [planSelected, setPlanSelected] = useState("");
+  const [errorMessages, setErrorMessages] = useState("");
+  const [isChangePlanLoading, setIsChangePlanLoading] = useState(false);
+  const [isChangePlanSuccess, setIsChangePlanSuccess] = useState(false);
 
-  let country = "";
   let billingName = "";
   let billingAddress = "";
   let paymentMethod = "";
 
   const subscriptions = accountInfo.subscription_plans[0];
   const subsId = subscriptions._id;
-  const planId = "624c73c4f97fc70001dc2c74"; //subscriptions.plan_id;
+  const planId = subscriptions.plan_id; //"624c73c4f97fc70001dc2c74"; //
   const subsInterval = subscriptions.interval;
 
   const billingInfo = accountInfo.billing_info;
@@ -32,9 +38,8 @@ export default function ChangePlanForm({ accountInfo }) {
     if (paymentMeth.cardType) {
       paymentMethod = `${paymentMeth.cardType} ending ${paymentMeth.lastFour}`;
     }
-    country = billingAddr.country;
   }
-  const isYearActive = false; //subsInterval == "year" || subsInterval.toLowerCase() == "annual" ? true : false;
+  const isYearActive = subsInterval == "year" || subsInterval.toLowerCase() == "annual" ? true : false;
   const isCancelSubs = subscriptions.cancel_at_period_end ? true : false;
 
   useEffect(() => {
@@ -49,23 +54,50 @@ export default function ChangePlanForm({ accountInfo }) {
     return () => {};
   }, []);
 
-  let sText = "",
-    planInterval = "",
-    intervalText = "",
-    ckChecked = "",
-    wrapClass = "",
-    labelClass = "";
-  let ckDisable = false;
-
-  const handlePlanChange = (e) => {
+  const handlePlanChange = (e, intervalTime, intervalPrice) => {
     if (e.target.value != planId) {
       setActiveConfirmBtn(true);
+      setPlanSelected(e.target.value);
+      setCrIntervalTimeText(intervalTime);
+      setCrIntervalPriceText(`$${intervalPrice}`);
     } else {
       setActiveConfirmBtn(false);
     }
   };
 
-  const handleSubmit = () => {};
+  const handleShowConfirmStep = () => {
+    hideCanReSubs();
+    setShowConfirmStep(true);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsChangePlanSuccess(false);
+    setErrorMessages("");
+
+    const accessToken = getCookie("STYXKEY_ACCESS_TOKEN").toString();
+
+    if (!subsId || !accessToken || !planSelected) {
+      setErrorMessages("Something went wrong. Please reload the page and try again");
+      return false;
+    }
+
+    setIsChangePlanLoading(true);
+
+    const changePlanData = await changePlanSubs(accessToken, planSelected, subsId);
+    // console.log(cancelSubsData);
+
+    if (changePlanData.success) {
+      setIsChangePlanSuccess(true);
+    } else {
+      if (changePlanData.error_message) {
+        setErrorMessages(changePlanData.error_message);
+      } else {
+        setErrorMessages("Something went wrong. Please try again!");
+      }
+    }
+    setIsChangePlanLoading(false);
+  };
 
   if (isLoading) {
     return (
@@ -79,6 +111,7 @@ export default function ChangePlanForm({ accountInfo }) {
     return <p className="error-msg big-error-msg">Something went wrong. Please reload page and try again!</p>;
   }
 
+  const btnClass = isChangePlanLoading ? "btn-submit loading" : "btn-submit";
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -95,16 +128,15 @@ export default function ChangePlanForm({ accountInfo }) {
 
             {plansInfo.length > 0 &&
               plansInfo.map((plan, index) => {
-                let intervalCount = plan.interval_count;
-
                 if (plan.active && plan.recurly_code.includes("gift") === false) {
-                  sText = intervalCount > 1 ? "s" : "";
-                  planInterval = cnbGetPlanIntervalText(plan.interval);
-                  intervalText = `${intervalCount}  ${planInterval}${sText}`;
-                  ckDisable = isCancelSubs || (isYearActive && planId != plan._id) ? true : false;
-                  ckChecked = planId == plan._id ? "checked" : "";
-                  wrapClass = ckDisable ? "plan-radio disabled" : "plan-radio";
-                  labelClass = isYearActive ? `form-label ${ckChecked}` : "form-label";
+                  const intervalCount = plan.interval_count;
+                  const sText = intervalCount > 1 ? "s" : "";
+                  const planInterval = cnbGetPlanIntervalText(plan.interval);
+                  const intervalText = `${intervalCount}  ${planInterval}${sText}`;
+                  const ckDisable = isCancelSubs || (isYearActive && planId != plan._id) ? true : false;
+                  const ckChecked = planId == plan._id ? "checked" : "";
+                  const wrapClass = ckDisable ? "plan-radio disabled" : "plan-radio";
+                  const labelClass = isYearActive ? `form-label ${ckChecked}` : "form-label";
 
                   return (
                     <div key={index} className={wrapClass}>
@@ -115,7 +147,7 @@ export default function ChangePlanForm({ accountInfo }) {
                           name="cnb_plan_id"
                           id={`cnb_plan_id_${index + 1}`}
                           value={plan._id}
-                          onChange={(e) => handlePlanChange(e)}
+                          onChange={(e) => handlePlanChange(e, intervalText, plan.amount)}
                           defaultChecked={Boolean(ckChecked)}
                         />
                       )}
@@ -128,14 +160,12 @@ export default function ChangePlanForm({ accountInfo }) {
                     </div>
                   );
                 } else {
-                  return <></>;
+                  return "";
                 }
               })}
 
-            {/* <input type="hidden" name="cnb-subs-id" value={subsId} /> */}
-
             {activeConfirmBtn ? (
-              <div className="btn" onClick={() => setShowConfirmStep(true)}>
+              <div className="btn" onClick={handleShowConfirmStep}>
                 Upgrade
               </div>
             ) : (
@@ -148,68 +178,70 @@ export default function ChangePlanForm({ accountInfo }) {
 
         {showConfirmStep && (
           <div className="cnb-confirm-plan-step">
-            {/* // <?php
-                // $interval_time_text = $interval_price_text = "";
-                // foreach (CNB_PLAN_INFO_LIST as $key => $plan) {
-                //     if ( $plan['active'] && strpos($plan['recurly_code'], 'gift') === false ) {
-                //         $s_text = ($plan['interval_count'] > 1) ? 's' : '';
-                //         $plan_interval = cnb_get_plan_interval_text($plan['interval']);
-                //         $interval_text = $plan['interval_count'] . ' ' . $plan_interval . $s_text;
-                //         $interval_time_text .= '<span className="cnb-plan-item plan-id-'.$plan['_id'].'">'.$interval_text.'</span>';
-                //         $interval_price_text .= '<span className="cnb-plan-item plan-id-'.$plan['_id'].'">$'.$plan['amount'].'</span>';
-                //     }
-                // } ?> */}
             <div className="change-row plan-confirm">
-              <h2>Change to interval_time_text Plan</h2>
+              <h2>Change to {crIntervalTimeText} Plan</h2>
             </div>
-            <div className="change-plan-error change-text account-error-text">
-              <p></p>
-            </div>
-            <div className="login-billing cancel-subs">
-              <button id="cnb-edit-billing" className="btn btn-editable">
-                Edit
-              </button>
-              <h2>Billing Information</h2>
-              <p>
-                <strong>Name: </strong>
-                {billingName}
+
+            {errorMessages && <p className="error-msg">{errorMessages}</p>}
+
+            {isChangePlanSuccess ? (
+              <p className="success-msg">
+                Your subscription has been successfully changed. It may take a few minutes for your account to reflect
+                the updates.
               </p>
-              <p>
-                <strong>Address: </strong>
-                {billingAddress}
-              </p>
-              <p>
-                <strong>Payment Method: </strong>
-                {paymentMethod}
-              </p>
-            </div>
-            <div className="login-billing cancel-subs">
-              <h2>What Happens Next:</h2>
-              <ul>
-                <li>Your new interval_time_text plan starts today.</li>
-                <li>You’ll be charged interval_price_text (auto renews each interval_time_text).</li>
-                <li>We’ll apply the remainder of your current bill to your new plan.</li>
-              </ul>
-            </div>
-            <div className="declaimer">
-              <p>
-                Auto renewal means your subscription will be automatically renewed using the credit card you signed up
-                with, at the same rate, and term. You will receive an e-mail notification from C&B VIP prior to your
-                expiration date. For C&B VIP subscribers who have selected a one-year term, an auto-renewal notice will
-                be sent at least 30 days prior to the expiration date, at which point you will be automatically charged
-                US interval_price_text every interval_time_text until you cancel. You will be notified prior to your
-                automatic renewal if subscription prices change. Of course, you may cancel your subscription any time by
-                sending an e-mail to: help@clayandbuck.com. Sorry, partial months cannot be refunded
-              </p>{" "}
-              <p>
-                By subscribing you agree to Automatic Renewal as described above, our{" "}
-                <Link href="/terms-conditions/">Terms of Use</Link> and{" "}
-                <Link href="/privacy-policy/">Privacy Policy.</Link>{" "}
-              </p>
-            </div>
-            <div className="btn-set-inline">
-              <button className="btn-submit">Confirm Change</button>
-            </div>
+            ) : (
+              <>
+                <div className="row-info">
+                  <div className="btn-editable" onClick={showUpdateBillingInfo}>
+                    Edit
+                  </div>
+                  <h3>Billing Information</h3>
+                  <p>
+                    <strong>Name: </strong>
+                    {billingName}
+                  </p>
+                  <p>
+                    <strong>Address: </strong>
+                    {billingAddress}
+                  </p>
+                  <p>
+                    <strong>Payment Method: </strong>
+                    {paymentMethod}
+                  </p>
+                </div>
+                <div className="row-info">
+                  <h3>What Happens Next:</h3>
+                  <ul>
+                    <li>Your new {crIntervalTimeText} plan starts today.</li>
+                    <li>
+                      You’ll be charged {crIntervalPriceText} (auto renews each {crIntervalTimeText}).
+                    </li>
+                    <li>We’ll apply the remainder of your current bill to your new plan.</li>
+                  </ul>
+                </div>
+                <div className="declaimer">
+                  <p>
+                    Auto renewal means your subscription will be automatically renewed using the credit card you signed
+                    up with, at the same rate, and term. You will receive an e-mail notification from C&B VIP prior to
+                    your expiration date. For C&B VIP subscribers who have selected a one-year term, an auto-renewal
+                    notice will be sent at least 30 days prior to the expiration date, at which point you will be
+                    automatically charged US {crIntervalPriceText} every {crIntervalTimeText} until you cancel. You will
+                    be notified prior to your automatic renewal if subscription prices change. Of course, you may cancel
+                    your subscription any time by sending an e-mail to: help@clayandbuck.com. Sorry, partial months
+                    cannot be refunded
+                  </p>{" "}
+                  <p>
+                    By subscribing you agree to Automatic Renewal as described above, our{" "}
+                    <Link href="/terms-conditions/">Terms of Use</Link> and{" "}
+                    <Link href="/privacy-policy/">Privacy Policy.</Link>{" "}
+                  </p>
+                </div>
+
+                <button type="submit" className={btnClass}>
+                  {isChangePlanLoading ? <span className="cnb-spinner-loading"></span> : <span>Confirm Change</span>}
+                </button>
+              </>
+            )}
           </div>
         )}
       </form>

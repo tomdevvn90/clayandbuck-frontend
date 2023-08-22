@@ -155,3 +155,10 @@ export async function reactiveSubscriptionPlan(accessToken: string, subsId: stri
 export async function getPlansInfo() {
   return await fetchAPINormal(`/v2/subscriber/get-plans/`);
 }
+
+/**
+ * Change Plan
+ */
+export async function changePlanSubs(accessToken: string, planId: string, subsId: string) {
+  return await fetchAPIPost(`/v2/subscriber/change-plan/`, { accessToken, planId, subsId });
+}
