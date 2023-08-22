@@ -1,0 +1,92 @@
+.sign-up-wrap {
+  font-family: $secondary-font;
+  margin: 20px 0;
+  background-color: #232323;
+  display: flex;
+
+  .subscribe-left {
+    background-color: #000;
+    background-image: url(../../public/images/overlay.png);
+    position: relative;
+    padding: 40px 48px 0 40px;
+    width: 50%;
+
+    .cb247-subscribe h2 {
+      font-family: $secondary-font;
+      font-weight: 700;
+      font-size: 40px;
+      line-height: 105.47%;
+      color: #ffffff;
+      max-width: 325px;
+      margin: 0;
+    }
+    .cnb-logo {
+      position: absolute;
+      top: 20px;
+      right: 36px;
+      width: 110px;
+      height: auto;
+    }
+    p {
+      font-family: $secondary-font;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 20px;
+      color: #ffffff;
+      margin: 28px 0;
+    }
+    .benefits {
+      margin: 26px 0 20px 0;
+
+      h3 {
+        font-family: $secondary-font;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 105.47%;
+        color: #ffffff;
+      }
+      ul {
+        padding-left: 16px;
+        margin: 0;
+
+        li {
+          font-family: $secondary-font;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 32px;
+          color: #ffffff;
+          margin: 0;
+        }
+      }
+    }
+    .two-friend {
+      display: flex;
+    }
+  }
+  .subscribe-right {
+    background-color: #fff;
+    width: 50%;
+  }
+  .create-account {
+    padding: 40px 32px;
+
+    h4 {
+      font-family: $secondary-font;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 32px;
+      letter-spacing: -0.02em;
+      color: #000000;
+      max-width: 380px;
+      margin: 0 0 16px;
+    }
+    p {
+      color: #000;
+    }
+    a.highlight {
+      letter-spacing: -0.02em;
+      color: #b2922c !important;
+      text-decoration: none;
+    }
+  }
+}
