@@ -32,7 +32,6 @@ body {
     overflow: hidden;
     position: fixed;
   }
-
   h1,
   h2,
   h3,
@@ -171,8 +170,43 @@ body {
   input {
     overflow: visible;
   }
+  input[type="text"],
+  input[type="email"],
+  input[type="url"],
+  input[type="password"],
+  input[type="search"],
+  input[type="number"],
+  input[type="tel"],
+  textarea,
+  select {
+    padding: 12px;
+    max-width: 100%;
+    font-family: $secondary-font;
+    width: 100%;
+    height: 48px;
+    background-color: #ffffff;
+    border: 2px solid #a9afb2;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    border-radius: 6px;
+    color: #000000;
+
+    &:focus {
+      border-color: #b2922c;
+    }
+    &.error {
+      border-color: red;
+    }
+  }
   .text-center {
     text-align: center;
+  }
+  .grecaptcha-badge {
+    display: none;
   }
   .cnb-podcasts-player {
     position: fixed;
