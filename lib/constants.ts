@@ -5,6 +5,7 @@ export const HOME_OG_IMAGE_URL = "/public/home-og-image.png";
 export const WP_REST_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_API_URL;
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 export const CNB_RECAPTCHA_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_KEY;
+export const CNB_RECURLY_API_KEY = process.env.NEXT_PUBLIC_RECURLY_API_KEY;
 
 export async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {
   const res = await fetch(input, init);

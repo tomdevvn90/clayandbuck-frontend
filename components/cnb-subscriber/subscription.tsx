@@ -1,13 +1,22 @@
 import SubscribeInfo from "./parts/subscribe-info";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import {
+  cnbCheckZipCodeMatchStateForCA,
+  cnbGetPlanIntervalText,
+  cnbGetStateByZipCodeForUS,
+} from "../../utils/global-functions";
+import { CardElement, useRecurly } from "@recurly/react-recurly";
 import dynamic from "next/dynamic";
-import { cnbGetPlanIntervalText } from "../../utils/global-functions";
+import { cnbRenderCountryStates } from "../../utils/html-render-functions";
 
 const CancelPopup = dynamic(() => import("./parts/cancel-popup"), {
   ssr: false,
 });
 
 export default function Subscription({ gift, plansInfo }) {
+  const formRef = useRef();
+  const recurly = useRecurly();
+
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [showPlanStep, setShowPlanStep] = useState("");
   const [showPaymentStep, setShowPaymentStep] = useState("hide");
@@ -17,12 +26,29 @@ export default function Subscription({ gift, plansInfo }) {
 
   const [crCountry, setCrCountry] = useState("");
   const [crPlan, setCrPlan] = useState("");
+  const [crFirstName, setCrFirstName] = useState("");
+  const [crLastName, setCrLastName] = useState("");
+  const [crAddr1, setCrAddr1] = useState("");
+  const [crCity, setCrCity] = useState("");
+  const [crState, setCrState] = useState("");
+  const [crZipCode, setCrZipCode] = useState("");
 
+  const [isCardValid, setIsCardValid] = useState(false);
   const [activeNextBtn, setActiveNextBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [planErrorMessages, setPlanErrorMessages] = useState("");
+  const [cardErrorMessages, setCardErrorMessages] = useState("");
+  const [billingErrorMessages, setBillingErrorMessages] = useState("");
+
+  const [firstNameClass, setFirstNameClass] = useState("");
+  const [lastNameClass, setLastNameClass] = useState("");
+  const [addr1Class, setAddr1Class] = useState("");
+  const [cityClass, setCityClass] = useState("");
+  const [stateClass, setStateClass] = useState("");
+  const [zipCodeClass, setZipCodeClass] = useState("");
 
   const handleNextPaymentStep = () => {
+    setPlanErrorMessages("");
     if (!crCountry) {
       setPlanErrorMessages("Please choose your country.");
       return false;
@@ -35,9 +61,72 @@ export default function Subscription({ gift, plansInfo }) {
     setShowPaymentStep("");
   };
 
+  const handleNextBillingStep = () => {
+    setPlanErrorMessages("");
+    if (!isCardValid) {
+      setCardErrorMessages("Please enter valid card info.");
+    } else {
+      setShowBillingStep("");
+      setShowPaymentStep("hide");
+    }
+  };
+
+  const handleNextReviewStep = () => {
+    setFirstNameClass("");
+    setLastNameClass("");
+    setAddr1Class("");
+    setCityClass("");
+    setStateClass("");
+    setZipCodeClass("");
+
+    if (!crFirstName) {
+      setBillingErrorMessages("Please enter your First name.");
+      setFirstNameClass("error");
+      return false;
+    }
+    if (!crLastName) {
+      setBillingErrorMessages("Please enter your Last name.");
+      setLastNameClass("error");
+      return false;
+    }
+    if (!crAddr1) {
+      setBillingErrorMessages("Please enter your Address 1.");
+      setAddr1Class("error");
+      return false;
+    }
+    if (!crCity) {
+      setBillingErrorMessages("Please enter your City.");
+      setCityClass("error");
+      return false;
+    }
+    if (!crState) {
+      setBillingErrorMessages("Please enter your State/Province.");
+      setStateClass("error");
+      return false;
+    }
+    if (!crZipCode) {
+      setBillingErrorMessages("Please enter your Zip Code.");
+      setZipCodeClass("error");
+      return false;
+    }
+    if (crCountry == "US" && cnbGetStateByZipCodeForUS(crZipCode) != crState) {
+      setBillingErrorMessages("Zip Code is not correct with State.");
+      setZipCodeClass("error");
+      return false;
+    }
+    if (crCountry == "CA" && !cnbCheckZipCodeMatchStateForCA(crState, crZipCode)) {
+      setBillingErrorMessages("Zip Code is not correct with State.");
+      setZipCodeClass("error");
+      return false;
+    }
+
+    setShowBillingStep("hide");
+    setShowReviewStep("");
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // setErrorMessages("");
+    // setBillingErrorMessages("");
   };
 
   return (
@@ -113,16 +202,16 @@ export default function Subscription({ gift, plansInfo }) {
                   })}
 
                 <div className="btn-set-inline">
-                  <div className="s-btn btn-half" onClick={() => setShowCancelPopup(true)}>
+                  <button className="s-btn btn-half" onClick={() => setShowCancelPopup(true)}>
                     Previous
-                  </div>
+                  </button>
                   <button className="s-btn btn-half btn-continue" onClick={handleNextPaymentStep}>
                     Continue
                   </button>
                 </div>
-                <div className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
+                <button className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
                   Cancel
-                </div>
+                </button>
               </div>
             </div>
 
@@ -130,25 +219,33 @@ export default function Subscription({ gift, plansInfo }) {
               <h4>Enter Your Payment Details</h4>
               <p>You can change or cancel your plan anytime</p>
               <div className="step-form">
+                {cardErrorMessages && <p className="error-msg">{cardErrorMessages}</p>}
+
                 <div className="credit-card-form">
                   <div className="row">
                     <div className="col-sm-12">
-                      <form>
-                        <input type="text" data-recurly="first_name" name="cnb_rc_f_name" className="rc-hide" />
-                        <input type="text" data-recurly="last_name" name="cnb_rc_l_name" className="rc-hide" />
-                        <input type="text" data-recurly="address1" name="cnb_rc_address_1" className="rc-hide" />
-                        <input type="text" data-recurly="address2" name="cnb_rc_address_2" className="rc-hide" />
-                        <input type="text" data-recurly="city" name="cnb_rc_city" className="rc-hide" />
-                        <input type="text" data-recurly="state" name="cnb_rc_state" className="rc-hide" />
-                        <input type="text" data-recurly="country" name="cnb_rc_country" className="rc-hide" />
-                        <input type="text" data-recurly="postal_code" name="cnb_rc_postal_code" className="rc-hide" />
-                        <input type="text" data-recurly="phone" name="cnb_rc_phone" className="rc-hide" />
-                        <div data-recurly="card"></div>
+                      <form ref={formRef}>
+                        <input type="text" data-recurly="first_name" name="cnb_f_name" className="rc-hide" />
+                        <input type="text" data-recurly="last_name" name="cnb_l_name" className="rc-hide" />
+                        <input type="text" data-recurly="address1" name="cnb_addr_1" className="rc-hide" />
+                        <input type="text" data-recurly="address2" name="cnb_addr_2" className="rc-hide" />
+                        <input type="text" data-recurly="city" name="cnb_city" className="rc-hide" />
+                        <input type="text" data-recurly="state" name="cnb_state" className="rc-hide" />
+                        <input type="text" data-recurly="country" name="cnb_country" className="rc-hide" />
+                        <input type="text" data-recurly="postal_code" name="cnb_postal_code" className="rc-hide" />
+                        <input type="text" data-recurly="phone" name="cnb_phone" className="rc-hide" />
+
+                        <CardElement
+                          onChange={(change) => {
+                            setIsCardValid(change.valid);
+                            setCardErrorMessages("");
+                          }}
+                        />
+                        <div></div>
                       </form>
                     </div>
                   </div>
                 </div>
-                <p className="error-msg"></p>
                 <div className="btn-set-inline">
                   <button
                     className="s-btn btn-half"
@@ -159,11 +256,13 @@ export default function Subscription({ gift, plansInfo }) {
                   >
                     Previous
                   </button>
-                  <button className="s-btn btn-half btn-continue disabled">Continue</button>
+                  <button className="s-btn btn-half btn-continue" onClick={handleNextBillingStep}>
+                    Continue
+                  </button>
                 </div>
-                <div className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
+                <button className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
                   Cancel
-                </div>
+                </button>
               </div>
             </div>
 
@@ -171,25 +270,27 @@ export default function Subscription({ gift, plansInfo }) {
               <h4>Enter Your Billing Info</h4>
               <p>You can change or cancel your plan anytime</p>
               <div className="step-form">
-                <div className="row">
-                  <div className="col-12 col-md-6 form-group pr-1">
+                <div className="name-fields">
+                  <div className="form-group first-name">
                     <label htmlFor="cnb-first-name">First Name</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={firstNameClass}
                       id="cnb-first-name"
-                      name="cnb-first-name"
+                      name="cnb_first_name"
                       placeholder="Enter first name"
+                      onChange={(e) => setCrFirstName(e.target.value)}
                     />
                   </div>
-                  <div className="col-12 col-md-6 form-group pl-1">
+                  <div className="form-group last-name">
                     <label htmlFor="cnb-last-name">Last Name</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={lastNameClass}
                       id="cnb-last-name"
-                      name="cnb-last-name"
+                      name="cnb_last_name"
                       placeholder="Enter last name"
+                      onChange={(e) => setCrLastName(e.target.value)}
                     />
                   </div>
                 </div>
@@ -197,73 +298,72 @@ export default function Subscription({ gift, plansInfo }) {
                   <label htmlFor="cnb-company">
                     Company<span>Optional</span>
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="cnb-company"
-                    name="cnb-company"
-                    placeholder="Enter company name"
-                  />
+                  <input type="text" id="cnb-company" name="cnb-company" placeholder="Enter company name" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="cnb-phone">
                     Phone<span>Optional</span>
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="cnb-phone"
-                    name="cnb-phone"
-                    placeholder="Enter phone number"
-                  />
+                  <input type="text" id="cnb-phone" name="cnb-phone" placeholder="Enter phone number" />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="cnb-billing-address">Billing Address </label>
+                  <label htmlFor="cnb-address">Billing Address </label>
                   <input
                     type="text"
-                    className="form-control mb-2"
-                    id="cnb-billing-address-1"
-                    name="cnb-billing-address-1"
+                    className={`addr-1 ${addr1Class}`}
+                    id="cnb-address-1"
+                    name="cnb_address_1"
                     placeholder="Address line 1"
+                    onChange={(e) => setCrAddr1(e.target.value)}
                   />
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="cnb-billing-address-2"
-                    name="cnb-billing-address-2"
-                    placeholder="Address line 2"
-                  />
+                  <input type="text" id="cnb-address-2" name="cnb_address_2" placeholder="Address line 2" />
                 </div>
-                <div className="row">
-                  <div className="col-12 col-lg-5 form-group pr-1">
+                <div className="city-state-postcode">
+                  <div className="form-group city">
                     <label htmlFor="cnb-city">City</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={cityClass}
                       id="cnb-city"
                       name="cnb-city"
                       placeholder="Enter your city"
+                      onChange={(e) => setCrCity(e.target.value)}
                     />
                   </div>
-                  <div className="col-12 col-lg-4 form-group pr-1 pl-1">
+                  <div className="form-group state">
                     <label htmlFor="cnb-state-providence">State/Province</label>
-                    <select className="form-control" id="cnb-state-providence" name="cnb-state-providence"></select>
+                    <select className={stateClass} name="cnb_state" onChange={(e) => setCrState(e.target.value)}>
+                      {cnbRenderCountryStates(crCountry)}
+                    </select>
                   </div>
-                  <div className="col-12 col-lg-3 form-group pl-1">
+                  <div className="form-group post-code">
                     <label htmlFor="cnb-zip-code">Zip</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className={zipCodeClass}
                       id="cnb-zip-code"
                       name="cnb-zip-code"
                       placeholder="Zip code"
+                      onChange={(e) => setCrZipCode(e.target.value)}
                     />
                   </div>
                 </div>
 
+                {billingErrorMessages && <p className="error-msg">{billingErrorMessages}</p>}
+
                 <div className="btn-set-inline">
-                  <button className="s-btn btn-half">Previous</button>
-                  <button className="s-btn btn-half btn-continue disabled">Continue</button>
+                  <button
+                    className="s-btn btn-half"
+                    onClick={() => {
+                      setShowPaymentStep("");
+                      setShowBillingStep("hide");
+                    }}
+                  >
+                    Previous
+                  </button>
+                  <button className="s-btn btn-half btn-continue" onClick={handleNextReviewStep}>
+                    Continue
+                  </button>
                 </div>
                 <div className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
                   Cancel

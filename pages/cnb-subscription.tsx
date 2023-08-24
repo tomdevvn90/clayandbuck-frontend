@@ -1,13 +1,19 @@
 import Head from "next/head";
 import ErrorPage from "next/error";
-import Container from "../components/container";
+// import Container from "../components/container";
 import Layout from "../components/layout/layout";
 import Subscription from "../components/cnb-subscriber/subscription";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
-import { SITE_URL } from "../lib/constants";
+import { CNB_RECURLY_API_KEY, SITE_URL } from "../lib/constants";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { getPlansInfo } from "../lib/normal-api";
+import { RecurlyProvider, Elements } from "@recurly/react-recurly";
+import dynamic from "next/dynamic";
+
+const Container = dynamic(() => import("../components/container"), {
+  ssr: false,
+});
 
 export default function SubscriptionPage({ pageData, plansInfo }) {
   const page = pageData?.pageBy ?? {};
@@ -55,10 +61,16 @@ export default function SubscriptionPage({ pageData, plansInfo }) {
         <meta name="twitter:image" content={page.seoTwitterThumb} />
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
+        <link rel="stylesheet" href="https://js.recurly.com/v4/recurly.css" />
+        <script src="https://js.recurly.com/v4/recurly.js"></script>
       </Head>
       <div className={`main-wrap page ${pageClass}`}>
         <Container>
-          <Subscription gift={false} plansInfo={plansInfo} />
+          <RecurlyProvider publicKey={CNB_RECURLY_API_KEY}>
+            <Elements>
+              <Subscription gift={false} plansInfo={plansInfo} />
+            </Elements>
+          </RecurlyProvider>
         </Container>
       </div>
     </Layout>

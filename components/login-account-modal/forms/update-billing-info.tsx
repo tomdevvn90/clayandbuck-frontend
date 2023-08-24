@@ -306,7 +306,7 @@ export default function UpdateBillingInfo({ refreshAccInfo, accountInfo, showAcc
           </div>
           <div className="form-group state">
             <label htmlFor="cnb-state">State/Province</label>
-            <select className={stateClass} id="cnb-state" name="cnb_state" defaultValue={billingAddr.region}>
+            <select className={stateClass} name="cnb_state" defaultValue={billingAddr.region}>
               {cnbRenderCountryStates(crCountry)}
             </select>
           </div>
