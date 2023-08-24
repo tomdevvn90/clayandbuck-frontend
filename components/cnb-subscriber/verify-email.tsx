@@ -1,12 +1,17 @@
 import SubscribeInfo from "./parts/subscribe-info";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { createUser } from "../../lib/normal-api";
+import { setCookieLoginInfo } from "../../utils/global-functions";
+import { useRouter } from "next/router";
 
 const CancelPopup = dynamic(() => import("./parts/cancel-popup"), {
   ssr: false,
 });
 
 export default function VerifyEmail({ gift, emailToken }) {
+  const router = useRouter();
+
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [passwordClass, setPasswordClass] = useState("");
   const [passwordCfClass, setPasswordCfClass] = useState("");
@@ -58,19 +63,38 @@ export default function VerifyEmail({ gift, emailToken }) {
       return false;
     }
 
-    // setIsLoading(true);
-    // const createAccRes = {}; // await verifyEmailSubs(email, planSelected, signUpGift);
-    // //console.log(verifyEmailRes);
+    setIsLoading(true);
+    const createAccRes = await createUser(emailToken, password, passwordHint);
+    console.log(createAccRes);
 
-    // if (createAccRes.success) {
-    // } else {
-    //   if (createAccRes.error_message) {
-    //     setErrorMessages(createAccRes.error_message);
-    //   } else {
-    //     setErrorMessages("Something went wrong. Please try again!");
-    //   }
-    // }
-    // setIsLoading(false);
+    if (createAccRes.success) {
+      const userInfo = createAccRes.userInfoForCookie;
+      const isSignUpGift = createAccRes.signUpGift;
+
+      setCookieLoginInfo(
+        userInfo.accessToken,
+        userInfo.userEmail,
+        password,
+        userInfo.userSubscribed,
+        userInfo.userCancelledSubs,
+        userInfo.userPrivacyOptout
+      );
+
+      if (isSignUpGift == "1") {
+        // window.location.href = "/cnb-give-the-gift/";
+        router.push("/cnb-give-the-gift");
+      } else {
+        // window.location.href = "/cnb-subscription/";
+        router.push("/cnb-subscription");
+      }
+    } else {
+      if (createAccRes.error_message) {
+        setErrorMessages(createAccRes.error_message);
+      } else {
+        setErrorMessages("Something went wrong. Please try again!");
+      }
+    }
+    setIsLoading(false);
   };
 
   return (

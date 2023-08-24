@@ -45,7 +45,7 @@ export default function SignUpGiftPage({ pageData, plansInfo }) {
         <meta property="og:title" content="Gift Sign Up" />
         <meta
           property="og:description"
-          content="Give the gift of C&B VIP Give the gift of C&B VIP &#8211; the only way to listen to the show live or on-demand on your computer of mobile device commercial-free. C&B VIP Members Benefits: Commercial-Free Audio Stream, Live or On-DemandCommercial-Free PodcastsExclusive VIP Invitations to C&B EventsExclusive Clay & Buck VIP VideosExclusive email access directly  […]"
+          content="Give the gift of C&B VIP Give the gift of C&B VIP - the only way to listen to the show live or on-demand on your computer of mobile device commercial-free. C&B VIP Members Benefits: Commercial-Free Audio Stream, Live or On-DemandCommercial-Free PodcastsExclusive VIP Invitations to C&B EventsExclusive Clay & Buck VIP VideosExclusive email access directly […]"
         />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:site_name" content="The Clay Travis & Buck Sexton Show" />

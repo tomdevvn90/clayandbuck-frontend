@@ -169,3 +169,10 @@ export async function changePlanSubs(accessToken: string, planId: string, subsId
 export async function verifyEmailSubs(email: string, recaptchaToken: string, planId: string, signUpGift: string) {
   return await fetchAPIPost(`/v2/subscriber/verify-email/`, { email, recaptchaToken, planId, signUpGift });
 }
+
+/**
+ * Create User
+ */
+export async function createUser(emailToken: string, password: string, passwordHint: string) {
+  return await fetchAPIPost(`/v2/subscriber/create-user/`, { emailToken, password, passwordHint });
+}
