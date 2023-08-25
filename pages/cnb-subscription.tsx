@@ -7,7 +7,6 @@ import { CNB_RECURLY_API_KEY, SITE_URL } from "../lib/constants";
 import { getPlansInfo } from "../lib/normal-api";
 import { RecurlyProvider, Elements } from "@recurly/react-recurly";
 import dynamic from "next/dynamic";
-import Script from "next/script";
 import { getCookie } from "cookies-next";
 import { useContext } from "react";
 import { GlobalsContext } from "../contexts/GlobalsContext";
@@ -68,7 +67,6 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
       </Head>
-      <Script src="https://js.recurly.com/v4/recurly.js" strategy="beforeInteractive" />
       <div className={`main-wrap page ${pageClass}`}>
         {!accessToken || isSubscribe ? (
           <Container>
@@ -109,10 +107,11 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
 }
 
 /** Server-side Rendering (SSR) */
-export async function getServerSideProps() {
+export async function getServerSideProps({ req, res }) {
   const pageData = await getPageData("/cnb-subscription");
 
-  const userEmail = getCookie("STYXKEY_USER_EMAIL") ? getCookie("STYXKEY_USER_EMAIL").toString() : "";
+  const userEmailCk = getCookie("STYXKEY_USER_EMAIL", { req, res });
+  const userEmail = userEmailCk ? userEmailCk.toString() : "";
   const plansInfoRes = await getPlansInfo(userEmail);
 
   return {

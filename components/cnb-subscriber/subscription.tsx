@@ -22,8 +22,8 @@ export default function Subscription({ gift, plansInfoRes }) {
   const recurly = useRecurly();
 
   const plansInfo = plansInfoRes.success ? plansInfoRes.plansInfo : [];
-  const userPlanId = plansInfoRes.userPlanInfo?.planId ?? "";
-  console.log(plansInfoRes);
+  const userPlanId = plansInfoRes.success ? plansInfoRes.userPlanId : "";
+
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [showPlanStep, setShowPlanStep] = useState("");
   const [showPaymentStep, setShowPaymentStep] = useState("hide");
@@ -32,7 +32,7 @@ export default function Subscription({ gift, plansInfoRes }) {
   const [showSuccessStep, setShowSuccessStep] = useState("hide");
 
   const [crCountry, setCrCountry] = useState("");
-  const [crPlan, setCrPlan] = useState("");
+  const [crPlan, setCrPlan] = useState(userPlanId);
   const [crFirstName, setCrFirstName] = useState("");
   const [crLastName, setCrLastName] = useState("");
   const [crCompany, setCrCompany] = useState("");
@@ -237,7 +237,7 @@ export default function Subscription({ gift, plansInfoRes }) {
                       const sText = intervalCount > 1 ? "s" : "";
                       const planInterval = cnbGetPlanIntervalText(plan.interval);
                       const intervalText = `${intervalCount} ${planInterval}${sText}`;
-                      const ckChecked = false; //planId == plan._id ? true : false;
+                      const ckChecked = userPlanId == plan._id ? true : false;
 
                       return (
                         <div key={index} className="plan-radio">

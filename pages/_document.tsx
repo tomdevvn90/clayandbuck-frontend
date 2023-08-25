@@ -1,14 +1,14 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 export default function Document() {
   return (
     <Html lang="en">
-      <Head>
-        <link rel="stylesheet" href="https://js.recurly.com/v4/recurly.css" />
-      </Head>
+      <Head />
       <body>
         <Main />
         <NextScript />
+        <Script src="https://js.recurly.com/v4/recurly.js" strategy="beforeInteractive" />
       </body>
     </Html>
   );
