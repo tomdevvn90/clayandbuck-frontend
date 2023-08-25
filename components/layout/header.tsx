@@ -8,7 +8,6 @@ import NoticeAndSocials from "./notice-and-socials";
 import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
-import { getCookie } from "cookies-next";
 import { GlobalsContext } from "../../contexts/GlobalsContext";
 
 // import DownloadApp from "./download-app";
@@ -53,7 +52,7 @@ export default function Header({ headerMenu }) {
         <div className="container">
           <div className="site-branding">
             <Link href="/" className="custom-logo-link" rel="home" aria-current="page">
-              <Image src={logo_img} width={150} height={80} alt="Clay and Buck"></Image>
+              <Image src={logo_img} width={150} height={80} priority={true} alt="Clay and Buck"></Image>
             </Link>
           </div>
 

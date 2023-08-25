@@ -1,21 +1,25 @@
 import Head from "next/head";
-import ErrorPage from "next/error";
-// import Container from "../components/container";
 import Layout from "../components/layout/layout";
 import Subscription from "../components/cnb-subscriber/subscription";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { CNB_RECURLY_API_KEY, SITE_URL } from "../lib/constants";
-import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { getPlansInfo } from "../lib/normal-api";
 import { RecurlyProvider, Elements } from "@recurly/react-recurly";
 import dynamic from "next/dynamic";
+import Script from "next/script";
+import { getCookie } from "cookies-next";
+import { useContext } from "react";
+import { GlobalsContext } from "../contexts/GlobalsContext";
+import Link from "next/link";
 
 const Container = dynamic(() => import("../components/container"), {
   ssr: false,
 });
 
-export default function SubscriptionPage({ pageData, plansInfo }) {
+export default function SubscriptionPage({ pageData, plansInfoRes }) {
+  const GlobalsCtx = useContext(GlobalsContext);
+
   const page = pageData?.pageBy ?? {};
   const router = useRouter();
 
@@ -32,6 +36,8 @@ export default function SubscriptionPage({ pageData, plansInfo }) {
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
+  const accessToken = getCookie("STYXKEY_ACCESS_TOKEN");
+  const isSubscribe = getCookie("STYXKEY_USER_SUBSCRIBED");
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>
@@ -61,17 +67,42 @@ export default function SubscriptionPage({ pageData, plansInfo }) {
         <meta name="twitter:image" content={page.seoTwitterThumb} />
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
-        <link rel="stylesheet" href="https://js.recurly.com/v4/recurly.css" />
-        <script src="https://js.recurly.com/v4/recurly.js"></script>
       </Head>
+      <Script src="https://js.recurly.com/v4/recurly.js" strategy="beforeInteractive" />
       <div className={`main-wrap page ${pageClass}`}>
-        <Container>
-          <RecurlyProvider publicKey={CNB_RECURLY_API_KEY}>
-            <Elements>
-              <Subscription gift={false} plansInfo={plansInfo} />
-            </Elements>
-          </RecurlyProvider>
-        </Container>
+        {!accessToken || isSubscribe ? (
+          <Container>
+            {isSubscribe ? (
+              <div className="require-subs-only-wrap">
+                <h2>You are already subscribed.</h2>
+                <p></p>
+                <p></p>
+                <Link href="/" className="cnb-btn">
+                  Return to Site
+                </Link>
+              </div>
+            ) : (
+              <div className="require-subs-only-wrap">
+                <h2>Please login to continue subscription.</h2>
+                <p></p>
+                <p></p>
+                <button className="btn" onClick={() => GlobalsCtx.setOpenLoginModal(true)}>
+                  Login
+                </button>
+              </div>
+            )}
+          </Container>
+        ) : (
+          <>
+            <Container>
+              <RecurlyProvider publicKey={CNB_RECURLY_API_KEY}>
+                <Elements>
+                  <Subscription gift={false} plansInfoRes={plansInfoRes} />
+                </Elements>
+              </RecurlyProvider>
+            </Container>
+          </>
+        )}
       </div>
     </Layout>
   );
@@ -81,10 +112,10 @@ export default function SubscriptionPage({ pageData, plansInfo }) {
 export async function getServerSideProps() {
   const pageData = await getPageData("/cnb-subscription");
 
-  const plansInfoRes = await getPlansInfo();
-  const plansInfo = plansInfoRes.success ? plansInfoRes.plansInfo : [];
+  const userEmail = getCookie("STYXKEY_USER_EMAIL") ? getCookie("STYXKEY_USER_EMAIL").toString() : "";
+  const plansInfoRes = await getPlansInfo(userEmail);
 
   return {
-    props: { pageData, plansInfo },
+    props: { pageData, plansInfoRes },
   };
 }

@@ -42,7 +42,7 @@ export default function AccountInfo(props) {
       <div className="acc-head">
         <h2>My Account</h2>
         <p>
-          You’re logged in as <strong>{accountInfo.name ? accountInfo.name : accountInfo.email}</strong>{" "}
+          You’re logged in as <strong>{billingName ? billingName : accountInfo.email}</strong>{" "}
           <a className="cnb-logout-link" onClick={logOutHandle}>
             Log Out
           </a>

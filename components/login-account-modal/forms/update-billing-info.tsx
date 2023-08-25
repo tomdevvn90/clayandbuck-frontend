@@ -58,9 +58,8 @@ export default function UpdateBillingInfo({ refreshAccInfo, accountInfo, showAcc
     const state = eventTarget.cnb_state.value;
     const zipCode = eventTarget.cnb_zip_code.value;
 
-    // Validate password value
     if (!accessToken) {
-      setErrorMessages("Access token is invalid or missing.");
+      setErrorMessages("Something went wrong. Please reload the page and try again.");
       return false;
     }
     if (!country) {
@@ -149,14 +148,11 @@ export default function UpdateBillingInfo({ refreshAccInfo, accountInfo, showAcc
     };
     setIsLoading(true);
 
-    console.log(billFields);
     const updateBillRes = await updateBillingInfo(billFields);
-    console.log(updateBillRes);
+    // console.log(updateBillRes);
 
     if (updateBillRes.success) {
-      //console.log(updateBillRes);
       setIsSuccess(true);
-      setIsLoading(false);
       refreshAccInfo();
     } else {
       if (updateBillRes.error_message) {
@@ -164,8 +160,8 @@ export default function UpdateBillingInfo({ refreshAccInfo, accountInfo, showAcc
       } else {
         setErrorMessages("Something went wrong. Please try again!");
       }
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   const btnClass = isLoading ? "btn-submit loading" : "btn-submit";

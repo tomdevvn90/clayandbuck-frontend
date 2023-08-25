@@ -152,8 +152,12 @@ export async function reactiveSubscriptionPlan(accessToken: string, subsId: stri
 /**
  * Get Plans Info
  */
-export async function getPlansInfo() {
-  return await fetchAPINormal(`/v2/subscriber/get-plans/`);
+export async function getPlansInfo(userEmail: string = "") {
+  if (userEmail) {
+    return await fetchAPINormal(`/v2/subscriber/get-plans/?userEmail=${userEmail}`);
+  } else {
+    return await fetchAPINormal(`/v2/subscriber/get-plans/`);
+  }
 }
 
 /**
@@ -175,4 +179,11 @@ export async function verifyEmailSubs(email: string, recaptchaToken: string, pla
  */
 export async function createUser(emailToken: string, password: string, passwordHint: string) {
   return await fetchAPIPost(`/v2/subscriber/create-user/`, { emailToken, password, passwordHint });
+}
+
+/**
+ * Create User
+ */
+export async function createSubscription(accessToken: string, recurlyToken: string, planId: string, company: string) {
+  return await fetchAPIPost(`/v2/subscriber/create-subscription/`, { accessToken, recurlyToken, planId, company });
 }

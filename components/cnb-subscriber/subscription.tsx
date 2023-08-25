@@ -4,19 +4,26 @@ import {
   cnbCheckZipCodeMatchStateForCA,
   cnbGetPlanIntervalText,
   cnbGetStateByZipCodeForUS,
+  setACookieF,
 } from "../../utils/global-functions";
 import { CardElement, useRecurly } from "@recurly/react-recurly";
 import dynamic from "next/dynamic";
 import { cnbRenderCountryStates } from "../../utils/html-render-functions";
+import Link from "next/link";
+import { createSubscription } from "../../lib/normal-api";
+import { getCookie } from "cookies-next";
 
 const CancelPopup = dynamic(() => import("./parts/cancel-popup"), {
   ssr: false,
 });
 
-export default function Subscription({ gift, plansInfo }) {
+export default function Subscription({ gift, plansInfoRes }) {
   const formRef = useRef();
   const recurly = useRecurly();
 
+  const plansInfo = plansInfoRes.success ? plansInfoRes.plansInfo : [];
+  const userPlanId = plansInfoRes.userPlanInfo?.planId ?? "";
+  console.log(plansInfoRes);
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [showPlanStep, setShowPlanStep] = useState("");
   const [showPaymentStep, setShowPaymentStep] = useState("hide");
@@ -28,17 +35,22 @@ export default function Subscription({ gift, plansInfo }) {
   const [crPlan, setCrPlan] = useState("");
   const [crFirstName, setCrFirstName] = useState("");
   const [crLastName, setCrLastName] = useState("");
+  const [crCompany, setCrCompany] = useState("");
+  const [crPhone, setCrPhone] = useState("");
   const [crAddr1, setCrAddr1] = useState("");
+  const [crAddr2, setCrAddr2] = useState("");
   const [crCity, setCrCity] = useState("");
   const [crState, setCrState] = useState("");
   const [crZipCode, setCrZipCode] = useState("");
+  const [crAcceptRenewal, setCrAcceptRenewal] = useState(false);
+  const [crAcceptTerm, setCrAcceptTerm] = useState(false);
 
   const [isCardValid, setIsCardValid] = useState(false);
-  const [activeNextBtn, setActiveNextBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [planErrorMessages, setPlanErrorMessages] = useState("");
   const [cardErrorMessages, setCardErrorMessages] = useState("");
   const [billingErrorMessages, setBillingErrorMessages] = useState("");
+  const [reviewErrorMessages, setReviewErrorMessages] = useState("");
 
   const [firstNameClass, setFirstNameClass] = useState("");
   const [lastNameClass, setLastNameClass] = useState("");
@@ -78,6 +90,7 @@ export default function Subscription({ gift, plansInfo }) {
     setCityClass("");
     setStateClass("");
     setZipCodeClass("");
+    setBillingErrorMessages("");
 
     if (!crFirstName) {
       setBillingErrorMessages("Please enter your First name.");
@@ -124,9 +137,57 @@ export default function Subscription({ gift, plansInfo }) {
     setShowReviewStep("");
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    // setBillingErrorMessages("");
+  const handleSubscription = async () => {
+    setReviewErrorMessages("");
+
+    if (!crAcceptRenewal) {
+      setReviewErrorMessages("Please accept auto-renewal.");
+      return false;
+    }
+    if (!crAcceptTerm) {
+      setReviewErrorMessages("Please accept accept terms.");
+      return false;
+    }
+
+    const accessToken = getCookie("STYXKEY_ACCESS_TOKEN");
+    if (!accessToken) {
+      setReviewErrorMessages("Something went wrong. Please reload the page and try again.");
+      return false;
+    }
+
+    setIsLoading(true);
+    recurly.token(formRef.current, async (err, token) => {
+      if (err) {
+        setReviewErrorMessages("Please recheck and enter valid card info.");
+        setIsLoading(false);
+        return false;
+      } else {
+        const recurlyToken = token ? token.id : "";
+
+        // Check recurly token
+        if (!recurlyToken) {
+          setReviewErrorMessages("Please recheck and enter valid card info.");
+          setIsLoading(false);
+          return false;
+        }
+
+        const createSubsRes = await createSubscription(accessToken.toString(), recurlyToken, crPlan, crCompany);
+        console.log(createSubsRes);
+
+        if (createSubsRes.success) {
+          setACookieF("STYXKEY_USER_SUBSCRIBED", "subscribed");
+          setShowSuccessStep("");
+          setShowReviewStep("hide");
+        } else {
+          if (createSubsRes.error_message) {
+            setReviewErrorMessages(createSubsRes.error_message);
+          } else {
+            setReviewErrorMessages("Something went wrong. Please try again!");
+          }
+        }
+        setIsLoading(false);
+      }
+    });
   };
 
   return (
@@ -142,35 +203,35 @@ export default function Subscription({ gift, plansInfo }) {
             </div>
           )}
 
-          <div className="cnb-create-subs-form">
-            <div className={`subs-step ${showPlanStep}`}>
-              <h4>Pick Your Plan</h4>
-              <p>
-                You can change or cancel your plan anytime.{" "}
-                <a href="<?php echo CNB_GIVE_THE_GIFT_URL; ?>" className="highlight">
-                  Give as a gift
-                </a>
-              </p>
-              <div className="step-form">
-                {planErrorMessages && <p className="error-msg">{planErrorMessages}</p>}
+          <div className={`subs-step ${showPlanStep}`}>
+            {plansInfo.length > 0 ? (
+              <>
+                <h4>Pick Your Plan</h4>
+                <p>
+                  You can change or cancel your plan anytime.{" "}
+                  <Link href="/cnb-give-the-gift/" className="highlight">
+                    Give as a gift
+                  </Link>
+                </p>
+                <div className="step-form">
+                  {planErrorMessages && <p className="error-msg">{planErrorMessages}</p>}
 
-                <div className="form-group">
-                  <label htmlFor="cnb-country">Select your location:</label>
-                  <select
-                    className="form-control country-select"
-                    name="cnb_country"
-                    onChange={(e) => setCrCountry(e.target.value)}
-                  >
-                    <option value="">Select your country</option>
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                  </select>
-                </div>
-                <label htmlFor="cnb-plan" className="form-group-label">
-                  Select your plan:
-                </label>
-                {plansInfo.length > 0 &&
-                  plansInfo.map((plan, index) => {
+                  <div className="form-group">
+                    <label htmlFor="cnb-country">Select your location:</label>
+                    <select
+                      className="form-control country-select"
+                      name="cnb_country"
+                      onChange={(e) => setCrCountry(e.target.value)}
+                    >
+                      <option value="">Select your country</option>
+                      <option value="US">United States</option>
+                      <option value="CA">Canada</option>
+                    </select>
+                  </div>
+                  <label htmlFor="cnb-plan" className="form-group-label">
+                    Select your plan:
+                  </label>
+                  {plansInfo.map((plan, index) => {
                     if (plan.active && !gift && plan.recurly_code.includes("gift") === false) {
                       const intervalCount = plan.interval_count;
                       const sText = intervalCount > 1 ? "s" : "";
@@ -201,181 +262,205 @@ export default function Subscription({ gift, plansInfo }) {
                     return "";
                   })}
 
-                <div className="btn-set-inline">
-                  <button className="s-btn btn-half" onClick={() => setShowCancelPopup(true)}>
-                    Previous
-                  </button>
-                  <button className="s-btn btn-half btn-continue" onClick={handleNextPaymentStep}>
-                    Continue
+                  <div className="btn-set-inline">
+                    <button className="s-btn btn-half" onClick={() => setShowCancelPopup(true)}>
+                      Previous
+                    </button>
+                    <button className="s-btn btn-half btn-continue" onClick={handleNextPaymentStep}>
+                      Continue
+                    </button>
+                  </div>
+                  <button className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
+                    Cancel
                   </button>
                 </div>
-                <button className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
-                  Cancel
+              </>
+            ) : (
+              <p className="error-msg">Something went wrong. Please reload the page and try again.</p>
+            )}
+          </div>
+
+          <div className={`subs-step ${showPaymentStep}`}>
+            <h4>Enter Your Payment Details</h4>
+            <p>You can change or cancel your plan anytime</p>
+            <div className="step-form">
+              {cardErrorMessages && <p className="error-msg">{cardErrorMessages}</p>}
+
+              <div className="credit-card-form">
+                <div className="row">
+                  <div className="col-sm-12">
+                    <form ref={formRef}>
+                      <div className="rc-hide">
+                        <input type="text" data-recurly="first_name" value={crFirstName} readOnly />
+                        <input type="text" data-recurly="last_name" value={crLastName} readOnly />
+                        <input type="text" data-recurly="address1" value={crAddr1} readOnly />
+                        <input type="text" data-recurly="address2" value={crAddr2} readOnly />
+                        <input type="text" data-recurly="city" value={crCity} readOnly />
+                        <input type="text" data-recurly="state" value={crState} readOnly />
+                        <input type="text" data-recurly="country" value={crCountry} readOnly />
+                        <input type="text" data-recurly="postal_code" value={crZipCode} readOnly />
+                        <input type="text" data-recurly="phone" name="cnb_phone" value={crPhone} readOnly />
+                      </div>
+
+                      <CardElement
+                        onChange={(change) => {
+                          setIsCardValid(change.valid);
+                          setCardErrorMessages("");
+                        }}
+                      />
+                      <div></div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div className="btn-set-inline">
+                <button
+                  className="s-btn btn-half"
+                  onClick={() => {
+                    setShowPlanStep("");
+                    setShowPaymentStep("hide");
+                  }}
+                >
+                  Previous
+                </button>
+                <button className="s-btn btn-half btn-continue" onClick={handleNextBillingStep}>
+                  Continue
                 </button>
               </div>
+              <button className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
+                Cancel
+              </button>
             </div>
+          </div>
 
-            <div className={`subs-step ${showPaymentStep}`}>
-              <h4>Enter Your Payment Details</h4>
-              <p>You can change or cancel your plan anytime</p>
-              <div className="step-form">
-                {cardErrorMessages && <p className="error-msg">{cardErrorMessages}</p>}
-
-                <div className="credit-card-form">
-                  <div className="row">
-                    <div className="col-sm-12">
-                      <form ref={formRef}>
-                        <input type="text" data-recurly="first_name" name="cnb_f_name" className="rc-hide" />
-                        <input type="text" data-recurly="last_name" name="cnb_l_name" className="rc-hide" />
-                        <input type="text" data-recurly="address1" name="cnb_addr_1" className="rc-hide" />
-                        <input type="text" data-recurly="address2" name="cnb_addr_2" className="rc-hide" />
-                        <input type="text" data-recurly="city" name="cnb_city" className="rc-hide" />
-                        <input type="text" data-recurly="state" name="cnb_state" className="rc-hide" />
-                        <input type="text" data-recurly="country" name="cnb_country" className="rc-hide" />
-                        <input type="text" data-recurly="postal_code" name="cnb_postal_code" className="rc-hide" />
-                        <input type="text" data-recurly="phone" name="cnb_phone" className="rc-hide" />
-
-                        <CardElement
-                          onChange={(change) => {
-                            setIsCardValid(change.valid);
-                            setCardErrorMessages("");
-                          }}
-                        />
-                        <div></div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-                <div className="btn-set-inline">
-                  <button
-                    className="s-btn btn-half"
-                    onClick={() => {
-                      setShowPlanStep("");
-                      setShowPaymentStep("hide");
-                    }}
-                  >
-                    Previous
-                  </button>
-                  <button className="s-btn btn-half btn-continue" onClick={handleNextBillingStep}>
-                    Continue
-                  </button>
-                </div>
-                <button className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
-                  Cancel
-                </button>
-              </div>
-            </div>
-
-            <div className={`subs-step ${showBillingStep}`}>
-              <h4>Enter Your Billing Info</h4>
-              <p>You can change or cancel your plan anytime</p>
-              <div className="step-form">
-                <div className="name-fields">
-                  <div className="form-group first-name">
-                    <label htmlFor="cnb-first-name">First Name</label>
-                    <input
-                      type="text"
-                      className={firstNameClass}
-                      id="cnb-first-name"
-                      name="cnb_first_name"
-                      placeholder="Enter first name"
-                      onChange={(e) => setCrFirstName(e.target.value)}
-                    />
-                  </div>
-                  <div className="form-group last-name">
-                    <label htmlFor="cnb-last-name">Last Name</label>
-                    <input
-                      type="text"
-                      className={lastNameClass}
-                      id="cnb-last-name"
-                      name="cnb_last_name"
-                      placeholder="Enter last name"
-                      onChange={(e) => setCrLastName(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="cnb-company">
-                    Company<span>Optional</span>
-                  </label>
-                  <input type="text" id="cnb-company" name="cnb-company" placeholder="Enter company name" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="cnb-phone">
-                    Phone<span>Optional</span>
-                  </label>
-                  <input type="text" id="cnb-phone" name="cnb-phone" placeholder="Enter phone number" />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="cnb-address">Billing Address </label>
+          <div className={`subs-step ${showBillingStep}`}>
+            <h4>Enter Your Billing Info</h4>
+            <p>You can change or cancel your plan anytime</p>
+            <div className="step-form">
+              <div className="name-fields">
+                <div className="form-group first-name">
+                  <label htmlFor="cnb-first-name">First Name</label>
                   <input
                     type="text"
-                    className={`addr-1 ${addr1Class}`}
-                    id="cnb-address-1"
-                    name="cnb_address_1"
-                    placeholder="Address line 1"
-                    onChange={(e) => setCrAddr1(e.target.value)}
+                    className={firstNameClass}
+                    id="cnb-first-name"
+                    name="cnb_first_name"
+                    placeholder="Enter first name"
+                    onChange={(e) => setCrFirstName(e.target.value)}
                   />
-                  <input type="text" id="cnb-address-2" name="cnb_address_2" placeholder="Address line 2" />
                 </div>
-                <div className="city-state-postcode">
-                  <div className="form-group city">
-                    <label htmlFor="cnb-city">City</label>
-                    <input
-                      type="text"
-                      className={cityClass}
-                      id="cnb-city"
-                      name="cnb-city"
-                      placeholder="Enter your city"
-                      onChange={(e) => setCrCity(e.target.value)}
-                    />
-                  </div>
-                  <div className="form-group state">
-                    <label htmlFor="cnb-state-providence">State/Province</label>
-                    <select className={stateClass} name="cnb_state" onChange={(e) => setCrState(e.target.value)}>
-                      {cnbRenderCountryStates(crCountry)}
-                    </select>
-                  </div>
-                  <div className="form-group post-code">
-                    <label htmlFor="cnb-zip-code">Zip</label>
-                    <input
-                      type="text"
-                      className={zipCodeClass}
-                      id="cnb-zip-code"
-                      name="cnb-zip-code"
-                      placeholder="Zip code"
-                      onChange={(e) => setCrZipCode(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                {billingErrorMessages && <p className="error-msg">{billingErrorMessages}</p>}
-
-                <div className="btn-set-inline">
-                  <button
-                    className="s-btn btn-half"
-                    onClick={() => {
-                      setShowPaymentStep("");
-                      setShowBillingStep("hide");
-                    }}
-                  >
-                    Previous
-                  </button>
-                  <button className="s-btn btn-half btn-continue" onClick={handleNextReviewStep}>
-                    Continue
-                  </button>
-                </div>
-                <div className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
-                  Cancel
+                <div className="form-group last-name">
+                  <label htmlFor="cnb-last-name">Last Name</label>
+                  <input
+                    type="text"
+                    className={lastNameClass}
+                    id="cnb-last-name"
+                    name="cnb_last_name"
+                    placeholder="Enter last name"
+                    onChange={(e) => setCrLastName(e.target.value)}
+                  />
                 </div>
               </div>
-            </div>
+              <div className="form-group">
+                <label htmlFor="cnb-company">
+                  Company<span>Optional</span>
+                </label>
+                <input
+                  type="text"
+                  id="cnb-company"
+                  name="cnb-company"
+                  placeholder="Enter company name"
+                  onChange={(e) => setCrCompany(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="cnb-phone">
+                  Phone<span>Optional</span>
+                </label>
+                <input
+                  type="text"
+                  id="cnb-phone"
+                  name="cnb-phone"
+                  placeholder="Enter phone number"
+                  onChange={(e) => setCrPhone(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="cnb-address">Billing Address </label>
+                <input
+                  type="text"
+                  className={`addr-1 ${addr1Class}`}
+                  id="cnb-address-1"
+                  name="cnb_address_1"
+                  placeholder="Address line 1"
+                  onChange={(e) => setCrAddr1(e.target.value)}
+                />
+                <input
+                  type="text"
+                  id="cnb-address-2"
+                  name="cnb_address_2"
+                  placeholder="Address line 2"
+                  onChange={(e) => setCrAddr2(e.target.value)}
+                />
+              </div>
+              <div className="city-state-postcode">
+                <div className="form-group city">
+                  <label htmlFor="cnb-city">City</label>
+                  <input
+                    type="text"
+                    className={cityClass}
+                    id="cnb-city"
+                    name="cnb-city"
+                    placeholder="Enter your city"
+                    onChange={(e) => setCrCity(e.target.value)}
+                  />
+                </div>
+                <div className="form-group state">
+                  <label htmlFor="cnb-state-providence">State/Province</label>
+                  <select className={stateClass} name="cnb_state" onChange={(e) => setCrState(e.target.value)}>
+                    {cnbRenderCountryStates(crCountry)}
+                  </select>
+                </div>
+                <div className="form-group post-code">
+                  <label htmlFor="cnb-zip-code">Zip</label>
+                  <input
+                    type="text"
+                    className={zipCodeClass}
+                    id="cnb-zip-code"
+                    name="cnb-zip-code"
+                    placeholder="Zip code"
+                    onChange={(e) => setCrZipCode(e.target.value)}
+                  />
+                </div>
+              </div>
 
-            <div className={`subs-step ${showReviewStep}`}>
-              <h4>Review and Submit</h4>
-              <div className="mt-4">Order summary:</div>
-              <div className="renewal-amount ">
-                {/* <?php
+              {billingErrorMessages && <p className="error-msg">{billingErrorMessages}</p>}
+
+              <div className="btn-set-inline">
+                <button
+                  className="s-btn btn-half"
+                  onClick={() => {
+                    setShowPaymentStep("");
+                    setShowBillingStep("hide");
+                  }}
+                >
+                  Previous
+                </button>
+                <button className="s-btn btn-half btn-continue" onClick={handleNextReviewStep}>
+                  Continue
+                </button>
+              </div>
+              <div className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
+                Cancel
+              </div>
+            </div>
+          </div>
+
+          <div className={`subs-step ${showReviewStep}`}>
+            <h4>Review and Submit</h4>
+            <div>Order summary:</div>
+            <div className="renewal-amount ">
+              {/* <?php
                 foreach (CNB_PLAN_INFO_LIST as $key => $plan) {
                     if ( $plan['active'] && strpos($plan['recurly_code'], 'gift') === false ) {
                         $s_text = ($plan['interval_count'] > 1) ? 's' : '';
@@ -390,10 +475,10 @@ export default function Subscription({ gift, plansInfo }) {
                       <p className="<?php echo $item_class; ?>">$<?php echo $plan['amount']; ?></p>
                 <?php }
                 } ?> */}
-              </div>
-              <div className="total-bill">
-                <p>Total Billed </p>
-                {/* <?php
+            </div>
+            <div className="total-bill">
+              <p>Total Billed </p>
+              {/* <?php
                 foreach (CNB_PLAN_INFO_LIST as $key => $plan) {
                     if ( $plan['active'] && strpos($plan['recurly_code'], 'gift') === false ) {
                         $item_class = 'cnb-plan-item plan-id-'.$plan['_id'];
@@ -401,68 +486,84 @@ export default function Subscription({ gift, plansInfo }) {
                       <p className="<?php echo $item_class; ?>">$<?php echo $plan['amount']; ?></p>
                 <?php }
                 } ?> */}
-              </div>
-              <p className="text-right">
-                <small>+ sales tax where applicable</small>
-              </p>
-              <div className="auto-renewal-description">
-                <p className="automatic-title">Automatic Renewal:</p>
-                <p>
-                  Auto renewal means your subscription will be automatically renewed using the credit card you signed up
-                  with, at the same rate, and term. You will receive an e-mail notification from C&B VIP prior to your
-                  expiration date. For C&B VIP subscribers who have selected a one-year term, an auto renewal notice
-                  will be sent at least 30 days prior to the expire date, at which point you will be automatically
-                  charged US $interval_price_text each interval_time_text until you cancel. You will be notified prior
-                  to your automatic renewal if subscription prices change. Of course, you may cancel your subscription
-                  any time by sending an e-mail to: help@clayandbuck.com. Sorry, partial months cannot be refunded.
-                  <br />
-                  <br />
-                  By subscribing you agree to Automatic Renewal as described above, our User Agreement, and Privacy
-                  Policy & Cookie Statement.
-                </p>
-              </div>
-              <div className="custom-checkbox">
-                <input
-                  type="checkbox"
-                  className="custom-control-input"
-                  name="cnb-accept-auto-renewal"
-                  id="cnb-accept-auto-renewal"
-                />
-                <label className="custom-control-label" htmlFor="cnb-accept-auto-renewal">
-                  I accept auto-renewal
-                </label>
-              </div>
-              <div className="custom-checkbox mb-1">
-                <input type="checkbox" className="custom-control-input" id="cnb-accept-terms" name="cnb-accept-terms" />
-                <label className="custom-control-label" htmlFor="cnb-accept-terms">
-                  I accept<b> Terms of Use & Privacy Policy</b>
-                </label>
-              </div>
-              <a href="/optout" className="not-sell-personal-info">
-                Do Not Sell or Share My Personal Information
-              </a>
-              <p className="error-msg"></p>
-              <div className="btn-set-inline">
-                <button className="s-btn btn-half">Previous</button>
-                <button className="s-btn btn-half btn-submit disabled">Subscribe</button>
-              </div>
-              <div className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
-                Cancel
-              </div>
             </div>
-
-            <div className={`subs-step ${showSuccessStep}`}>
-              <h4>You have successfully subscribed to C&B VIP</h4>
+            <p className="text-right">
+              <small>+ sales tax where applicable</small>
+            </p>
+            <div className="auto-renewal-description">
+              <p className="automatic-title">Automatic Renewal:</p>
               <p>
-                You will receive an email with your order confirmation. To change your settings, update your account
-                information, or cancel your subscription at a later date, please visit the My Account section.
+                Auto renewal means your subscription will be automatically renewed using the credit card you signed up
+                with, at the same rate, and term. You will receive an e-mail notification from C&B VIP prior to your
+                expiration date. For C&B VIP subscribers who have selected a one-year term, an auto renewal notice will
+                be sent at least 30 days prior to the expire date, at which point you will be automatically charged US
+                $interval_price_text each interval_time_text until you cancel. You will be notified prior to your
+                automatic renewal if subscription prices change. Of course, you may cancel your subscription any time by
+                sending an e-mail to: help@clayandbuck.com. Sorry, partial months cannot be refunded.
+                <br />
+                <br />
+                By subscribing you agree to Automatic Renewal as described above, our User Agreement, and Privacy Policy
+                & Cookie Statement.
               </p>
+            </div>
+            <div className="custom-checkbox">
+              <input
+                type="checkbox"
+                className="custom-control-input"
+                id="cnb-accept-auto-renewal"
+                onChange={(e) => setCrAcceptRenewal(e.target.checked)}
+              />
+              <label className="custom-control-label" htmlFor="cnb-accept-auto-renewal">
+                I accept auto-renewal
+              </label>
+            </div>
+            <div className="custom-checkbox">
+              <input
+                type="checkbox"
+                className="custom-control-input"
+                id="cnb-accept-terms"
+                onChange={(e) => setCrAcceptTerm(e.target.checked)}
+              />
+              <label className="custom-control-label" htmlFor="cnb-accept-terms">
+                I accept<b> Terms of Use & Privacy Policy</b>
+              </label>
+            </div>
+            <Link href="/optout" className="not-sell-personal-info">
+              Do Not Sell or Share My Personal Information
+            </Link>
 
-              <div className="btn-set-inline mt-4">
-                <a href="/" className="btn btn-full btn-submit">
-                  Return to Site
-                </a>
-              </div>
+            {reviewErrorMessages && <p className="error-msg">{reviewErrorMessages}</p>}
+
+            <div className="btn-set-inline">
+              <button
+                className="s-btn btn-half"
+                onClick={() => {
+                  setShowBillingStep("");
+                  setShowReviewStep("hide");
+                }}
+              >
+                Previous
+              </button>
+              <button className="s-btn btn-half btn-submit" onClick={handleSubscription}>
+                Subscribe
+              </button>
+            </div>
+            <div className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
+              Cancel
+            </div>
+          </div>
+
+          <div className={`subs-step ${showSuccessStep}`}>
+            <h4>You have successfully subscribed to C&B VIP</h4>
+            <p>
+              You will receive an email with your order confirmation. To change your settings, update your account
+              information, or cancel your subscription at a later date, please visit the My Account section.
+            </p>
+
+            <div className="btn-set-inline mt-4">
+              <Link href="/" className="btn btn-full btn-submit">
+                Return to Site
+              </Link>
             </div>
           </div>
         </div>
