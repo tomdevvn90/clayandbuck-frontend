@@ -65,7 +65,7 @@ export default function VerifyEmail({ gift, emailToken }) {
 
     setIsLoading(true);
     const createAccRes = await createUser(emailToken, password, passwordHint);
-    console.log(createAccRes);
+    // console.log(createAccRes);
 
     if (createAccRes.success) {
       const userInfo = createAccRes.userInfoForCookie;
@@ -81,10 +81,8 @@ export default function VerifyEmail({ gift, emailToken }) {
       );
 
       if (isSignUpGift == "1") {
-        // window.location.href = "/cnb-give-the-gift/";
         router.push("/cnb-give-the-gift");
       } else {
-        // window.location.href = "/cnb-subscription/";
         router.push("/cnb-subscription");
       }
     } else {

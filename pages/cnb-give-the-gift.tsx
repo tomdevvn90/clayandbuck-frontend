@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Layout from "../components/layout/layout";
-import Subscription from "../components/cnb-subscriber/subscription";
 import Link from "next/link";
+import GiveTheGift from "../components/cnb-subscriber/give-the-gift";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { CNB_RECURLY_API_KEY, SITE_URL } from "../lib/constants";
@@ -16,7 +16,7 @@ const Container = dynamic(() => import("../components/container"), {
   ssr: false,
 });
 
-export default function SubscriptionPage({ pageData, plansInfoRes }) {
+export default function GiftSubscriptionPage({ pageData, plansInfoRes }) {
   const GlobalsCtx = useContext(GlobalsContext);
 
   const page = pageData?.pageBy ?? {};
@@ -36,13 +36,12 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
   const accessToken = getCookie("STYXKEY_ACCESS_TOKEN");
-  const isSubscribe = getCookie("STYXKEY_USER_SUBSCRIBED");
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>
         {/* {fullHead} */}
         <link rel="canonical" href={canonicalUrl} />
-        <title>Subscribe to C&B VIP</title>
+        <title>Give the gift of C&B VIP</title>
         <meta
           name="description"
           content="Clay Travis and Buck Sexton tackle the biggest stories in news, politics and current events with intelligence and humor."
@@ -53,7 +52,7 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
         ></meta>
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="article" />
-        <meta property="og:title" content="Subscribe to C&B VIP" />
+        <meta property="og:title" content="Give the gift of C&B VIP" />
         <meta
           property="og:description"
           content="Subscribe to C&B VIP Sign up to become a C&B VIP subscriber and listen to the show live or on-demand on your computer or mobile device commercial-free. C&B VIP Members Benefits: Commercial-Free Audio Stream, Live or On-DemandCommercial-Free PodcastsExclusive VIP Invitations to C&B EventsExclusive Clay & Buck VIP VideosExclusive email access directly to Clay & Buck […]"
@@ -62,40 +61,29 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
         <meta property="og:site_name" content="The Clay Travis & Buck Sexton Show" />
         <meta property="og:image" content={page.seoTwitterThumb} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Subscribe to C&B VIP" />
+        <meta name="twitter:title" content="Give the gift of C&B VIP" />
         <meta name="twitter:image" content={page.seoTwitterThumb} />
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
       </Head>
       <div className={`main-wrap page ${pageClass}`}>
-        {!accessToken || isSubscribe ? (
+        {!accessToken ? (
           <Container>
-            {isSubscribe ? (
-              <div className="require-subs-only-wrap">
-                <h2>You are already subscribed.</h2>
-                <p></p>
-                <p></p>
-                <Link href="/" className="cnb-btn">
-                  Return to Site
-                </Link>
-              </div>
-            ) : (
-              <div className="require-subs-only-wrap">
-                <h2>Please login to continue subscription.</h2>
-                <p></p>
-                <p></p>
-                <button className="btn" onClick={() => GlobalsCtx.setOpenLoginModal(true)}>
-                  Login
-                </button>
-              </div>
-            )}
+            <div className="require-subs-only-wrap">
+              <h2>Please login to continue subscription.</h2>
+              <p></p>
+              <p></p>
+              <button className="btn" onClick={() => GlobalsCtx.setOpenLoginModal(true)}>
+                Login
+              </button>
+            </div>
           </Container>
         ) : (
           <>
             <Container>
               <RecurlyProvider publicKey={CNB_RECURLY_API_KEY}>
                 <Elements>
-                  <Subscription gift={false} plansInfoRes={plansInfoRes} />
+                  <GiveTheGift gift={true} plansInfoRes={plansInfoRes} />
                 </Elements>
               </RecurlyProvider>
             </Container>
@@ -108,7 +96,7 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
 
 /** Server-side Rendering (SSR) */
 export async function getServerSideProps({ req, res }) {
-  const pageData = await getPageData("/cnb-subscription");
+  const pageData = await getPageData("/cnb-give-the-gift");
 
   const userEmailCk = getCookie("STYXKEY_USER_EMAIL", { req, res });
   const userEmail = userEmailCk ? userEmailCk.toString() : "";

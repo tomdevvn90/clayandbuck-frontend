@@ -261,6 +261,9 @@
         color: #fff;
       }
     }
+    .btn-full {
+      width: 100%;
+    }
     .btn-half {
       width: calc(50% - 6px);
     }
@@ -446,26 +449,55 @@
         }
       }
     }
+    .summary-title {
+      margin: 8px 0;
+    }
+    .renewal-amount {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #e6eaed;
+      padding-bottom: 10px;
+
+      p {
+        margin: 0;
+        line-height: 24px;
+        letter-spacing: -0.02em;
+        text-transform: capitalize;
+      }
+    }
+    .total-bill {
+      padding-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      p {
+        font-weight: 700;
+        margin: 0;
+      }
+    }
+    p.subs-note {
+      margin: 0 0 1.5em;
+      small {
+        font-size: 80%;
+      }
+    }
     .auto-renewal-description {
       margin-bottom: 32px;
 
       .automatic-title {
         font-weight: 700;
-        font-family: $secondary-font;
         font-size: 12px;
-        margin: 0;
       }
 
       p {
-        font-weight: 400;
-        font-family: $secondary-font;
         font-size: 12px;
         line-height: 16px;
         margin: 0;
       }
     }
     .not-sell-personal-info {
-      font-family: $secondary-font;
       font-weight: 700;
       font-size: 14px;
       line-height: 24px;

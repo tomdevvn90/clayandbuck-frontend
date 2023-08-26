@@ -37,6 +37,10 @@ export default function Header({ headerMenu }) {
   const GlobalsCtx = useContext(GlobalsContext);
 
   useEffect(() => {
+    GlobalsCtx.setOpenLoginModal(false);
+  }, []);
+
+  useEffect(() => {
     if (GlobalsCtx.openLoginModal) {
       document.body.classList.add("overflow-hidden");
     } else {

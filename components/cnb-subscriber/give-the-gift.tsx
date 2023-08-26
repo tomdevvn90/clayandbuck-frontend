@@ -1,5 +1,4 @@
 import SubscribeInfo from "./parts/subscribe-info";
-import Link from "next/link";
 import { useRef, useState } from "react";
 import {
   cnbCheckZipCodeMatchStateForCA,
@@ -10,6 +9,7 @@ import {
 import { CardElement, useRecurly } from "@recurly/react-recurly";
 import dynamic from "next/dynamic";
 import { cnbRenderCountryStates } from "../../utils/html-render-functions";
+import Link from "next/link";
 import { createSubscription } from "../../lib/normal-api";
 import { getCookie } from "cookies-next";
 
@@ -17,15 +17,17 @@ const CancelPopup = dynamic(() => import("./parts/cancel-popup"), {
   ssr: false,
 });
 
-export default function Subscription({ gift, plansInfoRes }) {
+export default function GiveTheGift({ gift, plansInfoRes }) {
   const formRef = useRef();
   const recurly = useRecurly();
+  const isSubscribe = getCookie("STYXKEY_USER_SUBSCRIBED");
 
   const plansInfo = plansInfoRes.success ? plansInfoRes.plansInfo : [];
   const userPlanId = plansInfoRes.success ? plansInfoRes.userPlanId : "";
 
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [showPlanStep, setShowPlanStep] = useState("");
+  const [showRecipientStep, setShowRecipientStep] = useState("hide");
   const [showPaymentStep, setShowPaymentStep] = useState("hide");
   const [showBillingStep, setShowBillingStep] = useState("hide");
   const [showReviewStep, setShowReviewStep] = useState("hide");
@@ -33,6 +35,7 @@ export default function Subscription({ gift, plansInfoRes }) {
 
   const [crCountry, setCrCountry] = useState("");
   const [crPlan, setCrPlan] = useState(userPlanId);
+  const [crRecipientCountry, setCrRecipientCountry] = useState("");
   const [crFirstName, setCrFirstName] = useState("");
   const [crLastName, setCrLastName] = useState("");
   const [crCompany, setCrCompany] = useState("");
@@ -50,6 +53,7 @@ export default function Subscription({ gift, plansInfoRes }) {
   const [isCardValid, setIsCardValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [planErrorMessages, setPlanErrorMessages] = useState("");
+  const [recipientErrorMessages, setRecipientErrorMessages] = useState("");
   const [cardErrorMessages, setCardErrorMessages] = useState("");
   const [billingErrorMessages, setBillingErrorMessages] = useState("");
   const [reviewErrorMessages, setReviewErrorMessages] = useState("");
@@ -61,7 +65,7 @@ export default function Subscription({ gift, plansInfoRes }) {
   const [stateClass, setStateClass] = useState("");
   const [zipCodeClass, setZipCodeClass] = useState("");
 
-  const handleNextPaymentStep = () => {
+  const handleNextRecipientStep = () => {
     setPlanErrorMessages("");
     if (!crCountry) {
       setPlanErrorMessages("Please choose your country.");
@@ -72,6 +76,20 @@ export default function Subscription({ gift, plansInfoRes }) {
       return false;
     }
     setShowPlanStep("hide");
+    setShowRecipientStep("");
+  };
+
+  const handleNextPaymentStep = () => {
+    setRecipientErrorMessages("");
+    // if (!crCountry) {
+    //   setRecipientErrorMessages("Please choose your country.");
+    //   return false;
+    // }
+    // if (!crPlan) {
+    //   setRecipientErrorMessages("Please choose your plan.");
+    //   return false;
+    // }
+    setShowRecipientStep("hide");
     setShowPaymentStep("");
   };
 
@@ -208,13 +226,15 @@ export default function Subscription({ gift, plansInfoRes }) {
           <div className={`subs-step ${showPlanStep}`}>
             {plansInfo.length > 0 ? (
               <>
-                <h4>Pick Your Plan</h4>
-                <p>
-                  You can change or cancel your plan anytime.{" "}
-                  <Link href="/cnb-give-the-gift/" className="highlight">
-                    Give as a gift
-                  </Link>
-                </p>
+                <h4>Pick Your Gift Plan</h4>
+                {!isSubscribe && (
+                  <p>
+                    <Link href="/cnb-subscription/" className="highlight">
+                      Add a subscription to your account
+                    </Link>
+                  </p>
+                )}
+
                 <div className="step-form">
                   {planErrorMessages && <p className="error-msg">{planErrorMessages}</p>}
 
@@ -234,7 +254,7 @@ export default function Subscription({ gift, plansInfoRes }) {
                     Select your plan:
                   </label>
                   {plansInfo.map((plan, index) => {
-                    if (plan.active && plan.recurly_code.includes("gift") === false) {
+                    if (plan.active && plan.recurly_code.includes("gift") !== false) {
                       const intervalCount = plan.interval_count;
                       const sText = intervalCount > 1 ? "s" : "";
                       const planInterval = cnbGetPlanIntervalText(plan.interval);
@@ -260,7 +280,6 @@ export default function Subscription({ gift, plansInfoRes }) {
                             <strong>
                               {intervalText} for ${plan.amount}
                             </strong>
-                            <span>Auto-renews after {intervalText}</span>
                           </label>
                         </div>
                       );
@@ -272,7 +291,7 @@ export default function Subscription({ gift, plansInfoRes }) {
                     <button className="s-btn btn-half" onClick={() => setShowCancelPopup(true)}>
                       Previous
                     </button>
-                    <button className="s-btn btn-half btn-continue" onClick={handleNextPaymentStep}>
+                    <button className="s-btn btn-half btn-continue" onClick={handleNextRecipientStep}>
                       Continue
                     </button>
                   </div>
@@ -284,6 +303,66 @@ export default function Subscription({ gift, plansInfoRes }) {
             ) : (
               <p className="error-msg">Something went wrong. Please reload the page and try again.</p>
             )}
+          </div>
+
+          <div className={`subs-step ${showRecipientStep}`}>
+            <h4>Enter Your Gift Recipient's Info</h4>
+            <div className="step-form">
+              {recipientErrorMessages && <p className="error-msg">{recipientErrorMessages}</p>}
+
+              <div className="form-group">
+                <label htmlFor="cnb-country">Recipient Location:</label>
+                <select
+                  className="form-control country-select"
+                  name="cnb_country"
+                  onChange={(e) => setCrRecipientCountry(e.target.value)}
+                >
+                  <option value="">Select your country</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label htmlFor="cnb-recipient-name">Recipient Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="cnb-recipient-name"
+                  name="cnb-recipient-name"
+                  placeholder="Enter recipient name"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="cnb-recipient-email">Recipient Email</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="cnb-recipient-email"
+                  name="cnb-recipient-email"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter recipient email"
+                  required
+                />
+              </div>
+              <p className="error-msg"></p>
+              <div className="btn-set-inline">
+                <button
+                  className="s-btn btn-half"
+                  onClick={() => {
+                    setShowPlanStep("");
+                    setShowRecipientStep("hide");
+                  }}
+                >
+                  Previous
+                </button>
+                <button className="s-btn btn-half btn-continue" onClick={handleNextPaymentStep}>
+                  Continue
+                </button>
+              </div>
+              <button className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
+                Cancel
+              </button>
+            </div>
           </div>
 
           <div className={`subs-step ${showPaymentStep}`}>
@@ -323,7 +402,7 @@ export default function Subscription({ gift, plansInfoRes }) {
                 <button
                   className="s-btn btn-half"
                   onClick={() => {
-                    setShowPlanStep("");
+                    setShowRecipientStep("");
                     setShowPaymentStep("hide");
                   }}
                 >
@@ -466,7 +545,7 @@ export default function Subscription({ gift, plansInfoRes }) {
             <h4>Review and Submit</h4>
             <div className="summary-title">Order summary:</div>
             <div className="renewal-amount ">
-              <p>{crIntervalText} Auto Renewal </p>
+              <p>Gift {crIntervalText}</p>
               <p>${crIntervalPrice}</p>
             </div>
             <div className="total-bill">
@@ -491,17 +570,6 @@ export default function Subscription({ gift, plansInfoRes }) {
                 By subscribing you agree to Automatic Renewal as described above, our User Agreement, and Privacy Policy
                 & Cookie Statement.
               </p>
-            </div>
-            <div className="custom-checkbox">
-              <input
-                type="checkbox"
-                className="custom-control-input"
-                id="cnb-accept-auto-renewal"
-                onChange={(e) => setCrAcceptRenewal(e.target.checked)}
-              />
-              <label className="custom-control-label" htmlFor="cnb-accept-auto-renewal">
-                I accept auto-renewal
-              </label>
             </div>
             <div className="custom-checkbox">
               <input
@@ -540,10 +608,10 @@ export default function Subscription({ gift, plansInfoRes }) {
           </div>
 
           <div className={`subs-step ${showSuccessStep}`}>
-            <h4>You have successfully subscribed to C&B VIP</h4>
+            <h4>You have successfully gifted C&B VIP</h4>
             <p>
-              You will receive an email with your order confirmation. To change your settings, update your account
-              information, or cancel your subscription at a later date, please visit the My Account section.
+              You will receive an email with your order confirmation and the recipient will receive an email that will
+              allow them to set up their account.
             </p>
 
             <div className="btn-set-inline">
