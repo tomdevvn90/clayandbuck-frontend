@@ -182,8 +182,29 @@ export async function createUser(emailToken: string, password: string, passwordH
 }
 
 /**
- * Create User
+ * Create Subscription
  */
 export async function createSubscription(accessToken: string, recurlyToken: string, planId: string, company: string) {
   return await fetchAPIPost(`/v2/subscriber/create-subscription/`, { accessToken, recurlyToken, planId, company });
+}
+
+/**
+ * Create Gift Subscription
+ */
+export async function createGiftSubscription(
+  accessToken: string,
+  recurlyToken: string,
+  gRecaptcha: string,
+  planId: string,
+  giftEmail: string,
+  giftName: string
+) {
+  return await fetchAPIPost(`/v2/subscriber/create-gift-subscription/`, {
+    accessToken,
+    recurlyToken,
+    gRecaptcha,
+    planId,
+    giftEmail,
+    giftName,
+  });
 }

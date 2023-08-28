@@ -18,8 +18,6 @@ export default function SignUpPage({ pageData, plansInfo }) {
   // }
 
   const { headerMenu, footerMenu } = pageData;
-  const { templateName } = page?.template ?? "";
-  const pageClass = templateName ? templateName.toLowerCase().replace(" ", "-") : "";
 
   // const { seo } = page
   // const fullHead = ParseHtmlToReact(seo.fullHead);
@@ -56,7 +54,7 @@ export default function SignUpPage({ pageData, plansInfo }) {
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
       </Head>
-      <div className={`main-wrap page ${pageClass}`}>
+      <div className="main-wrap page sign-up-flow">
         <Container>
           <GoogleReCaptchaProvider
             reCaptchaKey={CNB_RECAPTCHA_KEY}

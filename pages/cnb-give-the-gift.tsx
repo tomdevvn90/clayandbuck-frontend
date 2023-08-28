@@ -4,13 +4,14 @@ import Link from "next/link";
 import GiveTheGift from "../components/cnb-subscriber/give-the-gift";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
-import { CNB_RECURLY_API_KEY, SITE_URL } from "../lib/constants";
+import { CNB_RECAPTCHA_KEY, CNB_RECURLY_API_KEY, SITE_URL } from "../lib/constants";
 import { getPlansInfo } from "../lib/normal-api";
 import { RecurlyProvider, Elements } from "@recurly/react-recurly";
 import dynamic from "next/dynamic";
 import { getCookie } from "cookies-next";
 import { useContext } from "react";
 import { GlobalsContext } from "../contexts/GlobalsContext";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 const Container = dynamic(() => import("../components/container"), {
   ssr: false,
@@ -27,8 +28,6 @@ export default function GiftSubscriptionPage({ pageData, plansInfoRes }) {
   // }
 
   const { headerMenu, footerMenu } = pageData;
-  const { templateName } = page?.template ?? "";
-  const pageClass = templateName ? templateName.toLowerCase().replace(" ", "-") : "";
 
   // const { seo } = page
   // const fullHead = ParseHtmlToReact(seo.fullHead);
@@ -66,7 +65,7 @@ export default function GiftSubscriptionPage({ pageData, plansInfoRes }) {
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
       </Head>
-      <div className={`main-wrap page ${pageClass}`}>
+      <div className="main-wrap page sign-up-flow">
         {!accessToken ? (
           <Container>
             <div className="require-subs-only-wrap">
@@ -83,7 +82,17 @@ export default function GiftSubscriptionPage({ pageData, plansInfoRes }) {
             <Container>
               <RecurlyProvider publicKey={CNB_RECURLY_API_KEY}>
                 <Elements>
-                  <GiveTheGift gift={true} plansInfoRes={plansInfoRes} />
+                  <GoogleReCaptchaProvider
+                    reCaptchaKey={CNB_RECAPTCHA_KEY}
+                    scriptProps={{
+                      async: false,
+                      defer: true,
+                      appendTo: "body",
+                      nonce: undefined,
+                    }}
+                  >
+                    <GiveTheGift gift={true} plansInfoRes={plansInfoRes} />
+                  </GoogleReCaptchaProvider>
                 </Elements>
               </RecurlyProvider>
             </Container>

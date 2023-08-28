@@ -1,5 +1,5 @@
 import SubscribeInfo from "./parts/subscribe-info";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   cnbCheckZipCodeMatchStateForCA,
   cnbGetPlanIntervalText,
@@ -10,8 +10,9 @@ import { CardElement, useRecurly } from "@recurly/react-recurly";
 import dynamic from "next/dynamic";
 import { cnbRenderCountryStates } from "../../utils/html-render-functions";
 import Link from "next/link";
-import { createSubscription } from "../../lib/normal-api";
+import { createGiftSubscription, createSubscription } from "../../lib/normal-api";
 import { getCookie } from "cookies-next";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const CancelPopup = dynamic(() => import("./parts/cancel-popup"), {
   ssr: false,
@@ -20,8 +21,9 @@ const CancelPopup = dynamic(() => import("./parts/cancel-popup"), {
 export default function GiveTheGift({ gift, plansInfoRes }) {
   const formRef = useRef();
   const recurly = useRecurly();
-  const isSubscribe = getCookie("STYXKEY_USER_SUBSCRIBED");
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
+  const isSubscribe = getCookie("STYXKEY_USER_SUBSCRIBED");
   const plansInfo = plansInfoRes.success ? plansInfoRes.plansInfo : [];
   const userPlanId = plansInfoRes.success ? plansInfoRes.userPlanId : "";
 
@@ -33,9 +35,11 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
   const [showReviewStep, setShowReviewStep] = useState("hide");
   const [showSuccessStep, setShowSuccessStep] = useState("hide");
 
+  // const [crRecipientCountry, setCrRecipientCountry] = useState("");
   const [crCountry, setCrCountry] = useState("");
   const [crPlan, setCrPlan] = useState(userPlanId);
-  const [crRecipientCountry, setCrRecipientCountry] = useState("");
+  const [crRecipientName, setCrRecipientName] = useState("");
+  const [crRecipientEmail, setCrRecipientEmail] = useState("");
   const [crFirstName, setCrFirstName] = useState("");
   const [crLastName, setCrLastName] = useState("");
   const [crCompany, setCrCompany] = useState("");
@@ -45,7 +49,6 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
   const [crCity, setCrCity] = useState("");
   const [crState, setCrState] = useState("");
   const [crZipCode, setCrZipCode] = useState("");
-  const [crAcceptRenewal, setCrAcceptRenewal] = useState(false);
   const [crAcceptTerm, setCrAcceptTerm] = useState(false);
   const [crIntervalText, setCrIntervalText] = useState("");
   const [crIntervalPrice, setCrIntervalPrice] = useState("");
@@ -58,12 +61,33 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
   const [billingErrorMessages, setBillingErrorMessages] = useState("");
   const [reviewErrorMessages, setReviewErrorMessages] = useState("");
 
+  // const [rpCountryClass, setRpCountryClass] = useState("");
+  const [rpNameClass, setRpNameClass] = useState("");
+  const [rpEmailClass, setRpEmailClass] = useState("");
   const [firstNameClass, setFirstNameClass] = useState("");
   const [lastNameClass, setLastNameClass] = useState("");
   const [addr1Class, setAddr1Class] = useState("");
   const [cityClass, setCityClass] = useState("");
   const [stateClass, setStateClass] = useState("");
   const [zipCodeClass, setZipCodeClass] = useState("");
+
+  useEffect(() => {
+    for (var i = 0; i < plansInfo.length; i++) {
+      let plan = plansInfo[i];
+      if (plan.active && plan.recurly_code.includes("gift") !== false) {
+        const intervalCount = plan.interval_count;
+        const sText = intervalCount > 1 ? "s" : "";
+        const planInterval = cnbGetPlanIntervalText(plan.interval);
+        const intervalText = `${intervalCount} ${planInterval}${sText}`;
+
+        if (userPlanId == plan._id) {
+          setCrIntervalText(intervalText);
+          setCrIntervalPrice(plan.amount);
+          break;
+        }
+      }
+    }
+  }, []);
 
   const handleNextRecipientStep = () => {
     setPlanErrorMessages("");
@@ -81,14 +105,26 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
 
   const handleNextPaymentStep = () => {
     setRecipientErrorMessages("");
-    // if (!crCountry) {
-    //   setRecipientErrorMessages("Please choose your country.");
+    setRpNameClass("");
+    setRpEmailClass("");
+    // setRpCountryClass("");
+
+    // if (!crRecipientCountry) {
+    //   setRecipientErrorMessages("Please choose Recipient's Country.");
+    //   setRpCountryClass("error");
     //   return false;
     // }
-    // if (!crPlan) {
-    //   setRecipientErrorMessages("Please choose your plan.");
-    //   return false;
-    // }
+    if (!crRecipientName) {
+      setRecipientErrorMessages("Please choose Recipient's Name.");
+      setRpNameClass("error");
+      return false;
+    }
+    if (!crRecipientEmail) {
+      setRecipientErrorMessages("Please choose Recipient's Email.");
+      setRpEmailClass("error");
+      return false;
+    }
+
     setShowRecipientStep("hide");
     setShowPaymentStep("");
   };
@@ -160,10 +196,6 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
   const handleSubscription = async () => {
     setReviewErrorMessages("");
 
-    if (!crAcceptRenewal) {
-      setReviewErrorMessages("Please accept auto-renewal.");
-      return false;
-    }
     if (!crAcceptTerm) {
       setReviewErrorMessages("Please accept accept terms.");
       return false;
@@ -191,19 +223,38 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
           return false;
         }
 
-        const createSubsRes = await createSubscription(accessToken.toString(), recurlyToken, crPlan, crCompany);
-        console.log(createSubsRes);
+        // Check Google Recaptcha
+        if (!executeRecaptcha) {
+          console.log("Execute recaptcha not yet available");
+          setReviewErrorMessages(`Something went wrong. Please try again!`);
+          return false;
+        }
 
-        if (createSubsRes.success) {
-          setACookieF("STYXKEY_USER_SUBSCRIBED", "subscribed");
-          setShowSuccessStep("");
-          setShowReviewStep("hide");
-        } else {
-          if (createSubsRes.error_message) {
-            setReviewErrorMessages(createSubsRes.error_message);
+        const grecaptchaToken = await executeRecaptcha("giftee_account");
+        if (grecaptchaToken) {
+          const createGiftSubsRes = await createGiftSubscription(
+            accessToken.toString(),
+            recurlyToken,
+            grecaptchaToken,
+            crPlan,
+            crRecipientEmail,
+            crRecipientName
+          );
+          console.log(createGiftSubsRes);
+
+          if (createGiftSubsRes.success) {
+            setShowSuccessStep("");
+            setShowReviewStep("hide");
           } else {
-            setReviewErrorMessages("Something went wrong. Please try again!");
+            if (createGiftSubsRes.error_message) {
+              setReviewErrorMessages(createGiftSubsRes.error_message);
+            } else {
+              setReviewErrorMessages("Something went wrong. Please try again!");
+            }
           }
+        } else {
+          console.log("Cannot get recaptcha token");
+          setReviewErrorMessages(`Something went wrong. Please try again!`);
         }
         setIsLoading(false);
       }
@@ -211,7 +262,7 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
   };
 
   return (
-    <div className="sign-up-wrap">
+    <div className="sign-up-wrap gift-subs">
       <div className="subscribe-left">
         <SubscribeInfo gift={gift} />
       </div>
@@ -310,10 +361,10 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
             <div className="step-form">
               {recipientErrorMessages && <p className="error-msg">{recipientErrorMessages}</p>}
 
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="cnb-country">Recipient Location:</label>
                 <select
-                  className="form-control country-select"
+                  className={rpCountryClass}
                   name="cnb_country"
                   onChange={(e) => setCrRecipientCountry(e.target.value)}
                 >
@@ -321,30 +372,29 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
                   <option value="US">United States</option>
                   <option value="CA">Canada</option>
                 </select>
-              </div>
+              </div> */}
               <div className="form-group">
                 <label htmlFor="cnb-recipient-name">Recipient Name</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className={rpNameClass}
                   id="cnb-recipient-name"
-                  name="cnb-recipient-name"
                   placeholder="Enter recipient name"
+                  onChange={(e) => setCrRecipientName(e.target.value)}
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="cnb-recipient-email">Recipient Email</label>
                 <input
                   type="email"
-                  className="form-control"
+                  className={rpEmailClass}
                   id="cnb-recipient-email"
-                  name="cnb-recipient-email"
                   aria-describedby="emailHelp"
                   placeholder="Enter recipient email"
+                  onChange={(e) => setCrRecipientEmail(e.target.value)}
                   required
                 />
               </div>
-              <p className="error-msg"></p>
               <div className="btn-set-inline">
                 <button
                   className="s-btn btn-half"

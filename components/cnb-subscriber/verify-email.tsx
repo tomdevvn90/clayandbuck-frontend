@@ -148,14 +148,14 @@ export default function VerifyEmail({ gift, emailToken }) {
                 />
               </div>
               <div className="btn-set-inline">
-                <div className="s-btn btn-half btn-previous" onClick={() => setShowCancelPopup(true)}>
+                <div className="s-btn btn-half" onClick={() => setShowCancelPopup(true)}>
                   Previous
                 </div>
                 <button className="s-btn btn-half btn-submit">Continue</button>
               </div>
             </div>
           </form>
-          <button className="btn-cancel btn-cancel-confirmation" onClick={() => setShowCancelPopup(true)}>
+          <button className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
             Cancel
           </button>
         </div>

@@ -17,7 +17,6 @@ export default function SignUp({ gift, plansInfo }) {
   const [showEmailStep, setShowEmailStep] = useState("hide");
   const [showSuccessStep, setShowSuccessStep] = useState(false);
   const [showCancelPopup, setShowCancelPopup] = useState(false);
-  const [activeNextBtn, setActiveNextBtn] = useState(false);
   const [planSelected, setPlanSelected] = useState("");
   const [emailEntered, setEmailEntered] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -29,13 +28,14 @@ export default function SignUp({ gift, plansInfo }) {
   };
 
   const handleShowEmailStep = () => {
+    if (!planSelected) {
+      setErrorMessages("Please choose your plan.");
+      return false;
+    }
+
+    setErrorMessages("");
     setShowEmailStep("");
     setShowPlanStep("hide");
-  };
-
-  const handlePlanChange = (e) => {
-    setActiveNextBtn(true);
-    setPlanSelected(e.target.value);
   };
 
   const handleSubmit = async (event, gift) => {
@@ -75,12 +75,11 @@ export default function SignUp({ gift, plansInfo }) {
           setErrorMessages("Something went wrong. Please try again!");
         }
       }
-      setIsLoading(false);
     } else {
       console.log("Cannot get recaptcha token");
       setErrorMessages(`Something went wrong. Please try again!`);
-      return false;
     }
+    setIsLoading(false);
   };
 
   return (
@@ -115,6 +114,8 @@ export default function SignUp({ gift, plansInfo }) {
             )}
 
             <div className="step-form">
+              {errorMessages && <p className="error-msg">{errorMessages}</p>}
+
               <label htmlFor="cnb-plan" className="form-group-label">
                 Select your plan:
               </label>
@@ -135,7 +136,7 @@ export default function SignUp({ gift, plansInfo }) {
                           name="cnb_plan_id"
                           id={`cnb_plan_id_${index + 1}`}
                           value={plan._id}
-                          onChange={(e) => handlePlanChange(e)}
+                          onChange={(e) => setPlanSelected(e.target.value)}
                         />
                         <label className="form-label" htmlFor={`cnb_plan_id_${index + 1}`}>
                           <strong>
@@ -161,7 +162,7 @@ export default function SignUp({ gift, plansInfo }) {
                           name="cnb_plan_id"
                           id={`cnb_plan_id_${index + 1}`}
                           value={plan._id}
-                          onChange={(e) => handlePlanChange(e)}
+                          onChange={(e) => setPlanSelected(e.target.value)}
                         />
                         <label className="form-label" htmlFor={`cnb_plan_id_${index + 1}`}>
                           <strong>
@@ -176,19 +177,15 @@ export default function SignUp({ gift, plansInfo }) {
                 })}
 
               <div className="btn-set-inline">
-                <button className="s-btn btn-half btn-cancel-confirmation" onClick={() => setShowCancelPopup(true)}>
+                <button className="s-btn btn-half" onClick={() => setShowCancelPopup(true)}>
                   Previous
                 </button>
 
-                {activeNextBtn ? (
-                  <button className="s-btn btn-half btn-continue" onClick={handleShowEmailStep}>
-                    Continue
-                  </button>
-                ) : (
-                  <button className="s-btn btn-half btn-continue disabled">Continue</button>
-                )}
+                <button className="s-btn btn-half btn-continue" onClick={handleShowEmailStep}>
+                  Continue
+                </button>
               </div>
-              <button className="btn-cancel btn-cancel-confirmation" onClick={() => setShowCancelPopup(true)}>
+              <button className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
                 Cancel
               </button>
             </div>
@@ -213,7 +210,7 @@ export default function SignUp({ gift, plansInfo }) {
                 />
               </div>
               <div className="btn-set-inline">
-                <div className="s-btn btn-half btn-previous" onClick={handelShowPlanStep}>
+                <div className="s-btn btn-half" onClick={handelShowPlanStep}>
                   Previous
                 </div>
                 <button type="submit" className="s-btn btn-half btn-submit">
@@ -221,7 +218,7 @@ export default function SignUp({ gift, plansInfo }) {
                 </button>
               </div>
             </form>
-            <button className="btn-cancel btn-cancel-confirmation" onClick={() => setShowCancelPopup(true)}>
+            <button className="btn-cancel" onClick={() => setShowCancelPopup(true)}>
               Cancel
             </button>
           </div>

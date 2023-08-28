@@ -179,7 +179,7 @@ body {
   input[type="tel"],
   textarea,
   select {
-    padding: 12px;
+    padding: 10px 12px;
     max-width: 100%;
     font-family: $secondary-font;
     width: 100%;
@@ -200,6 +200,9 @@ body {
     }
     &.error {
       border-color: red;
+    }
+    @media screen and (max-width: 479px) {
+      height: 46px;
     }
   }
   .text-center {

@@ -27,8 +27,6 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
   // }
 
   const { headerMenu, footerMenu } = pageData;
-  const { templateName } = page?.template ?? "";
-  const pageClass = templateName ? templateName.toLowerCase().replace(" ", "-") : "";
 
   // const { seo } = page
   // const fullHead = ParseHtmlToReact(seo.fullHead);
@@ -67,7 +65,7 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
       </Head>
-      <div className={`main-wrap page ${pageClass}`}>
+      <div className="main-wrap page sign-up-flow">
         {!accessToken || isSubscribe ? (
           <Container>
             {isSubscribe ? (

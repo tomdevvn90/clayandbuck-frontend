@@ -1,15 +1,33 @@
+body main .page-content .main-wrap.sign-up-flow {
+  @media screen and (max-width: 767px) {
+    padding: 20px 0;
+  }
+}
 .sign-up-wrap {
   font-family: $secondary-font;
   margin: 20px 0;
   background-color: #232323;
   display: flex;
 
+  @media screen and (max-width: 767px) {
+    flex-direction: column-reverse;
+    margin: 0;
+  }
+
   label {
     display: inline-block;
     margin-bottom: 0.5rem;
+
+    @media screen and (max-width: 479px) {
+      margin-bottom: 6px;
+    }
   }
   .form-group {
     margin-bottom: 16px;
+
+    @media screen and (max-width: 479px) {
+      margin-bottom: 12px;
+    }
   }
   .cnb-loading-sp {
     display: flex;
@@ -97,19 +115,64 @@
           font-family: $secondary-font;
           font-weight: 400;
           font-size: 16px;
-          line-height: 32px;
+          line-height: 24px;
           color: #ffffff;
-          margin: 0;
+          margin: 0 0 10px;
         }
       }
     }
     .two-friend {
       display: flex;
     }
+
+    @media screen and (max-width: 991px) {
+      padding: 32px 28px 0 32px;
+
+      .cb247-subscribe h2 {
+        max-width: 242px;
+      }
+      .cnb-logo {
+        right: 18px;
+        width: 90px;
+      }
+    }
+    @media screen and (max-width: 767px) {
+      width: 100%;
+
+      .two-friend {
+        display: none;
+      }
+    }
+    @media screen and (max-width: 479px) {
+      padding: 24px 20px 0 20px;
+
+      .cb247-subscribe h2 {
+        font-size: 28px;
+        max-width: 195px;
+      }
+      .benefits {
+        h3 {
+          margin-bottom: 12px;
+        }
+        ul li {
+          margin: 0 0 6px;
+        }
+      }
+      p {
+        margin: 20px 0;
+      }
+      .cnb-logo {
+        width: 72px;
+      }
+    }
   }
   .subscribe-right {
     background-color: #fff;
     width: 50%;
+
+    @media screen and (max-width: 767px) {
+      width: 100%;
+    }
   }
   .create-account {
     padding: 40px 48px;
@@ -185,6 +248,10 @@
           transition: all 250ms ease;
           border-radius: 100%;
         }
+        @media screen and (max-width: 479px) {
+          height: 60px;
+          padding-top: 10px;
+        }
       }
       label {
         position: relative;
@@ -219,6 +286,28 @@
         border: 2px solid #b2922c;
       }
     }
+
+    @media screen and (max-width: 1024px) {
+      padding: 32px;
+    }
+    @media screen and (max-width: 479px) {
+      padding: 20px;
+
+      .plan-radio {
+        &.gift {
+          .form-label {
+            height: 56px;
+
+            strong {
+              margin-top: 7px;
+            }
+            &:before {
+              top: 16px;
+            }
+          }
+        }
+      }
+    }
   }
   .sign-up-step {
     &.hide {
@@ -227,6 +316,10 @@
   }
   .step-form {
     margin-top: 32px;
+
+    @media screen and (max-width: 479px) {
+      margin-top: 20px;
+    }
   }
   .btn-set-inline {
     display: flex;
@@ -240,13 +333,16 @@
       font-family: $secondary-font;
       font-weight: 700;
       font-size: 16px;
-      line-height: 44px;
+      line-height: 100%;
       text-align: center;
       color: #b2922c;
       background: #fff;
       padding: 0;
       border-radius: 0.25rem;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       &.disabled {
         background-color: #dadfe3 !important;
@@ -266,6 +362,15 @@
     }
     .btn-half {
       width: calc(50% - 6px);
+    }
+    @media screen and (max-width: 479px) {
+      .s-btn {
+        height: 44px;
+        font-weight: 400;
+      }
+      .btn-half {
+        width: calc(50% - 4px);
+      }
     }
   }
 
@@ -309,6 +414,12 @@
       padding: 0 8px;
       box-sizing: border-box;
       margin-top: 10px;
+
+      @media screen and (max-width: 479px) {
+        height: 46px;
+        padding: 0;
+        margin-bottom: 12px;
+      }
     }
 
     .form-group label span {
@@ -496,15 +607,23 @@
         line-height: 16px;
         margin: 0;
       }
+
+      @media screen and (max-width: 479px) {
+        margin-bottom: 20px;
+      }
     }
     .not-sell-personal-info {
       font-weight: 700;
       font-size: 14px;
-      line-height: 24px;
+      line-height: 20px;
       color: #b2922c;
       padding-left: 7px;
       margin: 0 0 16px;
       display: inline-block;
+
+      @media screen and (max-width: 479px) {
+        margin-bottom: 10px;
+      }
     }
   }
 }
@@ -603,5 +722,26 @@
     position: absolute;
     right: 0;
     top: 0;
+  }
+}
+
+.sign-up-wrap.gift-subs {
+  .plan-radio .form-label {
+    height: 60px;
+
+    strong {
+      margin-top: 7px;
+    }
+
+    @media screen and (max-width: 479px) {
+      height: 56px;
+
+      strong {
+        margin-top: 7px;
+      }
+      &:before {
+        top: 16px;
+      }
+    }
   }
 }

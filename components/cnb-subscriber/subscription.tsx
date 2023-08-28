@@ -1,6 +1,6 @@
 import SubscribeInfo from "./parts/subscribe-info";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   cnbCheckZipCodeMatchStateForCA,
   cnbGetPlanIntervalText,
@@ -60,6 +60,24 @@ export default function Subscription({ gift, plansInfoRes }) {
   const [cityClass, setCityClass] = useState("");
   const [stateClass, setStateClass] = useState("");
   const [zipCodeClass, setZipCodeClass] = useState("");
+
+  useEffect(() => {
+    for (var i = 0; i < plansInfo.length; i++) {
+      let plan = plansInfo[i];
+      if (plan.active && plan.recurly_code.includes("gift") === false) {
+        const intervalCount = plan.interval_count;
+        const sText = intervalCount > 1 ? "s" : "";
+        const planInterval = cnbGetPlanIntervalText(plan.interval);
+        const intervalText = `${intervalCount} ${planInterval}${sText}`;
+
+        if (userPlanId == plan._id) {
+          setCrIntervalText(intervalText);
+          setCrIntervalPrice(plan.amount);
+          break;
+        }
+      }
+    }
+  }, []);
 
   const handleNextPaymentStep = () => {
     setPlanErrorMessages("");
