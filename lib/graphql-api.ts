@@ -149,7 +149,6 @@ export async function getPostAndMorePosts(slug) {
 }
 
 export async function getCategoryBySlug(slug: string) {
-  console.log(slug);
   const data = await fetchAPI(
     `
     query CategoryBySlug($slug: ID!) {
@@ -162,6 +161,29 @@ export async function getCategoryBySlug(slug: string) {
         slug
         seo {
           fullHead
+        }
+        posts(
+          first: 10
+        ) {
+          edges {
+            node {
+              featuredImage {
+                node {
+                  sourceUrl
+                }
+              }
+              slug
+              title
+              postId
+              excerpt
+            }
+          }
+          pageInfo {
+            endCursor
+            startCursor
+            hasNextPage
+            hasPreviousPage
+          }
         }
       }
     }
@@ -176,12 +198,12 @@ export async function getCategoryBySlug(slug: string) {
   return data;
 }
 
-export async function getPostsByCategoryId(categoryId: number, first: number, after: string) {
+export async function getPostsByCategoryId(categoryId: number, after: string) {
   const data = await fetchAPI(
     `
-    query PostsByCategoryId($first: Int = 10, $after: String = "", $categoryId: Int) {
+    query PostsByCategoryId($after: String = "", $categoryId: Int) {
       posts(
-        first: $first
+        first: 10
         where: {categoryId: $categoryId, orderby: {field: DATE, order: DESC}}
         after: $after
       ) {
@@ -210,7 +232,6 @@ export async function getPostsByCategoryId(categoryId: number, first: number, af
     {
       variables: {
         categoryId: categoryId,
-        first: first,
         after: after,
       },
     }

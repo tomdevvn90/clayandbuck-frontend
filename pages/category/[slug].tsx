@@ -6,32 +6,65 @@ import Container from "../../components/container";
 import Layout from "../../components/layout/layout";
 import PostTitle from "../../components/post/post-title";
 import BreadCrumb from "../../components/post/post-breadcrumb";
+import PostPreview from "../../components/post/post-preview";
 import { useRouter } from "next/router";
 import { getCategoryBySlug, getPostAndMorePosts, getPostsByCategoryId } from "../../lib/graphql-api";
 import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
 import { SITE_URL } from "../../lib/constants";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 
 // import Sidebar from "../../components/sidebar";
 const Sidebar = dynamic(() => import("../../components/sidebar"), {
   ssr: false,
 });
 
-export default function Post({ headerMenu, footerMenu, category, posts }) {
+export default function Post({ headerMenu, footerMenu, category }) {
+  const [showLoadMoreBtn, setShowLoadMoreBtn] = useState(true);
+  const [endCursor, setEndCursor] = useState("");
+  const [catPosts, setCatPosts] = useState([]);
+
   const router = useRouter();
   if (!category) {
     return <ErrorPage statusCode={404} />;
   }
 
-  const { seo } = category;
+  const { seo, posts } = category;
   const fullHead = ParseHtmlToReact(seo.fullHead);
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
-  console.log(category);
-  const catPosts = posts?.edges;
+
+  const catPostsEdges = posts?.edges;
+  const pageInfo = posts?.pageInfo;
+
+  useEffect(() => {
+    setCatPosts(catPostsEdges);
+    setEndCursor(pageInfo.endCursor);
+
+    if (!pageInfo.hasNextPage) {
+      setShowLoadMoreBtn(false);
+    }
+  }, []);
+
+  const loadMorePosts = async () => {
+    const { posts } = await getPostsByCategoryId(category.databaseId, endCursor);
+    const morePosts = posts?.edges;
+    const pageInfo = posts?.pageInfo;
+    console.log(morePosts, pageInfo);
+
+    if (morePosts.length > 0) {
+      setCatPosts([...catPosts, ...morePosts]);
+      setEndCursor(pageInfo.endCursor);
+    }
+    if (!pageInfo.hasNextPage) {
+      setShowLoadMoreBtn(false);
+    }
+  };
+
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
-      <div className="main-wrap post white-background">
+      <div className="main-wrap post white-background post-archive">
         <Container>
           {router.isFallback ? (
             <PostTitle>Loading…</PostTitle>
@@ -58,20 +91,27 @@ export default function Post({ headerMenu, footerMenu, category, posts }) {
 
               <div className="main-content">
                 <div className="post-content-wrap">
-                  {catPosts.length > 0 &&
-                    catPosts.map(({ node }) => (
-                      <div className="post" key={node.postId}>
-                        <Link href={`/posts/${node.slug}`} title={node.title}>
-                          <div className="post-img">
-                            <img src={node.featuredImage.node.sourceUrl} />
-                          </div>
-                          <div className="post-content">
-                            <h4>{node.title}</h4>
-                            <div dangerouslySetInnerHTML={{ __html: node.excerpt }}></div>
-                          </div>
-                        </Link>
-                      </div>
-                    ))}
+                  <div className="posts-rows">
+                    {catPosts.length > 0 &&
+                      catPosts.map(({ node }) => (
+                        <PostPreview
+                          key={node.postId}
+                          title={node.title}
+                          coverImage={node.featuredImage}
+                          slug={node.slug}
+                          excerpt={node.excerpt}
+                        />
+                      ))}
+                  </div>
+
+                  {showLoadMoreBtn && (
+                    <div className="text-center load-more-btn">
+                      <button className="btn" onClick={loadMorePosts}>
+                        <span>Load More</span>
+                        <FontAwesomeIcon icon={faRotateRight} style={{}} />
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 <Sidebar />
@@ -99,13 +139,11 @@ export const getServerSideProps = async ({ params }) => {
     };
   }
 
-  const { posts } = await getPostsByCategoryId(category.databaseId, 10, "");
   return {
     props: {
       headerMenu: data.headerMenu,
       footerMenu: data.footerMenu,
       category: category,
-      posts: posts,
     },
   };
 };
