@@ -1,8 +1,6 @@
-// import Avatar from '../avatar'
-// import Date from './date'
 import Link from "next/link";
 
-export default function PostPreview({ title, coverImage, date, excerpt, author, slug }) {
+export default function PostPreview({ title, coverImage, excerpt, slug }) {
   return (
     <div className="post-wrap">
       <Link href={`/posts/${slug}`} aria-label={title}>
@@ -10,11 +8,7 @@ export default function PostPreview({ title, coverImage, date, excerpt, author, 
           {coverImage && <img src={coverImage?.node.sourceUrl} alt={`Cover Image for ${title}`} />}
         </div>
         <h3 className="post-title" dangerouslySetInnerHTML={{ __html: title }}></h3>
-        {/* <div className="post-date">
-          <Date dateString={date} />
-        </div> */}
         <div className="post-excerpt" dangerouslySetInnerHTML={{ __html: excerpt }} />
-        {/* <Avatar author={author} /> */}
       </Link>
     </div>
   );

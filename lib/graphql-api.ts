@@ -147,3 +147,74 @@ export async function getPostAndMorePosts(slug) {
 
   return data;
 }
+
+export async function getCategoryBySlug(slug: string) {
+  console.log(slug);
+  const data = await fetchAPI(
+    `
+    query CategoryBySlug($slug: ID!) {
+      ${fraHeaderFooter}
+      category(id: $slug, idType: SLUG) {
+        databaseId
+        description
+        id
+        name
+        slug
+        seo {
+          fullHead
+        }
+      }
+    }
+  `,
+    {
+      variables: {
+        slug: slug,
+      },
+    }
+  );
+
+  return data;
+}
+
+export async function getPostsByCategoryId(categoryId: number, first: number, after: string) {
+  const data = await fetchAPI(
+    `
+    query PostsByCategoryId($first: Int = 10, $after: String = "", $categoryId: Int) {
+      posts(
+        first: $first
+        where: {categoryId: $categoryId, orderby: {field: DATE, order: DESC}}
+        after: $after
+      ) {
+        edges {
+          node {
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+            slug
+            title
+            postId
+            excerpt
+          }
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
+          hasPreviousPage
+        }
+      }
+    }
+  `,
+    {
+      variables: {
+        categoryId: categoryId,
+        first: first,
+        after: after,
+      },
+    }
+  );
+
+  return data;
+}

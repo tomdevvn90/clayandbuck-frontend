@@ -69,7 +69,7 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
                 <RequireSubscriberOnly requireObj={requireObj} />
               ) : (
                 <>
-                  <BreadCrumb />
+                  <BreadCrumb endLink="/category/top_stories/" endText="Stories" />
                   <div className="main-content">
                     <div className="post-content-wrap">
                       <PostHeader

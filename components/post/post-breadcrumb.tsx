@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function BreadCrumb() {
+export default function BreadCrumb({ endLink, endText }) {
   return (
     <div className="breadcrumb-ss">
       <ul className="breadcrumbs">
@@ -8,7 +8,7 @@ export default function BreadCrumb() {
           <Link href="/">Home</Link>
         </li>
         <li className="active">
-          <Link href="/category/top_stories/">Stories</Link>
+          <Link href={endLink}>{endText}</Link>
         </li>
       </ul>
     </div>
