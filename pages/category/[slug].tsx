@@ -1,4 +1,3 @@
-// import { GetStaticPaths, GetStaticProps } from 'next'
 import dynamic from "next/dynamic";
 import ErrorPage from "next/error";
 import Head from "next/head";
@@ -15,13 +14,13 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 
-// import Sidebar from "../../components/sidebar";
 const Sidebar = dynamic(() => import("../../components/sidebar"), {
   ssr: false,
 });
 
-export default function Post({ headerMenu, footerMenu, category }) {
-  const [showLoadMoreBtn, setShowLoadMoreBtn] = useState(true);
+export default function Category({ headerMenu, footerMenu, category }) {
+  const [showLoadMoreBtn, setShowLoadMoreBtn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [endCursor, setEndCursor] = useState("");
   const [catPosts, setCatPosts] = useState([]);
 
@@ -42,16 +41,16 @@ export default function Post({ headerMenu, footerMenu, category }) {
     setCatPosts(catPostsEdges);
     setEndCursor(pageInfo.endCursor);
 
-    if (!pageInfo.hasNextPage) {
-      setShowLoadMoreBtn(false);
+    if (pageInfo.hasNextPage) {
+      setShowLoadMoreBtn(true);
     }
   }, []);
 
   const loadMorePosts = async () => {
+    setIsLoading(true);
     const { posts } = await getPostsByCategoryId(category.databaseId, endCursor);
     const morePosts = posts?.edges;
     const pageInfo = posts?.pageInfo;
-    console.log(morePosts, pageInfo);
 
     if (morePosts.length > 0) {
       setCatPosts([...catPosts, ...morePosts]);
@@ -60,6 +59,7 @@ export default function Post({ headerMenu, footerMenu, category }) {
     if (!pageInfo.hasNextPage) {
       setShowLoadMoreBtn(false);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -106,10 +106,14 @@ export default function Post({ headerMenu, footerMenu, category }) {
 
                   {showLoadMoreBtn && (
                     <div className="text-center load-more-btn">
-                      <button className="btn" onClick={loadMorePosts}>
-                        <span>Load More</span>
-                        <FontAwesomeIcon icon={faRotateRight} style={{}} />
-                      </button>
+                      {isLoading ? (
+                        <div className="cnb-spinner-loading"></div>
+                      ) : (
+                        <button className="btn" onClick={loadMorePosts}>
+                          <span>Load More</span>
+                          <FontAwesomeIcon icon={faRotateRight} style={{}} />
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>

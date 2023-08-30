@@ -52,8 +52,8 @@ export default function Index({ homePageData, pageData }) {
 
 /** Server-side Rendering (SSR) */
 export async function getServerSideProps() {
-  const homePageData = await getHomePageData();
   const pageData = await getPageData("/");
+  const homePageData = await getHomePageData();
   return {
     props: { homePageData, pageData },
   };

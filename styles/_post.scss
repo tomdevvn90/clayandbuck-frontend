@@ -227,6 +227,14 @@ main .main-wrap.post-archive {
   }
   .load-more-btn {
     margin: 15px 0 24px;
+
+    .cnb-spinner-loading {
+      margin: 0px auto;
+      width: 40px;
+      height: 40px;
+      background: conic-gradient(rgba(0, 0, 0, 0) 10%, #b2922c);
+      display: block;
+    }
   }
   .post-wrap {
     margin-bottom: 30px;

@@ -208,3 +208,10 @@ export async function createGiftSubscription(
     giftName,
   });
 }
+
+/**
+ * Search function
+ */
+export async function searchByKeyword(keyword: string, crPage: number) {
+  return await fetchAPINormal(`/v2/search?search=${keyword}&page=${crPage}&_embed`);
+}

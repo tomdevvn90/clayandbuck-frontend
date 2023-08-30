@@ -11,6 +11,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 export default function TopStories({ tpStories, exTopStories, qtSliders }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [nextPage, setNextPage] = useState(2);
   const [topStories, setTopStories] = useState(tpStories);
   const [showLoadMoreBtn, setLoadMoreBtn] = useState(true);
@@ -28,6 +29,7 @@ export default function TopStories({ tpStories, exTopStories, qtSliders }) {
     </Swiper>
   );
   async function loadMoreTopStories() {
+    setIsLoading(true);
     const moreTopStories = await getTopStories(nextPage, 9, exTopStories);
     if (moreTopStories.length < 1) {
       setLoadMoreBtn(false);
@@ -35,6 +37,7 @@ export default function TopStories({ tpStories, exTopStories, qtSliders }) {
       setTopStories([...topStories, ...moreTopStories]);
       setNextPage(nextPage + 1);
     }
+    setIsLoading(false);
   }
 
   return (
@@ -53,10 +56,14 @@ export default function TopStories({ tpStories, exTopStories, qtSliders }) {
         })}
       {showLoadMoreBtn ? (
         <div className="load-more-wrap">
-          <button className="btn" onClick={loadMoreTopStories}>
-            <span>Load More</span>
-            <FontAwesomeIcon icon={faRotateRight} style={{}} />
-          </button>
+          {isLoading ? (
+            <div className="cnb-spinner-loading"></div>
+          ) : (
+            <button className="btn" onClick={loadMoreTopStories}>
+              <span>Load More</span>
+              <FontAwesomeIcon icon={faRotateRight} style={{}} />
+            </button>
+          )}
         </div>
       ) : null}
     </div>
