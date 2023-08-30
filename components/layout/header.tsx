@@ -4,14 +4,15 @@ import dynamic from "next/dynamic";
 import logo_img from "../../public/images/clay-and-buck-logo.png";
 import white_mini_logo from "../../public/images/white-mini-logo.png";
 import MenuItem from "../menu-item";
-import NoticeAndSocials from "./notice-and-socials";
+import NoticeAndSocials from "./parts/notice-and-socials";
 import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
 import { GlobalsContext } from "../../contexts/GlobalsContext";
+import SearchPopup from "./parts/search-popup";
 
 // import DownloadApp from "./download-app";
-const DownloadApp = dynamic(() => import("./download-app"), {
+const DownloadApp = dynamic(() => import("./parts/download-app"), {
   ssr: false,
 });
 // import LeaderBoardTopAds from '../ads/leaderboard-top-ads'
@@ -25,6 +26,7 @@ const LoginAccountModal = dynamic(() => import("../login-account-modal"), {
 
 export default function Header({ headerMenu }) {
   const [menuStatus, setMenuStatus] = useState(false);
+  const [showSearchPopup, setShowSearchPopup] = useState(false);
 
   const menuList = headerMenu?.edges;
   if (menuList) menuList.sort((a, b) => a.node.order - b.node.order);
@@ -66,7 +68,7 @@ export default function Header({ headerMenu }) {
               <ul>
                 {menuList && menuList.map(({ node }, index) => <MenuItem key={index} item={node}></MenuItem>)}
                 <li>
-                  <span className="search-btn">
+                  <span className="search-btn" onClick={() => setShowSearchPopup(true)}>
                     <FontAwesomeIcon icon={faSearch} style={{}} />
                   </span>
                 </li>
@@ -95,6 +97,8 @@ export default function Header({ headerMenu }) {
           handleCloseModal={() => GlobalsCtx.setOpenLoginModal(false)}
         />
       )}
+
+      {showSearchPopup && <SearchPopup closeSearchPopup={() => setShowSearchPopup(false)} />}
     </>
   );
 }

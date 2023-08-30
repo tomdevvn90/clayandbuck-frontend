@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SocialChannels from "../social-channels";
+import SocialChannels from "../../social-channels";
 
 export default function NoticeAndSocials() {
   const pacificDatetimeStr = new Date().toLocaleString("en-US", { timeZone: "US/Pacific" });

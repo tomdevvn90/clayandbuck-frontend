@@ -1,5 +1,5 @@
 import Image from "next/image";
-import AppStoreLogo from "../../public/images/app-store-logo.png";
+import AppStoreLogo from "../../../public/images/app-store-logo.png";
 import { useState } from "react";
 
 export default function DownloadApp() {
