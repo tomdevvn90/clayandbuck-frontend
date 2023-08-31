@@ -4,6 +4,7 @@ import { deleteCookie, setCookie } from "cookies-next";
  * Check external link
  */
 export const isExternalLink = (path: string) => {
+  if (!path) return false;
   return path.includes("http") || path.includes("www") ? true : false;
 };
 

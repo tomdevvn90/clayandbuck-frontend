@@ -1,10 +1,13 @@
 import Link from "next/link";
 
 export default function SearchItem({ title, coverImage, excerpt, slug, type }) {
-  const link = type == "post" ? `/posts/${slug}` : `/${slug}`;
+  let url = slug;
+  if (type == "post") url = `/posts/${slug}`;
+  if (type != "page" && type != "post") url = `/${type}/${slug}`;
+
   return (
     <div className={coverImage ? "post-wrap" : "post-wrap no-image"}>
-      <Link href={link} aria-label={title}>
+      <Link href={url} aria-label={title}>
         {coverImage && (
           <div className="post-featured-img">
             <img src={coverImage} alt={`Cover Image for ${title}`} />

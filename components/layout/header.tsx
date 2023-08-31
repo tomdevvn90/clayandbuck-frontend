@@ -98,7 +98,9 @@ export default function Header({ headerMenu }) {
         />
       )}
 
-      {showSearchPopup && <SearchPopup closeSearchPopup={() => setShowSearchPopup(false)} />}
+      {showSearchPopup && (
+        <SearchPopup closeSearchPopup={() => setShowSearchPopup(false)} toggleMenuHeader={toggleMenuHeader} />
+      )}
     </>
   );
 }

@@ -1,4 +1,3 @@
-// import { GetStaticPaths, GetStaticProps } from 'next'
 import dynamic from "next/dynamic";
 import ErrorPage from "next/error";
 import Head from "next/head";
@@ -79,13 +78,8 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
                         featureImageTab={post.featureImageTab}
                         featuredVideosPost={post.featuredVideosPost}
                         date={post.date}
-                        author={post.author}
-                        categories={post.categories}
                       />
                       <PostBody content={post.content} />
-                      {/* <footer>
-                    {post.tags.edges.length > 0 && <Tags tags={post.tags} />}
-                  </footer> */}
                     </div>
 
                     <Sidebar />

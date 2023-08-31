@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-export default function SearchPopup({ closeSearchPopup }) {
+export default function SearchPopup({ closeSearchPopup, toggleMenuHeader }) {
   const router = useRouter();
   const outSideRef = useRef(null);
 
@@ -16,7 +16,10 @@ export default function SearchPopup({ closeSearchPopup }) {
     event.preventDefault();
     const keyword = event.target.s.value;
 
-    router.push(`/search?s=${keyword}`);
+    router.push(`/search?s=${keyword}`, null, { shallow: true });
+
+    closeSearchPopup();
+    toggleMenuHeader();
   };
   return (
     <div className="search-modal">

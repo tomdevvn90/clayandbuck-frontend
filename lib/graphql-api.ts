@@ -37,7 +37,7 @@ export async function getAllMenu() {
   return data;
 }
 
-export async function getPageData(uri) {
+export async function getPageData(uri: string) {
   const data = await fetchAPI(
     `query PageData($uri: String) {
       ${fraHeaderFooter}
@@ -233,6 +233,129 @@ export async function getPostsByCategoryId(categoryId: number, after: string) {
       variables: {
         categoryId: categoryId,
         after: after,
+      },
+    }
+  );
+
+  return data;
+}
+
+export async function getAllPosts(uri: string) {
+  const data = await fetchAPI(
+    `
+    query AllPosts($uri: String) {
+      ${fraHeaderFooter}
+      pageBy(uri: $uri) {
+        id
+        title
+        content
+        slug
+        uri
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+        seo {
+          metaDesc
+          fullHead
+          title
+        }
+        seoTwitterThumb
+        template {
+          templateName
+        }
+      }
+      posts(
+        first: 10
+      ) {
+        edges {
+          node {
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+            slug
+            title
+            postId
+            excerpt
+          }
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
+          hasPreviousPage
+        }
+      }
+    }
+  `,
+    {
+      variables: { uri },
+    }
+  );
+
+  return data;
+}
+
+export async function getBookMovieBySlug(slug: string) {
+  const data = await fetchAPI(
+    `
+    query BookmovieBySlug($id: ID!) {
+      ${fraHeaderFooter}
+      bookmovie(id: $id, idType: SLUG) {
+        content
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+        date
+        excerpt
+        title
+        slug
+        seo {
+          fullHead
+        }
+      }
+    }
+  `,
+    {
+      variables: {
+        id: slug,
+      },
+    }
+  );
+
+  return data;
+}
+
+export async function getTranscriptBySlug(slug) {
+  const data = await fetchAPI(
+    `
+    query TranscripttemplateBySlug($id: ID!) {
+      ${fraHeaderFooter}
+      transcripttemplate(id: $id, idType: SLUG) {
+        content
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+        date
+        excerpt
+        title
+        slug
+        seo {
+          fullHead
+        }
+      }
+    }
+  `,
+    {
+      variables: {
+        id: slug,
       },
     }
   );

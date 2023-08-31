@@ -160,7 +160,7 @@
       max-width: 480px;
       width: 100%;
       overflow: auto;
-      max-height: 560px;
+      max-height: 570px;
       display: none;
 
       &.expanded {
@@ -256,6 +256,7 @@
   -webkit-backface-visibility: hidden;
   display: flex;
   align-items: center;
+  padding: 20px;
 
   &::before {
     content: "";
@@ -280,22 +281,16 @@
     color: #404040;
     position: relative;
     z-index: 999999;
+
+    @media (max-width: 767px) {
+      padding: 60px 32px;
+    }
+    @media (max-width: 359px) {
+      padding: 60px 20px;
+    }
   }
   form {
     position: relative;
-  }
-  input[type="text"] {
-    padding: 10px;
-    background: transparent;
-    width: 100%;
-    outline: none;
-    border-radius: 3px;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.5;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
   }
   .btn-submit {
     position: absolute;
@@ -303,17 +298,11 @@
     top: 2px;
     border: none;
     height: calc(100% - 4px);
-    text-transform: uppercase;
     width: 56px;
     font-size: 16px;
     line-height: 24px;
-    font-weight: 500;
-    border-radius: 0;
-    padding: 10px 1em;
+    border-radius: 0 6px 6px 0;
     cursor: pointer;
-    background-repeat: no-repeat;
-    background-size: 20px;
-    background-position: center;
     background-color: #f8da49;
   }
   button.close-modal {

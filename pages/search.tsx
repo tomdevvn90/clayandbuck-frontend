@@ -5,31 +5,29 @@ import Container from "../components/container";
 import Layout from "../components/layout/layout";
 import PostTitle from "../components/post/post-title";
 import BreadCrumb from "../components/post/post-breadcrumb";
-import PostPreview from "../components/post/post-preview";
+import SearchItem from "../components/search-item";
 import { useRouter } from "next/router";
-import { getCategoryBySlug, getPageData, getPostAndMorePosts, getPostsByCategoryId } from "../lib/graphql-api";
+import { getPageData } from "../lib/graphql-api";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
-import { SITE_URL } from "../lib/constants";
+import { SITE_URL, TWITTER_OG_IMAGE_URL } from "../lib/constants";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import { faRotateRight, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { searchByKeyword } from "../lib/normal-api";
-import SearchItem from "../components/search-item";
 
 const Sidebar = dynamic(() => import("../components/sidebar"), {
   ssr: false,
 });
 
 export default function Search({ pageData }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
   const [showLoadMoreBtn, setShowLoadMoreBtn] = useState(false);
   const [crPage, setCrPage] = useState(1);
   const [searchItems, setSearchItems] = useState([]);
-  const { headerMenu, footerMenu } = pageData;
-  const router = useRouter();
-  // if (!category) {
-  //   return <ErrorPage statusCode={404} />;
-  // }
 
+  const router = useRouter();
+  const { headerMenu, footerMenu } = pageData;
   const page = pageData?.pageBy ?? {};
   const { seo } = page;
   const fullHead = ParseHtmlToReact(seo.fullHead);
@@ -39,32 +37,45 @@ export default function Search({ pageData }) {
   const keyword = router.query.s.toString() ?? "";
   useEffect(() => {
     const getSearchData = async () => {
-      const searchData = await searchByKeyword(keyword, crPage);
+      setSearchItems([]);
+      setShowLoadMoreBtn(false);
+
+      setIsLoading(true);
+      const searchData = await searchByKeyword(keyword, 1);
       if (searchData.length > 0) {
         setSearchItems(searchData);
-        setCrPage((crPage) => crPage + 1);
+        setCrPage(2);
 
         if (searchData.length == 10) {
           setShowLoadMoreBtn(true);
         }
       }
-      console.log(searchData);
+      setIsLoading(false);
+      // console.log(searchData);
     };
     getSearchData();
-  }, []);
+  }, [router.query.s]);
 
   const loadMorePosts = async () => {
-    // const { posts } = await getPostsByCategoryId(category.databaseId, crPage);
-    // const morePosts = posts?.edges;
-    // const pageInfo = posts?.pageInfo;
-    // console.log(morePosts, pageInfo);
-    // if (morePosts.length > 0) {
-    //   setSearchItems([...searchItems, ...morePosts]);
-    //   setCrPage(pageInfo.endCursor);
-    // }
-    // if (!pageInfo.hasNextPage) {
-    //   setShowLoadMoreBtn(false);
-    // }
+    setIsLoadMoreLoading(true);
+    const searchData = await searchByKeyword(keyword, crPage);
+    if (searchData.length > 0) {
+      setSearchItems([...searchItems, ...searchData]);
+      setCrPage((crPage) => crPage + 1);
+
+      if (searchData.length == 10) {
+        setShowLoadMoreBtn(true);
+      } else {
+        setShowLoadMoreBtn(false);
+      }
+    }
+    setIsLoadMoreLoading(false);
+  };
+
+  const handleSearchOther = (event) => {
+    event.preventDefault();
+    const keyword = event.target.s.value;
+    router.push(`/search?s=${keyword}`, null, { shallow: true });
   };
 
   return (
@@ -82,10 +93,7 @@ export default function Search({ pageData }) {
                   name="robots"
                   content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
                 ></meta>
-                <meta
-                  name="twitter:image"
-                  content="https://www.clayandbuck.com/wp-content/uploads/2022/05/social.png"
-                />
+                <meta name="twitter:image" content={TWITTER_OG_IMAGE_URL} />
                 <meta name="twitter:image:width" content="1200" />
                 <meta name="twitter:image:height" content="640" />
               </Head>
@@ -96,32 +104,58 @@ export default function Search({ pageData }) {
 
               <div className="main-content">
                 <div className="post-content-wrap">
-                  <div className="posts-rows">
-                    {searchItems.length > 0 &&
-                      searchItems.map((item) => {
-                        const metaData = item._embedded.self[0];
-                        const featuredImage = metaData.yoast_head_json.og_image[0].url;
-                        const slug = metaData.slug;
-                        const excerpt = metaData.excerpt.rendered;
-                        return (
-                          <SearchItem
-                            key={item.id}
-                            title={item.title}
-                            coverImage={featuredImage}
-                            slug={slug}
-                            excerpt={excerpt}
-                            type={item.type}
-                          />
-                        );
-                      })}
-                  </div>
+                  {isLoading ? (
+                    <div className="load-more-wrap">
+                      <div className="cnb-spinner-loading"></div>
+                    </div>
+                  ) : (
+                    <div className="posts-rows">
+                      {searchItems.length > 0 &&
+                        searchItems.map((item) => {
+                          const metaData = item._embedded.self[0];
+                          const featuredImage = metaData.yoast_head_json.og_image[0].url;
+                          const slug = metaData.slug;
+                          const excerpt = metaData.excerpt.rendered;
+                          const type = metaData.type;
+                          return (
+                            <SearchItem
+                              key={item.id}
+                              title={item.title}
+                              coverImage={featuredImage}
+                              slug={slug}
+                              excerpt={excerpt}
+                              type={type}
+                            />
+                          );
+                        })}
+
+                      {searchItems.length == 0 && (
+                        <section className="no-results not-found">
+                          <h2 className="page-title">Nothing Found</h2>
+                          <p>
+                            Sorry, but nothing matched your search terms. Please try again with some different keywords.
+                          </p>
+                          <form className="search-form" role="search" onSubmit={handleSearchOther}>
+                            <input type="text" placeholder="Search..." name="s" />
+                            <button type="submit" className="btn-submit">
+                              <FontAwesomeIcon icon={faSearch} style={{}} />
+                            </button>
+                          </form>
+                        </section>
+                      )}
+                    </div>
+                  )}
 
                   {showLoadMoreBtn && (
                     <div className="text-center load-more-btn">
-                      <button className="btn" onClick={loadMorePosts}>
-                        <span>Load More</span>
-                        <FontAwesomeIcon icon={faRotateRight} style={{}} />
-                      </button>
+                      {isLoadMoreLoading ? (
+                        <div className="cnb-spinner-loading"></div>
+                      ) : (
+                        <button className="btn" onClick={loadMorePosts}>
+                          <span>Load More</span>
+                          <FontAwesomeIcon icon={faRotateRight} style={{}} />
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>

@@ -7,9 +7,9 @@ import PostTitle from "../../components/post/post-title";
 import BreadCrumb from "../../components/post/post-breadcrumb";
 import PostPreview from "../../components/post/post-preview";
 import { useRouter } from "next/router";
-import { getCategoryBySlug, getPostAndMorePosts, getPostsByCategoryId } from "../../lib/graphql-api";
+import { getAllPosts, getCategoryBySlug, getPostAndMorePosts, getPostsByCategoryId } from "../../lib/graphql-api";
 import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
-import { SITE_URL } from "../../lib/constants";
+import { SITE_URL, TWITTER_OG_IMAGE_URL } from "../../lib/constants";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
@@ -77,10 +77,7 @@ export default function Category({ headerMenu, footerMenu, category }) {
                   name="robots"
                   content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
                 ></meta>
-                <meta
-                  name="twitter:image"
-                  content="https://www.clayandbuck.com/wp-content/uploads/2022/05/social.png"
-                />
+                <meta name="twitter:image" content={TWITTER_OG_IMAGE_URL} />
                 <meta name="twitter:image:width" content="1200" />
                 <meta name="twitter:image:height" content="640" />
               </Head>

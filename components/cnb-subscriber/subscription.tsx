@@ -311,31 +311,26 @@ export default function Subscription({ gift, plansInfoRes }) {
               {cardErrorMessages && <p className="error-msg">{cardErrorMessages}</p>}
 
               <div className="credit-card-form">
-                <div className="row">
-                  <div className="col-sm-12">
-                    <form ref={formRef}>
-                      <div className="rc-hide">
-                        <input type="text" data-recurly="first_name" value={crFirstName} readOnly />
-                        <input type="text" data-recurly="last_name" value={crLastName} readOnly />
-                        <input type="text" data-recurly="address1" value={crAddr1} readOnly />
-                        <input type="text" data-recurly="address2" value={crAddr2} readOnly />
-                        <input type="text" data-recurly="city" value={crCity} readOnly />
-                        <input type="text" data-recurly="state" value={crState} readOnly />
-                        <input type="text" data-recurly="country" value={crCountry} readOnly />
-                        <input type="text" data-recurly="postal_code" value={crZipCode} readOnly />
-                        <input type="text" data-recurly="phone" name="cnb_phone" value={crPhone} readOnly />
-                      </div>
-
-                      <CardElement
-                        onChange={(change) => {
-                          setIsCardValid(change.valid);
-                          setCardErrorMessages("");
-                        }}
-                      />
-                      <div></div>
-                    </form>
+                <form ref={formRef}>
+                  <div className="rc-hide">
+                    <input type="text" data-recurly="first_name" value={crFirstName} readOnly />
+                    <input type="text" data-recurly="last_name" value={crLastName} readOnly />
+                    <input type="text" data-recurly="address1" value={crAddr1} readOnly />
+                    <input type="text" data-recurly="address2" value={crAddr2} readOnly />
+                    <input type="text" data-recurly="city" value={crCity} readOnly />
+                    <input type="text" data-recurly="state" value={crState} readOnly />
+                    <input type="text" data-recurly="country" value={crCountry} readOnly />
+                    <input type="text" data-recurly="postal_code" value={crZipCode} readOnly />
+                    <input type="text" data-recurly="phone" name="cnb_phone" value={crPhone} readOnly />
                   </div>
-                </div>
+
+                  <CardElement
+                    onChange={(change) => {
+                      setIsCardValid(change.valid);
+                      setCardErrorMessages("");
+                    }}
+                  />
+                </form>
               </div>
               <div className="btn-set-inline">
                 <button
