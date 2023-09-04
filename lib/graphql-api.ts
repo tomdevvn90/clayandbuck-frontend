@@ -163,7 +163,7 @@ export async function getCategoryBySlug(slug: string) {
           fullHead
         }
         posts(
-          first: 10
+          first: 10, where: {orderby: {field: DATE, order: DESC}}
         ) {
           edges {
             node {
@@ -203,8 +203,8 @@ export async function getPostsByCategoryId(categoryId: number, after: string) {
     `
     query PostsByCategoryId($after: String = "", $categoryId: Int) {
       posts(
-        first: 10
-        where: {categoryId: $categoryId, orderby: {field: DATE, order: DESC}}
+        first: 10,
+        where: {categoryId: $categoryId, orderby: {field: DATE, order: DESC}},
         after: $after
       ) {
         edges {
@@ -268,6 +268,7 @@ export async function getAllPosts(uri: string) {
       }
       posts(
         first: 10
+        where: {orderby: {field: DATE, order: DESC}}
       ) {
         edges {
           node {
@@ -293,6 +294,46 @@ export async function getAllPosts(uri: string) {
   `,
     {
       variables: { uri },
+    }
+  );
+
+  return data;
+}
+export async function getAllPostsByPage(after: string) {
+  const data = await fetchAPI(
+    `
+    query AllPostsByPage($after: String = "") {
+      posts(
+        first: 10,
+        where: {orderby: {field: DATE, order: DESC}},
+        after: $after
+      ) {
+        edges {
+          node {
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+            slug
+            title
+            postId
+            excerpt
+          }
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
+          hasPreviousPage
+        }
+      }
+    }
+  `,
+    {
+      variables: {
+        after: after,
+      },
     }
   );
 

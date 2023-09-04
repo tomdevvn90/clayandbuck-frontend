@@ -1,0 +1,20 @@
+.backward {
+  display: flex;
+  transition: transform 0.2s;
+}
+
+.backward:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+@media screen and (max-width: 767px) {
+  .backward svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .backward {
+    display: none;
+  }
+}

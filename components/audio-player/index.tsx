@@ -7,40 +7,31 @@ import Title from "./parts/Title";
 import Time from "./parts/Time";
 import Progress from "./parts/Progress";
 import ButtonsBox from "./parts/ButtonsBox";
-import LoopCurrent from "./parts/LoopCurrent";
 import Previous from "./parts/Previous";
 import Play from "./parts/Play";
 import Pause from "./parts/Pause";
 import Next from "./parts/Next";
-import Shuffle from "./parts/Shuffle";
 import Volume from "./parts/Volume";
 import PlaylistTemplate from "./parts/PlaylistTemplate";
 import PlaylistItem from "./parts/PlaylistItem";
-import TagsTemplate from "./parts/TagsTemplate";
-import TagItem from "./parts/TagItem";
-import Search from "./parts/Search";
-
-import loopCurrentBtn from "./icons/loop_current.png";
-import loopNoneBtn from "./icons/loop_none.png";
 import previousBtn from "./icons/previous.png";
 import playBtn from "./icons/play.png";
 import pauseBtn from "./icons/pause.png";
 import nextBtn from "./icons/next.png";
-import shuffleAllBtn from "./icons/shuffle_all.png";
-import shuffleNoneBtn from "./icons/shuffle_none.png";
 import AudioImage from "./parts/AudioImage";
 import StartDate from "./parts/StartDate";
 import PlaylistToggle from "./parts/PlaylistToggle";
+import Forward from "./parts/Forward";
+import Backward from "./parts/Backward";
 import { decodeLink } from "../../utils/global-functions";
 import { GlobalsContext } from "../../contexts/GlobalsContext";
+import Speed from "./parts/Speed";
 
-const Player = ({
-  trackList,
-  includeTags = true,
-  includeSearch = true,
-  showPlaylist = true,
-  autoPlayNextTrack = true,
-}) => {
+// import LoopCurrent from "./parts/LoopCurrent";
+// import loopCurrentBtn from "./icons/loop_current.png";
+// import loopNoneBtn from "./icons/loop_none.png";
+
+const Player = ({ trackList, showPlaylist = true, autoPlayNextTrack = true }) => {
   let playlist = [];
   const [query, updateQuery] = useState("");
   const [audio, setAudio] = useState(null);
@@ -54,10 +45,9 @@ const Player = ({
   const [slider, setSlider] = useState(1);
   const [drag, setDrag] = useState(0);
   const [volume, setVolume] = useState(0.8);
-  let [end, setEnd] = useState(0);
-  const [shuffled, setShuffled] = useState(false);
   const [looped, setLooped] = useState(false);
   const [filter, setFilter] = useState([]);
+  let [end, setEnd] = useState(0);
   // let [curTrack, setCurTrack] = useState(0);
 
   const GlobalsCtx = useContext(GlobalsContext);
@@ -98,31 +88,11 @@ const Player = ({
     };
   }, []);
 
-  const tags = [];
-  if (includeTags) {
-    trackList.forEach((track) => {
-      track.tags.forEach((tag) => {
-        if (!tags.includes(tag)) {
-          tags.push(tag);
-        }
-      });
-    });
-  }
-
-  const shufflePlaylist = (arr) => {
-    if (arr.length === 1) return arr;
-    const rand = Math.floor(Math.random() * arr.length);
-    return [arr[rand], ...shufflePlaylist(arr.filter((_, i) => i != rand))];
-  };
-
   const isInitialMount = useRef(true);
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
-      if (shuffled) {
-        playlist = shufflePlaylist(playlist);
-      }
       !looped && autoPlayNextTrack ? next() : play();
     }
   }, [end]);
@@ -179,8 +149,18 @@ const Player = ({
       : GlobalsCtx.setCurTrack((GlobalsCtx.curTrack = playlist[0]));
   };
 
-  const shuffle = () => {
-    setShuffled(!shuffled);
+  const speed = (playbackRate) => {
+    audio.playbackRate = playbackRate;
+  };
+
+  const backward = () => {
+    const currentTime = audio.currentTime;
+    audio.currentTime = currentTime - 15;
+  };
+
+  const forward = () => {
+    const currentTime = audio.currentTime;
+    audio.currentTime = currentTime + 30;
   };
 
   const togglePlaylist = () => {
@@ -194,52 +174,8 @@ const Player = ({
     play();
   };
 
-  const isInitialFilter = useRef(true);
-  useEffect(() => {
-    if (isInitialFilter.current) {
-      isInitialFilter.current = false;
-    } else {
-      if (!playlist.includes(GlobalsCtx.curTrack)) {
-        GlobalsCtx.setCurTrack((GlobalsCtx.curTrack = playlist[0]));
-      }
-    }
-  }, [filter]);
-
-  const tagClickHandler = (e) => {
-    const tag = e.currentTarget.innerHTML;
-    if (!filter.includes(tag)) {
-      setFilter([...filter, tag]);
-    } else {
-      const filteredArray = filter.filter((item) => item !== tag);
-      setFilter([...filteredArray]);
-    }
-  };
-
   return (
     <PageTemplate>
-      {includeTags && (
-        <TagsTemplate>
-          {tags.map((tag, index) => {
-            return (
-              <TagItem
-                key={index}
-                className={filter.length !== 0 && filter.includes(tag) ? "active" : ""}
-                tag={tag}
-                onClick={tagClickHandler}
-              />
-            );
-          })}
-        </TagsTemplate>
-      )}
-
-      {includeSearch && (
-        <Search
-          value={query}
-          onChange={(e) => updateQuery(e.target.value.toLowerCase())}
-          placeholder={`Search ${trackList.length} tracks...`}
-        />
-      )}
-
       <PlayerTemplate>
         <div className={styles.image_title_time_wrapper}>
           <AudioImage imageUrl={imageUrl} />
@@ -253,11 +189,14 @@ const Player = ({
         <div className={styles.buttons_progress_wrapper}>
           <div className={styles.buttons_wrapper}>
             <ButtonsBox>
-              <LoopCurrent src={looped ? loopCurrentBtn : loopNoneBtn} onClick={loop} />
+              <Speed onChange={(e) => speed(e.target.value)} />
               <Previous src={previousBtn} onClick={previous} />
+              <Backward onClick={backward} />
               {active ? <Pause src={pauseBtn} onClick={pause} /> : <Play src={playBtn} onClick={play} />}
+              <Forward onClick={forward} />
               <Next src={nextBtn} onClick={next} />
-              <Shuffle src={shuffled ? shuffleAllBtn : shuffleNoneBtn} onClick={shuffle} />
+              <div></div>
+              {/* <LoopCurrent src={looped ? loopCurrentBtn : loopNoneBtn} onClick={loop} /> */}
             </ButtonsBox>
           </div>
 
@@ -288,28 +227,22 @@ const Player = ({
 
       {showPlaylist && (
         <PlaylistTemplate playlistShowing={playlistShowing}>
-          {trackList
-            // .sort((a, b) => (a.title > b.title ? 1 : -1))
-            .map((el, index) => {
-              if (filter.length === 0 || filter.some((filter) => el.tags.includes(filter))) {
-                if (el.title.toLowerCase().includes(query.toLowerCase())) {
-                  playlist.push(index);
-                  return (
-                    <PlaylistItem
-                      className={GlobalsCtx.curTrack === index ? "active" : ""}
-                      key={index}
-                      data_key={index}
-                      title={el.title}
-                      imageUrl={el.imageUrl}
-                      src={decodeLink(el.mediaUrl)}
-                      startDate={el.startDate}
-                      duration={el.duration}
-                      onClick={playlistItemClickHandler}
-                    />
-                  );
-                }
-              }
-            })}
+          {trackList.map((el, index) => {
+            playlist.push(index);
+            return (
+              <PlaylistItem
+                className={GlobalsCtx.curTrack === index ? "active" : ""}
+                key={index}
+                data_key={index}
+                title={el.title}
+                imageUrl={el.imageUrl}
+                src={decodeLink(el.mediaUrl)}
+                startDate={el.startDate}
+                duration={el.duration}
+                onClick={playlistItemClickHandler}
+              />
+            );
+          })}
         </PlaylistTemplate>
       )}
     </PageTemplate>

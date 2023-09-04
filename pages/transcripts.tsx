@@ -1,44 +1,44 @@
 import dynamic from "next/dynamic";
 import ErrorPage from "next/error";
 import Head from "next/head";
-import Container from "../../components/container";
-import Layout from "../../components/layout/layout";
-import PostTitle from "../../components/post/post-title";
-import BreadCrumb from "../../components/post/post-breadcrumb";
-import PostPreview from "../../components/post/post-preview";
+import Container from "../components/container";
+import Layout from "../components/layout/layout";
+import PostTitle from "../components/post/post-title";
+import BreadCrumb from "../components/post/post-breadcrumb";
+import PostPreview from "../components/post/post-preview";
 import { useRouter } from "next/router";
-import { getCategoryBySlug, getPostsByCategoryId } from "../../lib/graphql-api";
-import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
-import { SITE_URL, TWITTER_OG_IMAGE_URL } from "../../lib/constants";
+import { getAllPosts, getAllPostsByPage } from "../lib/graphql-api";
+import { ParseHtmlToReact } from "../utils/parse-html-to-react";
+import { SITE_URL, TWITTER_OG_IMAGE_URL } from "../lib/constants";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 
-const Sidebar = dynamic(() => import("../../components/sidebar"), {
+const Sidebar = dynamic(() => import("../components/sidebar"), {
   ssr: false,
 });
 
-export default function Category({ headerMenu, footerMenu, category }) {
+export default function Transcripts({ headerMenu, footerMenu, transcripts, posts }) {
   const [showLoadMoreBtn, setShowLoadMoreBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [endCursor, setEndCursor] = useState("");
-  const [catPosts, setCatPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
 
   const router = useRouter();
-  if (!category) {
+  if (!transcripts) {
     return <ErrorPage statusCode={404} />;
   }
 
-  const { seo, posts } = category;
+  const { seo } = transcripts;
   const fullHead = ParseHtmlToReact(seo.fullHead);
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
-  const catPostsEdges = posts?.edges;
+  const allPostsEdges = posts?.edges;
   const pageInfo = posts?.pageInfo;
 
   useEffect(() => {
-    setCatPosts(catPostsEdges);
+    setAllPosts(allPostsEdges);
     setEndCursor(pageInfo.endCursor);
 
     if (pageInfo.hasNextPage) {
@@ -48,12 +48,12 @@ export default function Category({ headerMenu, footerMenu, category }) {
 
   const loadMorePosts = async () => {
     setIsLoading(true);
-    const { posts } = await getPostsByCategoryId(category.databaseId, endCursor);
+    const { posts } = await getAllPostsByPage(endCursor);
     const morePosts = posts?.edges;
     const pageInfo = posts?.pageInfo;
 
     if (morePosts.length > 0) {
-      setCatPosts([...catPosts, ...morePosts]);
+      setAllPosts([...allPosts, ...morePosts]);
       setEndCursor(pageInfo.endCursor);
     }
     if (!pageInfo.hasNextPage) {
@@ -82,15 +82,15 @@ export default function Category({ headerMenu, footerMenu, category }) {
                 <meta name="twitter:image:height" content="640" />
               </Head>
 
-              <h1>{category.name}</h1>
+              <h1>Top Stories</h1>
 
-              <BreadCrumb endLink={category.slug} endText={category.name} />
+              <BreadCrumb endLink="/category/top_stories/" endText="Top Stories" />
 
               <div className="main-content">
                 <div className="post-content-wrap">
                   <div className="posts-rows">
-                    {catPosts.length > 0 &&
-                      catPosts.map(({ node }) => (
+                    {allPosts.length > 0 &&
+                      allPosts.map(({ node }) => (
                         <PostPreview
                           key={node.postId}
                           title={node.title}
@@ -126,15 +126,16 @@ export default function Category({ headerMenu, footerMenu, category }) {
 }
 
 export const getServerSideProps = async ({ params }) => {
-  const data = await getCategoryBySlug(params?.slug);
-  const category = data.category;
+  const data = await getAllPosts("/transcripts");
+  const transcripts = data.pageBy;
 
-  if (!category) {
+  if (!transcripts) {
     return {
       props: {
         headerMenu: data.headerMenu,
         footerMenu: data.footerMenu,
-        category: [],
+        transcripts: [],
+        posts: [],
       },
     };
   }
@@ -143,7 +144,8 @@ export const getServerSideProps = async ({ params }) => {
     props: {
       headerMenu: data.headerMenu,
       footerMenu: data.footerMenu,
-      category: category,
+      transcripts: transcripts,
+      posts: data.posts,
     },
   };
 };

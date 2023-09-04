@@ -39,10 +39,16 @@
   .title_time {
     min-height: 40px;
   }
+  .buttons_progress_wrapper {
+    width: 48%;
+  }
+  .playlist_wrapper {
+    width: 17%;
+  }
 }
 @media screen and (max-width: 767px) {
   .image_title_time_wrapper {
-    width: 37%;
+    width: 40%;
     padding-right: 10px;
   }
   .title_time {
@@ -50,7 +56,7 @@
     justify-content: center;
   }
   .buttons_progress_wrapper {
-    width: 50%;
+    width: 47%;
   }
   .playlist_wrapper {
     width: 13%;

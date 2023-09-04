@@ -1,14 +1,13 @@
 .wrapper {
   width: 100%;
   display: inline-grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(7, auto);
   place-items: center;
-  max-width: 300px;
+  max-width: 350px;
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 480px) {
   .wrapper {
-    grid-template-columns: repeat(3, auto);
-    max-width: 150px;
+    grid-template-columns: repeat(4, auto);
   }
 }

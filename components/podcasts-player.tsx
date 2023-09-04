@@ -7,9 +7,7 @@ export default function PodcastsPlayer() {
 
   return (
     <div className="cnb-podcasts-player">
-      {GlobalsCtx.podcasts.length > 0 && (
-        <Player trackList={GlobalsCtx.podcasts} includeTags={false} includeSearch={false} />
-      )}
+      {GlobalsCtx.podcasts.length > 0 && <Player trackList={GlobalsCtx.podcasts} />}
     </div>
   );
 }
