@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 export default function EmailTheShow() {
+  const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
@@ -15,6 +16,8 @@ export default function EmailTheShow() {
       }
     }
 
+    setIsLoading(true);
+
     fetch("https://cnb-react.dev1.bwmmedia.com//wp-json/contact-form-7/v1/contact-forms/481/feedback", {
       method: "POST",
       body: formData,
@@ -23,6 +26,8 @@ export default function EmailTheShow() {
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.log("error", error));
+
+    setIsLoading(false);
   };
 
   if (submitted) {
@@ -34,6 +39,7 @@ export default function EmailTheShow() {
     );
   }
 
+  const btnClass = isLoading ? "btn-submit loading" : "btn-submit";
   return (
     <section className="form-ss">
       <h3>
@@ -61,7 +67,9 @@ export default function EmailTheShow() {
           <textarea id="cnb-message" placeholder="Enter your message" name="eib-message" rows={6} />
         </div>
         <div className="form-group">
-          <button type="submit">Send a message</button>
+          <button type="submit" className={btnClass}>
+            {isLoading ? <span className="cnb-spinner-loading"></span> : <span>Send a message</span>}
+          </button>
         </div>
       </form>
     </section>

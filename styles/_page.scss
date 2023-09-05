@@ -673,6 +673,12 @@ body main .page-content .main-wrap.email-the-show {
         -webkit-user-select: none;
         -moz-user-select: none;
         user-select: none;
+
+        &.loading {
+          background-color: transparent !important;
+          border-color: transparent !important;
+          pointer-events: none !important;
+        }
       }
     }
   }
