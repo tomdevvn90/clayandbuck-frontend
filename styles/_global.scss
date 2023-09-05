@@ -195,6 +195,9 @@ body {
     border-radius: 6px;
     color: #666;
 
+    &::placeholder {
+      color: #b7b7b7;
+    }
     &:focus {
       border-color: #b2922c;
     }
@@ -204,6 +207,9 @@ body {
     @media screen and (max-width: 479px) {
       height: 46px;
     }
+  }
+  textarea {
+    height: 220px;
   }
   .text-center {
     text-align: center;

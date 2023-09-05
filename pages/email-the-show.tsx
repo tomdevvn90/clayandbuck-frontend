@@ -3,16 +3,18 @@ import ErrorPage from "next/error";
 import Container from "../components/container";
 import Layout from "../components/layout/layout";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import EmailTheShowImg from "../public/images/email-the-show.jpg";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
 import { getCookie } from "cookies-next";
 
-const Podcast = dynamic(() => import("../components/cnb-podcast"), {
+const RequireSubscriberOnly = dynamic(() => import("../components/require-subscriber-only"), {
   ssr: false,
 });
-const RequireSubscriberOnly = dynamic(() => import("../components/require-subscriber-only"), {
+const EmailTheShow = dynamic(() => import("../components/email-the-show"), {
   ssr: false,
 });
 
@@ -58,9 +60,13 @@ export default function VipPodcastPage({ pageData }) {
         <meta name="twitter:image:height" content="640" />
       </Head>
       <div className={`main-wrap page white-background ${pageClass}`}>
-        <Container>
-          {noRequireSubs ? <Podcast requireObj={requireObj} /> : <RequireSubscriberOnly requireObj={requireObj} />}
-        </Container>
+        <section className="hero-ss">
+          <Container>
+            <Image src={EmailTheShowImg} width={1200} height={327} alt="Exclusive Member Email" />
+          </Container>
+        </section>
+
+        <Container>{noRequireSubs ? <EmailTheShow /> : <RequireSubscriberOnly requireObj={requireObj} />}</Container>
       </div>
     </Layout>
   );
@@ -68,7 +74,7 @@ export default function VipPodcastPage({ pageData }) {
 
 /** Server-side Rendering (SSR) */
 export async function getServerSideProps() {
-  const pageData = await getPageData("/podcast");
+  const pageData = await getPageData("/email-the-show");
 
   return {
     props: { pageData },
