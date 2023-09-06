@@ -22,7 +22,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const { data } = useSWR<PodcastProps[], Error>(`${WP_REST_API_URL}/v2/podcasts-player/`, fetcher);
+  const { data } = useSWR<PodcastProps[], Error>(`${WP_REST_API_URL}wp/v2/podcasts-player/`, fetcher);
   useEffect(() => {
     if (data) setPodcasts(data);
   }, [data]);
@@ -31,6 +31,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     const accessToken = getCookie("STYXKEY_ACCESS_TOKEN");
     if (accessToken) {
       setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
     }
   }, [isLoggedIn]);
 

@@ -623,11 +623,142 @@ body main .page-content .main-wrap.email-the-show {
     padding: 32px 0;
     max-width: 1000px;
     margin: 0 auto;
+
+    p.error-msg {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: center;
+      color: red;
+      background: rgba(218, 223, 227, 0.4);
+      border-radius: 6px;
+      min-height: 48px;
+      padding: 12px;
+      margin: 20px 0 0;
+    }
     h3 {
       font-size: 26px;
       margin: 20px 0;
       text-align: center;
       font-weight: 500;
+    }
+    .error-files-head {
+      font-size: 18px;
+      text-align: left;
+      font-weight: 500;
+      color: red;
+      margin: 20px 0 0;
+    }
+    .drop-area {
+      border: 2px dashed #c5c5c5;
+      border-radius: 5px;
+      margin: 12px 0 20px;
+      padding: 15px;
+      text-align: center;
+
+      svg {
+        font-size: 32px;
+        color: #b28e2a;
+        margin-top: 12px;
+      }
+      p {
+        margin-bottom: 4px;
+        font-size: 18px;
+      }
+      em {
+        font-size: 15px;
+      }
+    }
+    .btn-remove {
+      border-radius: 5px;
+      border: 1px solid;
+      padding: 4px 10px;
+      font-size: 12px;
+      background: transparent;
+      cursor: pointer;
+
+      &:hover {
+        background-color: red;
+        color: #fff;
+      }
+    }
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+
+      .pdf-file,
+      .word-file {
+        color: green;
+        font-size: 30px;
+        min-width: 30px;
+      }
+      .word-file {
+        color: blue;
+      }
+      .image-file {
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+
+      &.accepted-files {
+        p {
+          margin: 0 0 0 10px;
+          font-size: 15px;
+        }
+        > li {
+          display: flex;
+
+          > div {
+            display: flex;
+            align-items: center;
+          }
+        }
+        .btn-remove {
+          background: none;
+          color: #7f8389;
+          padding: 0;
+          font-size: 20px;
+          border: 0;
+          cursor: pointer;
+          width: 30px;
+          height: 30px;
+          margin-left: 10px;
+        }
+      }
+
+      &.error-files > li {
+        display: flex;
+        width: 100%;
+        margin: 10px 0 0;
+        padding: 10px 0 0;
+        border-top: 1px solid #ccc;
+
+        > div {
+          width: 100%;
+
+          .top-row {
+            display: flex;
+            justify-content: space-between;
+          }
+        }
+      }
+      &.error-msg {
+        font-size: 15px;
+        color: red;
+        margin-top: 2px;
+
+        > li {
+          margin-bottom: 4px;
+        }
+      }
+
+      p {
+        margin: 0;
+        color: #404040;
+      }
     }
     hr {
       border: 0;
@@ -650,7 +781,7 @@ body main .page-content .main-wrap.email-the-show {
           display: block;
         }
       }
-      button {
+      button[type="submit"] {
         height: 48px;
         border: 2px solid #b2922c;
         font-family: "Helvetica";
@@ -678,6 +809,26 @@ body main .page-content .main-wrap.email-the-show {
           background-color: transparent !important;
           border-color: transparent !important;
           pointer-events: none !important;
+        }
+        .cnb-spinner-loading {
+          width: 40px;
+          height: 40px;
+          background: conic-gradient(rgba(0, 0, 0, 0) 10%, #b2922c);
+          display: block;
+          margin: 0 auto;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .form-ss {
+      h3 {
+        font-size: 20px;
+      }
+      form {
+        .form-group label {
+          font-size: 16px;
         }
       }
     }

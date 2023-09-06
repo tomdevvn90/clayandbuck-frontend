@@ -1,5 +1,4 @@
-const REST_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_API_URL;
-
+import { WP_REST_API_URL } from "../../../lib/constants";
 import {
   ZypeViewVideoResponse,
   ZypeListVideosResponse,
@@ -32,68 +31,55 @@ export class PwsMediaService {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = REST_API_URL;
+    this.baseUrl = WP_REST_API_URL;
   }
 
   getOnAirVideo() {
     // Old API Ex: https://services.premierenetworks.com/media/clay-and-buck/on-air?manifest=false
-    return this.doMediaRequest<ZypeViewVideoResponse>(`v2/media/on-air/`);
+    return this.doMediaRequest<ZypeViewVideoResponse>(`/on-air/`);
   }
 
   getVideoBySlug(slug: string) {
     if (slug === "live") {
       // Old API Ex: https://services.premierenetworks.com/media/clay-and-buck/on-air
-      return this.doMediaRequest<ZypeViewVideoResponse>(`v2/media/on-air/`);
+      return this.doMediaRequest<ZypeViewVideoResponse>(`/on-air/`);
     }
     // Old API Ex: https://services.premierenetworks.com/media/clay-and-buck/videos/slug/what-s-next-for-the-disgraced-ny-governor
     slug = encodeURIComponent(slug);
-    return this.doMediaRequest<ZypeViewVideoResponse>(
-      `v2/media/videos/slug/${slug}`
-    );
+    return this.doMediaRequest<ZypeViewVideoResponse>(`/videos/slug/${slug}`);
   }
 
   getNextVideo(publishedAt: string) {
     // Old API Ex: //services.premierenetworks.com/media/clay-and-buck/next/64418dddf0b6de0001d66fb7
     publishedAt = encodeURIComponent(publishedAt);
-    return this.doMediaRequest<ZypeViewVideoResponse>(
-      `v2/media/next/?publishedAt=${publishedAt}`
-    );
+    return this.doMediaRequest<ZypeViewVideoResponse>(`/next/?publishedAt=${publishedAt}`);
   }
 
   getConfig(includeVideos = true, perPage = 12) {
     // Old API Ex: //services.premierenetworks.com/media/clay-and-buck/config?includeVideos=true&perPage=12
-    return this.doMediaRequest<ZypeConfigResponse>(
-      `v2/media/config/?includeVideos=${includeVideos}&perPage=${perPage}`
-    );
+    return this.doMediaRequest<ZypeConfigResponse>(`/config/?includeVideos=${includeVideos}&perPage=${perPage}`);
   }
 
   getIsAudio(id: string) {
     // Old API Ex: //services.premierenetworks.com/media/clay-and-buck/is-audio/64418dddf0b6de0001d66fb7?onAir=false
-    return this.doMediaRequest<ZypeIsAudioResponse>(`v2/media/is-audio/${id}`);
+    return this.doMediaRequest<ZypeIsAudioResponse>(`/is-audio/${id}`);
   }
 
   getVideos(resume: string | null = null, config: ListVideosConfig = {}) {
     if (resume) {
       // Old API Ex: //services.premierenetworks.com/media/clay-and-buck/videos?resume=eyJwYWdlIjoyLCJwZXJQYWdlIjoxMiwiY2F0ZWdvcmllcyI6eyJDbGF5IGFuZCBCdWNrIjoiQXVkaW8gQ2xpcHMifX0=
       resume = encodeURIComponent(resume);
-      return this.doMediaRequest<ZypeListVideosResponse>(
-        `v2/media/videos/?resume=${resume}`
-      );
+      return this.doMediaRequest<ZypeListVideosResponse>(`/videos/?resume=${resume}`);
     }
-    let query = Object.entries(config).reduce(
-      (acc, [key, val]) => acc + `&${key}=${encodeURIComponent(val)}`,
-      ""
-    );
+    let query = Object.entries(config).reduce((acc, [key, val]) => acc + `&${key}=${encodeURIComponent(val)}`, "");
     if (query) {
       query = `?${query.slice(1)}`;
     }
     // Old API Ex: //services.premierenetworks.com/media/clay-and-buck/videos/?query=Former
-    return this.doMediaRequest<ZypeListVideosResponse>(
-      `v2/media/videos/${query}`
-    );
+    return this.doMediaRequest<ZypeListVideosResponse>(`/videos/${query}`);
   }
 
   private doMediaRequest<T>(url: string) {
-    return doRequest<T>(`${this.baseUrl}/${url}`);
+    return doRequest<T>(`${this.baseUrl}wp/v2/media${url}`);
   }
 }

@@ -5,7 +5,7 @@ import { TwitterTimelineEmbed } from "react-twitter-embed";
 
 export default function Sidebar() {
   const { data, error } = useSWR<SidebarWidgetRes[], Error>(
-    `${WP_REST_API_URL}/v2/widgets?sidebar=home-sidebar-1`,
+    `${WP_REST_API_URL}wp/v2/widgets?sidebar=home-sidebar-1`,
     fetcher
   );
   if (error) return <div className="no-podcasts"></div>;

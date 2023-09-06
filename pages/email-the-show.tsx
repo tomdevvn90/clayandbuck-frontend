@@ -62,7 +62,7 @@ export default function VipPodcastPage({ pageData }) {
       <div className={`main-wrap page white-background ${pageClass}`}>
         <section className="hero-ss">
           <Container>
-            <Image src={EmailTheShowImg} width={1200} height={327} alt="Exclusive Member Email" />
+            <Image src={EmailTheShowImg} width={1200} height={327} priority={true} alt="Exclusive Member Email" />
           </Container>
         </section>
 
