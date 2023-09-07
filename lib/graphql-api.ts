@@ -61,6 +61,8 @@ export async function getPageData(uri: string) {
         template {
           templateName
         }
+        homeData
+        recsData
       }
     }`,
     {

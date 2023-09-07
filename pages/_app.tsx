@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import dynamic from "next/dynamic";
+import NextNProgress from "nextjs-progressbar";
 import { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { GlobalsContext } from "../contexts/GlobalsContext";
@@ -50,6 +51,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       <main>
+        <NextNProgress color="rgb(235, 211, 96)" height={5} options={{ showSpinner: false }} />
+
         <Component {...pageProps} />
 
         {podcasts.length > 0 && <PodcastsPlayer />}

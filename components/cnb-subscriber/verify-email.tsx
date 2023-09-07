@@ -1,6 +1,6 @@
 import SubscribeInfo from "./parts/subscribe-info";
-import { useState } from "react";
 import dynamic from "next/dynamic";
+import { useState } from "react";
 import { createUser } from "../../lib/normal-api";
 import { setCookieLoginInfo } from "../../utils/global-functions";
 import { useRouter } from "next/router";

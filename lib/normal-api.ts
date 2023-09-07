@@ -38,13 +38,6 @@ export async function getPodcastsData() {
 }
 
 /**
- * Get data for Homepage
- */
-export async function getHomePageData() {
-  return await fetchAPINormal(`wp/v2/home-data/`);
-}
-
-/**
  * Get Sidebar Widget
  */
 export async function getSidebarWidget(sidebar_id: string) {

@@ -6,17 +6,20 @@ import { recItemProps } from "../../lib/constants";
 import RecItem from "./rec-item";
 
 export default function AllRecs({ allRecs, latestItem }) {
-  const { excludeId } = latestItem?.id ?? "";
+  const [isFilterLoading, setIsFilterLoading] = useState(false);
+  const [isMoreLoading, setIsMoreLoading] = useState(false);
   const [recs, setRecs] = useState(allRecs);
   const [crPage, setCrPage] = useState(2);
   const [recTypeS, setRecType] = useState("");
   const [activeType, setActiveType] = useState("");
   const [showLoadMoreBtn, setLoadMoreBtn] = useState(true);
+  const excludeId = latestItem?.id ?? "";
 
   // Filter by type
   const getRecsByType = async (recType: string) => {
     setActiveType(recType);
 
+    setIsFilterLoading(true);
     const recsData = await getRecsData(1, 6, excludeId, recType);
     const recsByType = recsData?.booksMovies ?? {};
     if (recsByType.length > 5) {
@@ -24,12 +27,15 @@ export default function AllRecs({ allRecs, latestItem }) {
     } else {
       setLoadMoreBtn(false);
     }
+    setIsFilterLoading(false);
     setRecType(recType);
     setCrPage(2);
     setRecs(recsByType);
   };
+
   // Load more Recs
   const loadMoreRecs = async () => {
+    setIsMoreLoading(true);
     const recsData = await getRecsData(crPage, 6, excludeId, recTypeS);
     const moreRecs = recsData?.booksMovies ?? {};
     if (moreRecs.length < 1) {
@@ -38,12 +44,13 @@ export default function AllRecs({ allRecs, latestItem }) {
       setRecs([...recs, ...moreRecs]);
       setCrPage(crPage + 1);
     }
+    setIsMoreLoading(false);
   };
 
-  const booksClAt = activeType == "Books" ? "active" : "";
-  const moviesClAt = activeType == "Movies" ? "active" : "";
-  const tvShowsClAt = activeType == "TV Shows" ? "active" : "";
-  const guestBkClAt = activeType == "Guest Books" ? "active" : "";
+  const booksClAt = activeType == "Books" ? "btn active" : "btn";
+  const moviesClAt = activeType == "Movies" ? "btn active" : "btn";
+  const tvShowsClAt = activeType == "TV Shows" ? "btn active" : "btn";
+  const guestBkClAt = activeType == "Guest Books" ? "btn active" : "btn";
   return (
     <div className="">
       <div className="rc-filter-block">
@@ -52,16 +59,16 @@ export default function AllRecs({ allRecs, latestItem }) {
         </div>
         <div className="right-col">
           <div className="rc-filter-btns">
-            <button className={`btn ${booksClAt}`} onClick={() => getRecsByType("Books")}>
+            <button className={booksClAt} onClick={() => getRecsByType("Books")}>
               Books
             </button>
-            <button className={`btn ${moviesClAt}`} onClick={() => getRecsByType("Movies")}>
+            <button className={moviesClAt} onClick={() => getRecsByType("Movies")}>
               Movies
             </button>
-            <button className={`btn ${tvShowsClAt}`} onClick={() => getRecsByType("TV Shows")}>
+            <button className={tvShowsClAt} onClick={() => getRecsByType("TV Shows")}>
               TV Shows
             </button>
-            <button className={`btn ${guestBkClAt}`} onClick={() => getRecsByType("Guest Books")}>
+            <button className={guestBkClAt} onClick={() => getRecsByType("Guest Books")}>
               Guest Books
             </button>
           </div>
@@ -69,17 +76,28 @@ export default function AllRecs({ allRecs, latestItem }) {
       </div>
 
       <div className="rc-result-lst">
-        {recs &&
+        {isFilterLoading && (
+          <div className="rc-loading-wrap">
+            <div className="cnb-spinner-loading"></div>
+          </div>
+        )}
+
+        {!isFilterLoading &&
+          recs.length > 0 &&
           recs.map((rec: recItemProps, index: number) => {
             return <RecItem key={index} recItem={rec} />;
           })}
 
-        {showLoadMoreBtn && (
+        {!isFilterLoading && showLoadMoreBtn && (
           <div className="load-more-wrap">
-            <button className="btn" onClick={loadMoreRecs}>
-              <span>Load More</span>
-              <FontAwesomeIcon icon={faRotateRight} style={{}} />
-            </button>
+            {isMoreLoading ? (
+              <div className="cnb-spinner-loading"></div>
+            ) : (
+              <button className="btn" onClick={loadMoreRecs}>
+                <span>Load More</span>
+                <FontAwesomeIcon icon={faRotateRight} style={{}} />
+              </button>
+            )}
           </div>
         )}
       </div>

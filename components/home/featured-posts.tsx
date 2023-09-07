@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { isExternalLink } from "../../utils/global-functions";
-// import HomeMinibarAds from '../ads/home-minibar-ads'
 const HomeMinibarAds = dynamic(() => import("../ads/home-minibar-ads"), {
   ssr: false,
 });

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import useEscapeKey from "../../../hooks/useEscapeKey";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import { useRouter } from "next/router";
@@ -11,6 +11,10 @@ export default function SearchPopup({ closeSearchPopup, toggleMenuHeader }) {
 
   useEscapeKey(closeSearchPopup);
   useOutsideClick(closeSearchPopup, outSideRef);
+
+  useEffect(() => {
+    document.getElementById("cnb-search-input").focus();
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -26,7 +30,7 @@ export default function SearchPopup({ closeSearchPopup, toggleMenuHeader }) {
       <div className="modal-wrap" ref={outSideRef}>
         <div>
           <form role="search" onSubmit={handleSubmit}>
-            <input type="text" placeholder="Search..." name="s" />
+            <input id="cnb-search-input" type="text" placeholder="Search..." name="s" />
             <button type="submit" className="btn-submit">
               <FontAwesomeIcon icon={faSearch} style={{}} />
             </button>

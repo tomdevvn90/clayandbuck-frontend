@@ -5,21 +5,18 @@ import logo_img from "../../public/images/clay-and-buck-logo.png";
 import white_mini_logo from "../../public/images/white-mini-logo.png";
 import MenuItem from "../menu-item";
 import NoticeAndSocials from "./parts/notice-and-socials";
+import SearchPopup from "./parts/search-popup";
 import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faBars } from "@fortawesome/free-solid-svg-icons";
 import { GlobalsContext } from "../../contexts/GlobalsContext";
-import SearchPopup from "./parts/search-popup";
 
-// import DownloadApp from "./download-app";
 const DownloadApp = dynamic(() => import("./parts/download-app"), {
   ssr: false,
 });
-// import LeaderBoardTopAds from '../ads/leaderboard-top-ads'
 const LeaderBoardTopAds = dynamic(() => import("../ads/leaderboard-top-ads"), {
   ssr: false,
 });
-// import LoginAccountModal from "../login-account-modal";
 const LoginAccountModal = dynamic(() => import("../login-account-modal"), {
   ssr: false,
 });

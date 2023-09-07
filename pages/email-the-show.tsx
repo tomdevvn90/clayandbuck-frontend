@@ -26,9 +26,6 @@ export default function VipPodcastPage({ pageData }) {
   }
 
   const { headerMenu, footerMenu } = pageData;
-  const { templateName } = page?.template ?? "";
-  const pageClass = templateName ? templateName.toLowerCase().replace(" ", "-") : "";
-
   const { seo } = page;
   const fullHead = ParseHtmlToReact(seo.fullHead);
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
@@ -59,7 +56,7 @@ export default function VipPodcastPage({ pageData }) {
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
       </Head>
-      <div className={`main-wrap page white-background ${pageClass}`}>
+      <div className="main-wrap page white-background email-the-show">
         <section className="hero-ss">
           <Container>
             <Image src={EmailTheShowImg} width={1200} height={327} priority={true} alt="Exclusive Member Email" />

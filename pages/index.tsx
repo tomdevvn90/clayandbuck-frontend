@@ -5,22 +5,20 @@ import Layout from "../components/layout/layout";
 import PlayButtonList from "../components/home/play-button-list";
 import FeaturedPosts from "../components/home/featured-posts";
 import dynamic from "next/dynamic";
-import { getHomePageData } from "../lib/normal-api";
 import { getPageData } from "../lib/graphql-api";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
 
-// import Sidebar from '../components/sidebar'
 const Sidebar = dynamic(() => import("../components/sidebar"), {
   ssr: false,
 });
 
-export default function Index({ homePageData, pageData }) {
-  const { featuredPosts, topStories, excludeTopStories, quoteSliders } = homePageData;
+export default function Index({ pageData }) {
   const { headerMenu, footerMenu } = pageData;
 
   const page = pageData?.pageBy ?? {};
   const { seo } = page;
+  const { featuredPosts, topStories, excludeTopStories, quoteSliders } = JSON.parse(page.homeData);
   const fullHead = ParseHtmlToReact(seo.fullHead);
 
   return (
@@ -39,9 +37,11 @@ export default function Index({ homePageData, pageData }) {
       <div className="main-wrap index-page">
         <Container>
           <PlayButtonList />
-          {featuredPosts && <FeaturedPosts ftPosts={featuredPosts} />}
+          {featuredPosts.length > 0 && <FeaturedPosts ftPosts={featuredPosts} />}
           <div className="main-content">
-            <TopStories tpStories={topStories} exTopStories={excludeTopStories} qtSliders={quoteSliders} />
+            {topStories.length > 0 && (
+              <TopStories tpStories={topStories} exTopStories={excludeTopStories} qtSliders={quoteSliders} />
+            )}
             <Sidebar />
           </div>
         </Container>
@@ -53,16 +53,15 @@ export default function Index({ homePageData, pageData }) {
 /** Server-side Rendering (SSR) */
 export async function getServerSideProps() {
   const pageData = await getPageData("/");
-  const homePageData = await getHomePageData();
   return {
-    props: { homePageData, pageData },
+    props: { pageData },
   };
 }
 /** Static Site Generation (SSG) */
 // export const getStaticProps: GetStaticProps = async () => {
-//      const homePageData = await getHomePageData();
+//      const pageData = await getPageData("/");
 //      return {
-//         props: homePageData,
+//         props: pageData,
 //         revalidate: 10,
 //      }
 // }

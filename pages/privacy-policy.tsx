@@ -16,9 +16,6 @@ export default function PrivacyPolicyPage({ pageData }) {
   }
 
   const { headerMenu, footerMenu } = pageData;
-  const { templateName } = page?.template ?? "";
-  const pageClass = templateName ? templateName.toLowerCase().replace(" ", "-") : "";
-
   const { seo } = page;
   const fullHead = ParseHtmlToReact(seo.fullHead);
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
@@ -37,7 +34,7 @@ export default function PrivacyPolicyPage({ pageData }) {
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
       </Head>
-      <div className={`main-wrap page white-background ${pageClass}`}>
+      <div className="main-wrap page white-background terms-conditions-single-post">
         <Container>
           <OneTrustContent
             id="otnotice-817b67df-8a7f-42db-8847-d9d07698faf2"

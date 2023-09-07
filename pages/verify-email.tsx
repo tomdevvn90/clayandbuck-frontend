@@ -2,24 +2,16 @@ import Head from "next/head";
 import ErrorPage from "next/error";
 import Container from "../components/container";
 import Layout from "../components/layout/layout";
+import VerifyEmail from "../components/cnb-subscriber/verify-email";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { SITE_URL } from "../lib/constants";
-import { ParseHtmlToReact } from "../utils/parse-html-to-react";
-import VerifyEmail from "../components/cnb-subscriber/verify-email";
 
 export default function VerifyEmailPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
   const router = useRouter();
 
-  // if (!router.isFallback && !page?.slug) {
-  // 	return <ErrorPage statusCode={404} />
-  // }
-
   const { headerMenu, footerMenu } = pageData;
-
-  // const { seo } = page
-  // const fullHead = ParseHtmlToReact(seo.fullHead);
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
@@ -27,7 +19,6 @@ export default function VerifyEmailPage({ pageData }) {
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>
-        {/* {fullHead} */}
         <link rel="canonical" href={canonicalUrl} />
         <title>Verify Email</title>
         <meta

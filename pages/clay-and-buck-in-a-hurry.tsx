@@ -16,15 +16,11 @@ export default function NewsletterPage({ pageData }) {
   }
 
   const { headerMenu, footerMenu } = pageData;
-  const { templateName } = page?.template ?? "";
-  const pageClass = templateName ? templateName.toLowerCase().replace(" ", "-") : "";
-
   const { seo } = page;
   const fullHead = ParseHtmlToReact(seo.fullHead);
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
-  const backgroundClass = getBackgroundClass(pageClass);
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>
@@ -38,7 +34,7 @@ export default function NewsletterPage({ pageData }) {
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
       </Head>
-      <div className={`main-wrap page ${pageClass} ${backgroundClass}`}>
+      <div className="main-wrap page white-background eib-in-a-hurry">
         <Newsletter />
       </div>
     </Layout>

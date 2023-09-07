@@ -153,22 +153,20 @@ export default function useGpt(id: string) {
           .addService(window.googletag.pubads());
       }
 
-      if (id == "div-gpt-ad-leaderboard_728x90_top") {
-        if (devSite) {
-          slot = window.googletag
-            .defineSlot(
-              "/6663/prnd/prn-clayandbuck",
-              [
-                [728, 90],
-                [320, 50],
-              ],
-              id
-            )
-            .setTargeting("pos", ["leaderboardtop"])
-            .setTargeting("prnpage", ["home"])
-            .defineSizeMapping(mapping)
-            .addService(window.googletag.pubads());
-        }
+      if (id == "div-gpt-ad-leaderboard_728x90_top" && devSite) {
+        slot = window.googletag
+          .defineSlot(
+            "/6663/prnd/prn-clayandbuck",
+            [
+              [728, 90],
+              [320, 50],
+            ],
+            id
+          )
+          .setTargeting("pos", ["leaderboardtop"])
+          .setTargeting("prnpage", ["home"])
+          .defineSizeMapping(mapping)
+          .addService(window.googletag.pubads());
       }
 
       window.googletag.pubads().enableSingleRequest();
