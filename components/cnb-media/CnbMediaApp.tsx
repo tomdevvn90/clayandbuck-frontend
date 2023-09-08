@@ -1,5 +1,4 @@
 import React from "react";
-
 import { PwsMediaService } from "./service/pws-media.service";
 import { ZypeMedia } from "./zype/ZypeMedia.component";
 import { ZypeViewVideoResponse } from "./zype/ZypeMedia.types";
@@ -10,8 +9,6 @@ export default class CnbMediaApp extends React.Component<CnbMediaProps> {
 
   constructor(props: CnbMediaProps) {
     super(props);
-
-    //this.mediaService = new PwsMediaService(props.showSlug, props.pwsHost);
     this.mediaService = new PwsMediaService();
   }
 

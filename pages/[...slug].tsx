@@ -2,12 +2,12 @@ import Head from "next/head";
 import ErrorPage from "next/error";
 import Container from "../components/container";
 import Layout from "../components/layout/layout";
+import TwoColumnTemp from "../components/two-column-template/two-column";
+import SpecialOffer from "../components/special-offer-template/special-offer";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
-import TwoColumnTemp from "../components/two-column-template/two-column";
-import SpecialOffer from "../components/special-offer-template/special-offer";
 import { getBackgroundClass } from "../utils/global-functions";
 
 export default function Page({ pageData, cnbMediaData }) {

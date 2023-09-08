@@ -92,7 +92,6 @@ export default function ChangePasswordForm() {
 
       {!isSuccess && (
         <form onSubmit={handleSubmit}>
-          <p className="change-password-error"></p>
           <div className="form-group">
             <label htmlFor="cnb-current-password">Current Password</label>
             <input

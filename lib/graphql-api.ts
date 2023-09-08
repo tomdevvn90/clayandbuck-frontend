@@ -63,6 +63,7 @@ export async function getPageData(uri: string) {
         }
         homeData
         recsData
+        plansInfo
       }
     }`,
     {

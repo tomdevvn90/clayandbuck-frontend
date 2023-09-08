@@ -745,3 +745,150 @@ body main .page-content .main-wrap.sign-up-flow {
     }
   }
 }
+
+.update-email-wrap,
+.reset-pass-wrap {
+  .form-group {
+    margin-bottom: 16px;
+
+    label {
+      font-family: $secondary-font;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 16px;
+      color: #27292d;
+      display: block;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+    @media screen and (max-width: 480px) {
+      margin-bottom: 12px;
+    }
+  }
+  button[type="submit"] {
+    height: 48px;
+    border: 2px solid #b2922c;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 44px;
+    color: #fff;
+    background: #b2922c;
+    width: 100%;
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    -webkit-appearance: button;
+    border-radius: 0.25rem;
+
+    &.loading {
+      background-color: transparent !important;
+      border-color: transparent !important;
+      pointer-events: none !important;
+    }
+    .cnb-spinner-loading {
+      margin: 0 auto;
+      width: 40px;
+      height: 40px;
+    }
+  }
+  form {
+    margin: 20px 0;
+  }
+  .update-box {
+    max-width: 500px;
+    min-height: 450px;
+    background-color: #fff;
+    margin: auto;
+    padding: 32px;
+    text-align: center;
+    position: relative;
+
+    @media screen and (max-width: 480px) {
+      padding: 20px;
+    }
+    @media screen and (max-width: 360px) {
+      padding: 15px;
+    }
+    .cnb-spinner-loading {
+      margin: 60px auto;
+      width: 50px;
+      height: 50px;
+      background: conic-gradient(rgba(0, 0, 0, 0) 10%, #b2922c);
+      display: block;
+    }
+    .close-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: #000;
+      width: 56px;
+      height: 56px;
+      line-height: 44px;
+      font-size: 44px;
+      overflow: visible;
+      display: block;
+    }
+    .result-wrap {
+      margin: 40px 0;
+    }
+    h2 {
+      font-family: $secondary-font;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 23px;
+      color: #000;
+      margin: 16px 0 10px;
+    }
+    p {
+      font-family: $secondary-font;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: #000;
+    }
+    p.error-msg,
+    p.success-msg {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: center;
+      color: red;
+      background: rgba(218, 223, 227, 0.4);
+      border-radius: 6px;
+      min-height: 48px;
+      padding: 12px;
+    }
+    p.success-msg {
+      color: #46815a;
+    }
+    .box-footer a {
+      display: block;
+      font-family: Helvetica;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 21px;
+      text-align: center;
+      padding: 5px 0;
+      color: #b2922c !important;
+      margin: 0;
+    }
+  }
+}
+body .reset-pass-wrap {
+  button.btn {
+    box-shadow: none;
+    border: none;
+    margin-top: 12px;
+    background: #cbac41;
+    color: #fff;
+    border-radius: 5px;
+  }
+  .update-box p.success-msg {
+    margin: 40px 0;
+  }
+  @media screen and (max-width: 480px) {
+    .update-box p.success-msg {
+      margin: 20px 0;
+    }
+  }
+}

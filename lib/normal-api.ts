@@ -97,6 +97,17 @@ export async function getForgotPasswordData(recaptchaKey: string, email: string)
 }
 
 /**
+ * Reset password
+ */
+export async function resetPassword(passwordToken: string, password: string, hintPassword: string) {
+  return await fetchAPIPost(`wp/v2/subscriber/reset-password/`, {
+    passwordToken,
+    password,
+    hintPassword,
+  });
+}
+
+/**
  * get Account Info
  */
 export async function getAccountInfo(accessToken: string) {
@@ -109,6 +120,13 @@ export async function getAccountInfo(accessToken: string) {
  */
 export async function changeEmail(newEmail: string, password: string, currentEmail: string) {
   return await fetchAPIPost(`wp/v2/subscriber/change-email/`, { newEmail, password, currentEmail });
+}
+
+/**
+ * Update email
+ */
+export async function updateEmail(emailToken: string) {
+  return await fetchAPIPost(`wp/v2/subscriber/update-email/`, { emailToken });
 }
 
 /**

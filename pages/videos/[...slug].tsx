@@ -9,7 +9,6 @@ import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
 import { SITE_URL } from "../../lib/constants";
 import { PwsMediaService } from "../../components/cnb-media/service/pws-media.service";
 
-// import CnbMediaApp from "../../components/cnb-media";
 const CnbMediaApp = dynamic(() => import("../../components/cnb-media"), {
   ssr: false,
 });

@@ -1,13 +1,12 @@
 import Head from "next/head";
 import Layout from "../components/layout/layout";
-import Link from "next/link";
 import GiveTheGift from "../components/cnb-subscriber/give-the-gift";
+import dynamic from "next/dynamic";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { CNB_RECAPTCHA_KEY, CNB_RECURLY_API_KEY, SITE_URL } from "../lib/constants";
 import { getPlansInfo } from "../lib/normal-api";
 import { RecurlyProvider, Elements } from "@recurly/react-recurly";
-import dynamic from "next/dynamic";
 import { getCookie } from "cookies-next";
 import { useContext } from "react";
 import { GlobalsContext } from "../contexts/GlobalsContext";
@@ -21,16 +20,8 @@ export default function GiftSubscriptionPage({ pageData, plansInfoRes }) {
   const GlobalsCtx = useContext(GlobalsContext);
 
   const page = pageData?.pageBy ?? {};
-  const router = useRouter();
-
-  // if (!router.isFallback && !page?.slug) {
-  // 	return <ErrorPage statusCode={404} />
-  // }
-
   const { headerMenu, footerMenu } = pageData;
-
-  // const { seo } = page
-  // const fullHead = ParseHtmlToReact(seo.fullHead);
+  const router = useRouter();
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
@@ -38,7 +29,6 @@ export default function GiftSubscriptionPage({ pageData, plansInfoRes }) {
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>
-        {/* {fullHead} */}
         <link rel="canonical" href={canonicalUrl} />
         <title>Give the gift of C&B VIP</title>
         <meta

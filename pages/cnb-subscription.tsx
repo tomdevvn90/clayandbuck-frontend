@@ -2,12 +2,12 @@ import Head from "next/head";
 import Layout from "../components/layout/layout";
 import Subscription from "../components/cnb-subscriber/subscription";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { CNB_RECURLY_API_KEY, SITE_URL } from "../lib/constants";
 import { getPlansInfo } from "../lib/normal-api";
 import { RecurlyProvider, Elements } from "@recurly/react-recurly";
-import dynamic from "next/dynamic";
 import { getCookie } from "cookies-next";
 import { useContext } from "react";
 import { GlobalsContext } from "../contexts/GlobalsContext";
@@ -17,19 +17,12 @@ const Container = dynamic(() => import("../components/container"), {
 });
 
 export default function SubscriptionPage({ pageData, plansInfoRes }) {
+  console.log(pageData);
   const GlobalsCtx = useContext(GlobalsContext);
 
   const page = pageData?.pageBy ?? {};
-  const router = useRouter();
-
-  // if (!router.isFallback && !page?.slug) {
-  // 	return <ErrorPage statusCode={404} />
-  // }
-
   const { headerMenu, footerMenu } = pageData;
-
-  // const { seo } = page
-  // const fullHead = ParseHtmlToReact(seo.fullHead);
+  const router = useRouter();
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
@@ -38,7 +31,6 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>
-        {/* {fullHead} */}
         <link rel="canonical" href={canonicalUrl} />
         <title>Subscribe to C&B VIP</title>
         <meta
@@ -106,11 +98,11 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
 
 /** Server-side Rendering (SSR) */
 export async function getServerSideProps({ req, res }) {
-  const pageData = await getPageData("/cnb-subscription");
-
   const userEmailCk = getCookie("STYXKEY_USER_EMAIL", { req, res });
   const userEmail = userEmailCk ? userEmailCk.toString() : "";
   const plansInfoRes = await getPlansInfo(userEmail);
+
+  const pageData = await getPageData("/cnb-subscription");
 
   return {
     props: { pageData, plansInfoRes },

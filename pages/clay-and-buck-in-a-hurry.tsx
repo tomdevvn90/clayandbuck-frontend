@@ -6,7 +6,6 @@ import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
-import { getBackgroundClass } from "../utils/global-functions";
 
 export default function NewsletterPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
