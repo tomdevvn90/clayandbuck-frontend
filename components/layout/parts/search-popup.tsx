@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import useEscapeKey from "../../../hooks/useEscapeKey";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import { useRouter } from "next/router";
@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export default function SearchPopup({ closeSearchPopup, toggleMenuHeader }) {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const outSideRef = useRef(null);
 
@@ -18,11 +19,13 @@ export default function SearchPopup({ closeSearchPopup, toggleMenuHeader }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const keyword = event.target.s.value;
+    setIsLoading(true);
 
+    const keyword = event.target.s.value;
     router.push(`/search?s=${keyword}`, null, { shallow: true });
 
-    closeSearchPopup();
+    if (router.pathname == "/search") closeSearchPopup();
+
     toggleMenuHeader();
   };
   return (
@@ -31,9 +34,16 @@ export default function SearchPopup({ closeSearchPopup, toggleMenuHeader }) {
         <div>
           <form role="search" onSubmit={handleSubmit}>
             <input id="cnb-search-input" type="text" placeholder="Search..." name="s" />
-            <button type="submit" className="btn-submit">
-              <FontAwesomeIcon icon={faSearch} style={{}} />
-            </button>
+
+            {isLoading ? (
+              <button type="submit" className="btn-submit loading">
+                <span className="cnb-spinner-loading"></span>
+              </button>
+            ) : (
+              <button type="submit" className="btn-submit">
+                <FontAwesomeIcon icon={faSearch} />
+              </button>
+            )}
           </form>
           <button title="Close (Esc)" type="button" className="close-modal" onClick={closeSearchPopup}>
             ×

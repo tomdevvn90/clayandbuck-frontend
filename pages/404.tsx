@@ -22,6 +22,6 @@ export const getStaticProps: GetStaticProps = async () => {
   const allMenu = await getAllMenu();
   return {
     props: allMenu,
-    revalidate: 10,
+    revalidate: 30,
   };
 };

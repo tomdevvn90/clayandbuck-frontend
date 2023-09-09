@@ -1,6 +1,5 @@
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import ErrorPage from "next/error";
 import Container from "../../components/container";
 import Layout from "../../components/layout/layout";
 import { getPageData } from "../../lib/graphql-api";
@@ -8,6 +7,7 @@ import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
 import { SITE_URL } from "../../lib/constants";
 import { PwsMediaService } from "../../components/cnb-media/service/pws-media.service";
+import { useEffect } from "react";
 
 const CnbMediaApp = dynamic(() => import("../../components/cnb-media"), {
   ssr: false,
@@ -17,7 +17,10 @@ export default function VideoSlugsPage({ pageData, mediaData }) {
   const page = pageData?.pageBy ?? {};
   const router = useRouter();
   if (!router.isFallback && !page?.slug) {
-    return <ErrorPage statusCode={404} />;
+    useEffect(() => {
+      router.push("/404");
+    }, []);
+    return;
   }
 
   const { headerMenu, footerMenu } = pageData;

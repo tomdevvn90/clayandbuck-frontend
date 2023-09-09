@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import ErrorPage from "next/error";
 import Head from "next/head";
 import Container from "../../components/container";
 import PostBody from "../../components/post/post-body";
@@ -8,14 +7,14 @@ import PostHeader from "../../components/post/post-header";
 import Layout from "../../components/layout/layout";
 import PostTitle from "../../components/post/post-title";
 import BreadCrumb from "../../components/post/post-breadcrumb";
+import RequireSubscriberOnly from "../../components/require-subscriber-only";
 import { useRouter } from "next/router";
 import { getPostAndMorePosts } from "../../lib/graphql-api";
 import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
 import { SITE_URL } from "../../lib/constants";
 import { getCookie } from "cookies-next";
-import RequireSubscriberOnly from "../../components/require-subscriber-only";
+import { useEffect } from "react";
 
-// import Sidebar from "../../components/sidebar";
 const Sidebar = dynamic(() => import("../../components/sidebar"), {
   ssr: false,
 });
@@ -23,7 +22,10 @@ const Sidebar = dynamic(() => import("../../components/sidebar"), {
 export default function Post({ post, headerMenu, footerMenu, posts }) {
   const router = useRouter();
   if (!router.isFallback && !post?.slug) {
-    return <ErrorPage statusCode={404} />;
+    useEffect(() => {
+      router.push("/404");
+    }, []);
+    return;
   }
   const { seo, subscriberOnly } = post;
   const fullHead = ParseHtmlToReact(seo.fullHead);

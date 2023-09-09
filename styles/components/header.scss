@@ -304,6 +304,18 @@
     border-radius: 0 6px 6px 0;
     cursor: pointer;
     background-color: #f8da49;
+
+    &.loading {
+      background: transparent;
+    }
+    .cnb-spinner-loading {
+      display: block;
+      margin: 0 auto;
+      width: 30px;
+      height: 30px;
+      background: conic-gradient(rgba(0, 0, 0, 0) 10%, #f8da49);
+      -webkit-mask: radial-gradient(farthest-side, rgba(0, 0, 0, 0) calc(100% - 7px), #000 0);
+    }
   }
   button.close-modal {
     color: #000;

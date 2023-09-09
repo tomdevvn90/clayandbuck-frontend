@@ -91,8 +91,8 @@ export default function VerifyEmail({ gift, emailToken }) {
       } else {
         setErrorMessages("Something went wrong. Please try again!");
       }
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (

@@ -1,4 +1,3 @@
-import ErrorPage from "next/error";
 import Head from "next/head";
 import Container from "../../components/container";
 import PostBody from "../../components/post/post-body";
@@ -8,11 +7,15 @@ import { useRouter } from "next/router";
 import { getTranscriptBySlug } from "../../lib/graphql-api";
 import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
 import { SITE_URL, TWITTER_OG_IMAGE_URL } from "../../lib/constants";
+import { useEffect } from "react";
 
 export default function TranscriptTemplate({ post, headerMenu, footerMenu }) {
   const router = useRouter();
   if (!router.isFallback && !post?.slug) {
-    return <ErrorPage statusCode={404} />;
+    useEffect(() => {
+      router.push("/404");
+    }, []);
+    return;
   }
   const { seo } = post;
   const fullHead = ParseHtmlToReact(seo.fullHead);

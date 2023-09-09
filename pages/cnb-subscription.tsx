@@ -17,7 +17,6 @@ const Container = dynamic(() => import("../components/container"), {
 });
 
 export default function SubscriptionPage({ pageData, plansInfoRes }) {
-  console.log(pageData);
   const GlobalsCtx = useContext(GlobalsContext);
 
   const page = pageData?.pageBy ?? {};

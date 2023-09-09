@@ -5,14 +5,13 @@ import { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { GlobalsContext } from "../contexts/GlobalsContext";
 import { PodcastProps, WP_REST_API_URL, fetcher } from "../lib/constants";
+import { getCookie } from "cookies-next";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 
 import "../styles/main.scss";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import { getCookie } from "cookies-next";
 
-// import PodcastsPlayer from "../components/podcasts-player";
 const PodcastsPlayer = dynamic(() => import("../components/podcasts-player"), {
   ssr: false,
 });
