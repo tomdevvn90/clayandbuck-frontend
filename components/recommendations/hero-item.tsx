@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function HeroItem({ latestItem }) {
   const buyUrl = latestItem.buyUrlPostBooks;
   const watchUrl = latestItem.watchUrlPostBooks;
@@ -23,7 +25,7 @@ export default function HeroItem({ latestItem }) {
       </div>
       <div className="rc-image">
         <h2 className="page-title mob" dangerouslySetInnerHTML={{ __html: latestItem.title }} />
-        {ftImage && <img src={ftImage} alt={latestItem.title} />}
+        {ftImage && <Image src={ftImage} alt={latestItem.title} width={460} height={470} />}
       </div>
     </div>
   );

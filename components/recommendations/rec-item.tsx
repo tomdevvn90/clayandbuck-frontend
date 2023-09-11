@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function RecItem({ recItem }) {
   const buyUrl = recItem.buyUrlPostBooks;
   const watchUrl = recItem.watchUrlPostBooks;
@@ -6,7 +8,7 @@ export default function RecItem({ recItem }) {
   return (
     <div className={`rc-item ${recClass}`}>
       <div className="rc-image">
-        <img src={ftImage} alt={recItem.title} />
+        <Image src={ftImage} alt={recItem.title} width={343} height={330} />
       </div>
       <div className="rc-info">
         <h3 dangerouslySetInnerHTML={{ __html: recItem.title }} />

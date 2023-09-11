@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function PostPreview({ title, coverImage, excerpt, slug }) {
   return (
@@ -6,7 +7,7 @@ export default function PostPreview({ title, coverImage, excerpt, slug }) {
       <Link href={`/posts/${slug}`} aria-label={title}>
         {coverImage && (
           <div className="post-featured-img">
-            <img src={coverImage?.node.sourceUrl} alt={`Cover Image for ${title}`} />
+            <Image src={coverImage?.node.sourceUrl} alt={`Cover Image for ${title}`} width={300} height={160} />
           </div>
         )}
         <div className="post-content">

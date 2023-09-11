@@ -1,11 +1,13 @@
 import { decodeLink } from "../../utils/global-functions";
+import Image from "next/image";
 
 export default function PodcastItem({ podItem, styles, ...rest }) {
+  const pcImgUrl = !podItem.imageUrl.includes("http") ? `https:${podItem.imageUrl}` : podItem.imageUrl;
   return (
     <div className={styles.podcast_item} {...rest}>
       <div className={styles.song_info}>
         <div className={styles.top_row}>
-          <img src={podItem.imageUrl} alt="" />
+          <Image src={pcImgUrl} width={60} height={60} alt="" />
           <div className={styles.title_box}>
             <h2>{podItem.title}</h2>
             <p className={styles.date_time}>{podItem.startDate}</p>

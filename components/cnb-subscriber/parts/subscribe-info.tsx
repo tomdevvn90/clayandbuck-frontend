@@ -32,7 +32,7 @@ export default function SubscribeInfo({ gift }) {
         </ul>
       </div>
       <div className="two-friend">
-        <Image className="two-friend-img" src={TwoManImg} alt="Clay and Buck" />
+        <Image className="two-friend-img" width={487} height={383} src={TwoManImg} alt="Clay and Buck" />
       </div>
     </div>
   );

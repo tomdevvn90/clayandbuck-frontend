@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function SearchItem({ title, coverImage, excerpt, slug, type }) {
   let url = slug;
@@ -10,7 +11,7 @@ export default function SearchItem({ title, coverImage, excerpt, slug, type }) {
       <Link href={url} aria-label={title}>
         {coverImage && (
           <div className="post-featured-img">
-            <img src={coverImage} alt={`Cover Image for ${title}`} />
+            <Image src={coverImage} alt={`Cover Image for ${title}`} width={300} height={160} />
           </div>
         )}
         <div className="post-content">
