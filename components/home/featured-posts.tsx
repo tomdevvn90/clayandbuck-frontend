@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { isExternalLink } from "../../utils/global-functions";
+import Image from "next/image";
 const HomeMinibarAds = dynamic(() => import("../ads/home-minibar-ads"), {
   ssr: false,
 });
@@ -16,7 +17,7 @@ export default function FeaturedPosts({ ftPosts }) {
           <Link href={`posts/${firstPost.slug}`} target={firstPost.target}>
             <div className="post-wrap">
               <div className="p-thumb">
-                <img src={firstPost.image_url} alt={firstPost.image_alt} />
+                <Image src={firstPost.image_url} width={330} height={146} alt={firstPost.image_alt} />
               </div>
               <div className="p-content">
                 <h6>{firstPost.post_date}</h6>
@@ -34,30 +35,26 @@ export default function FeaturedPosts({ ftPosts }) {
         <div className="row-2">
           {restPosts &&
             restPosts.map((p) => {
+              const postContent = (
+                <div className="post-wrap">
+                  <div className="p-thumb">
+                    <Image src={p.image_url} width={324} height={143} alt={p.image_alt} />
+                  </div>
+                  <div className="p-content">
+                    <h4 dangerouslySetInnerHTML={{ __html: p.post_title }}></h4>
+                  </div>
+                </div>
+              );
               if (!isExternalLink(p.slug)) {
                 return (
                   <Link href={p.slug} key={p.post_id} target={p.target}>
-                    <div className="post-wrap">
-                      <div className="p-thumb">
-                        <img src={p.image_url} alt={p.image_alt} />
-                      </div>
-                      <div className="p-content">
-                        <h4 dangerouslySetInnerHTML={{ __html: p.post_title }}></h4>
-                      </div>
-                    </div>
+                    {postContent}
                   </Link>
                 );
               } else {
                 return (
                   <a href={p.slug} key={p.post_id} target={p.target}>
-                    <div className="post-wrap">
-                      <div className="p-thumb">
-                        <img src={p.image_url} alt={p.image_alt} />
-                      </div>
-                      <div className="p-content">
-                        <h4 dangerouslySetInnerHTML={{ __html: p.post_title }}></h4>
-                      </div>
-                    </div>
+                    {postContent}
                   </a>
                 );
               }

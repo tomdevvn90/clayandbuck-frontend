@@ -95,11 +95,11 @@ export default function GiftSubscriptionPage({ pageData, plansInfoRes }) {
 
 /** Server-side Rendering (SSR) */
 export async function getServerSideProps({ req, res }) {
-  const pageData = await getPageData("/cnb-give-the-gift");
-
   const userEmailCk = getCookie("STYXKEY_USER_EMAIL", { req, res });
   const userEmail = userEmailCk ? userEmailCk.toString() : "";
   const plansInfoRes = await getPlansInfo(userEmail);
+
+  const pageData = await getPageData("/cnb-give-the-gift");
 
   return {
     props: { pageData, plansInfoRes },

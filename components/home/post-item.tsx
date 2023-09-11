@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { sanitize } from "../../utils/miscellaneous";
 
 export default function PostItem({ postData }) {
@@ -8,7 +9,7 @@ export default function PostItem({ postData }) {
         <div className="post-wrap">
           {postData.image_url && (
             <div className="post-img">
-              <img src={postData.image_url} alt={postData.image_alt} />
+              <Image src={postData.image_url} width={346} height={153} alt={postData.image_alt} />
             </div>
           )}
           <div className="post-content">

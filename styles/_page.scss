@@ -841,3 +841,47 @@ body main .page-content .main-wrap.email-the-show {
     }
   }
 }
+body main .page-content .page-404 {
+  .page-content {
+    color: #000;
+    max-width: 560px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px 0 60px;
+
+    @media screen and (max-width: 480px) {
+      padding: 0 0 20px;
+    }
+  }
+
+  form {
+    position: relative;
+    margin-top: 24px;
+
+    .btn-submit {
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      border: none;
+      height: calc(100% - 4px);
+      width: 56px;
+      font-size: 16px;
+      line-height: 24px;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+      background-color: #f8da49;
+
+      &.loading {
+        background: transparent;
+      }
+      .cnb-spinner-loading {
+        display: block;
+        margin: 0 auto;
+        width: 30px;
+        height: 30px;
+        background: conic-gradient(rgba(0, 0, 0, 0) 10%, #f8da49);
+        -webkit-mask: radial-gradient(farthest-side, rgba(0, 0, 0, 0) calc(100% - 7px), #000 0);
+      }
+    }
+  }
+}

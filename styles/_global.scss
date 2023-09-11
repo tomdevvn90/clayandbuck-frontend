@@ -382,6 +382,8 @@ body {
           border: 3px solid #b28e2a;
           width: 100%;
           max-width: 100%;
+          object-fit: cover;
+          object-position: center;
         }
       }
       .post-content {
