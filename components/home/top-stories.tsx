@@ -30,7 +30,7 @@ export default function TopStories({ tpStories, exTopStories, qtSliders }) {
   );
   async function loadMoreTopStories() {
     setIsLoading(true);
-    const moreTopStories = await getTopStories(nextPage, 9, exTopStories);
+    const moreTopStories = await getTopStories(nextPage, exTopStories);
     if (moreTopStories.length < 1) {
       setLoadMoreBtn(false);
     } else {

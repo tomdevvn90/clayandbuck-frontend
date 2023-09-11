@@ -47,10 +47,8 @@ export async function getSidebarWidget(sidebar_id: string) {
 /**
  * Get Top Stories
  */
-export async function getTopStories(crPage: number, perPage: number, excludeStories: string) {
-  return await fetchAPINormal(
-    `wp/v2/top-stories/?crPage=${crPage}&perPage=${perPage}&excludeStories=${excludeStories}`
-  );
+export async function getTopStories(crPage: number, excludeStories: string) {
+  return await fetchAPINormal(`wp/v2/top-stories/?crPage=${crPage}&excludeStories=${excludeStories}`);
 }
 
 /**

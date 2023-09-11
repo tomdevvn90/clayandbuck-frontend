@@ -38,7 +38,13 @@ export default function FeaturedPosts({ ftPosts }) {
               const postContent = (
                 <div className="post-wrap">
                   <div className="p-thumb">
-                    <Image src={p.image_url} width={324} height={143} alt={p.image_alt} />
+                    <Image
+                      src={p.image_url}
+                      width={324}
+                      height={143}
+                      alt={p.image_alt}
+                      style={{ width: 324, height: 143 }}
+                    />
                   </div>
                   <div className="p-content">
                     <h4 dangerouslySetInnerHTML={{ __html: p.post_title }}></h4>
