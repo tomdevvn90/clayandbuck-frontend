@@ -11,6 +11,7 @@ import { RecurlyProvider, Elements } from "@recurly/react-recurly";
 import { getCookie } from "cookies-next";
 import { useContext } from "react";
 import { GlobalsContext } from "../contexts/GlobalsContext";
+import { useScript } from "usehooks-ts";
 
 const Container = dynamic(() => import("../components/container"), {
   ssr: false,
@@ -18,6 +19,8 @@ const Container = dynamic(() => import("../components/container"), {
 
 export default function SubscriptionPage({ pageData, plansInfoRes }) {
   const GlobalsCtx = useContext(GlobalsContext);
+
+  const status = useScript("https://js.recurly.com/v4/recurly.js");
 
   const page = pageData?.pageBy ?? {};
   const { headerMenu, footerMenu } = pageData;
@@ -27,6 +30,9 @@ export default function SubscriptionPage({ pageData, plansInfoRes }) {
 
   const accessToken = getCookie("STYXKEY_ACCESS_TOKEN");
   const isSubscribe = getCookie("STYXKEY_USER_SUBSCRIBED");
+
+  if (status !== "ready") return null;
+
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>

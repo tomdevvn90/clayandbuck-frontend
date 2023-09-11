@@ -11,6 +11,7 @@ import { getCookie } from "cookies-next";
 import { useContext } from "react";
 import { GlobalsContext } from "../contexts/GlobalsContext";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+import { useScript } from "usehooks-ts";
 
 const Container = dynamic(() => import("../components/container"), {
   ssr: false,
@@ -19,6 +20,8 @@ const Container = dynamic(() => import("../components/container"), {
 export default function GiftSubscriptionPage({ pageData, plansInfoRes }) {
   const GlobalsCtx = useContext(GlobalsContext);
 
+  const status = useScript("https://js.recurly.com/v4/recurly.js");
+
   const page = pageData?.pageBy ?? {};
   const { headerMenu, footerMenu } = pageData;
   const router = useRouter();
@@ -26,6 +29,9 @@ export default function GiftSubscriptionPage({ pageData, plansInfoRes }) {
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
   const accessToken = getCookie("STYXKEY_ACCESS_TOKEN");
+
+  if (status !== "ready") return null;
+
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
       <Head>

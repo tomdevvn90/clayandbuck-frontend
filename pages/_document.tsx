@@ -8,7 +8,6 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <Script src="https://js.recurly.com/v4/recurly.js" strategy="beforeInteractive" />
       </body>
     </Html>
   );
