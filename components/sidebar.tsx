@@ -22,12 +22,12 @@ export default function Sidebar() {
             <section className="widget widget_text">
               <div className="textwidget">
                 <div>
-                  {/* <TwitterTimelineEmbed
+                  <TwitterTimelineEmbed
                     tweetLimit={5}
                     sourceType="profile"
                     screenName="clayandbuck"
                     options={{ height: 600 }}
-                  /> */}
+                  />
                 </div>
               </div>
             </section>
