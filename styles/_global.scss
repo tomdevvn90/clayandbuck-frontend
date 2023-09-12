@@ -460,10 +460,26 @@ body {
     }
   }
 
-  #ihrAffiliatesMapContainer #ihmInViewStationsList {
-    overflow-y: auto;
-    height: auto;
-    margin: 15px 0;
+  #ihrAffiliatesMapContainer {
+    #ihmInViewStationsList {
+      overflow-y: auto;
+      height: auto;
+      margin: 15px 0;
+    }
+    .cnb-loading-wrap {
+      background-color: #fff;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+
+      .cnb-spinner-loading {
+        margin: 60px auto;
+        width: 60px;
+        height: 60px;
+        background: conic-gradient(rgba(0, 0, 0, 0) 10%, #b2922c);
+        display: block;
+      }
+    }
   }
 }
 

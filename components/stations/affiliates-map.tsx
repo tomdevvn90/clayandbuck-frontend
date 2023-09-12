@@ -34,7 +34,7 @@ export default function AffiliatesMap() {
       </div>
 
       <div id="ihrAffiliatesMapContainer">
-        <div className="">
+        <div className="cnb-loading-wrap">
           <div className="cnb-spinner-loading"></div>
         </div>
       </div>
