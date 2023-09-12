@@ -34,7 +34,7 @@ export default function StationPage({ pageData }) {
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
       </Head>
-      <div className="main-wrap page default">
+      <div className="main-wrap page default station">
         <Container>
           <AffiliatesMap />
         </Container>

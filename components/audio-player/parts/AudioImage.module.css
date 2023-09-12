@@ -1,11 +1,12 @@
 .audio_image {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
+  width: 60px;
+  height: auto;
+  max-height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 @media screen and (max-width: 767px) {
-    .audio_image {
-        display: none;
-    }
+  .audio_image {
+    display: none;
+  }
 }

@@ -3,8 +3,9 @@ import React from "react";
 import Image from "next/image";
 
 const FeaturedImage = ({ imageUrl }) => {
+  const pcImgUrl = !imageUrl.includes("http") ? `https:${imageUrl}` : imageUrl;
   if (!imageUrl) return <></>;
-  return <Image className={styles.audio_image} src={imageUrl} width={60} height={60} alt="" />;
+  return <Image className={styles.audio_image} src={pcImgUrl} width={60} height={60} alt="" />;
 };
 
 export default FeaturedImage;

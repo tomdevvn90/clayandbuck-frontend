@@ -841,6 +841,32 @@ body main .page-content .main-wrap.email-the-show {
     }
   }
 }
+body .main-wrap.station {
+  .content_ss {
+    min-height: 400px;
+  }
+  #ihrAffiliatesMapContainer {
+    #ihmInViewStationsList {
+      overflow-y: auto;
+      height: auto;
+      margin: 15px 0;
+    }
+    .cnb-loading-wrap {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      min-height: 400px;
+
+      .cnb-spinner-loading {
+        margin: 60px auto;
+        width: 60px;
+        height: 60px;
+        background: conic-gradient(rgba(0, 0, 0, 0) 10%, #b2922c);
+        display: block;
+      }
+    }
+  }
+}
 body main .page-content .page-404 {
   .page-content {
     color: #000;
