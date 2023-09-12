@@ -12,9 +12,8 @@ import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
 import { SITE_URL, TWITTER_OG_IMAGE_URL } from "../../lib/constants";
 import { useEffect } from "react";
 
-const Sidebar = dynamic(() => import("../../components/sidebar"), {
-  ssr: false,
-});
+const ShareThis = dynamic(() => import("../../components/share-this"), { ssr: false });
+const Sidebar = dynamic(() => import("../../components/sidebar"), { ssr: false });
 
 export default function BookMovie({ post, headerMenu, footerMenu }) {
   const router = useRouter();
@@ -61,6 +60,8 @@ export default function BookMovie({ post, headerMenu, footerMenu }) {
             </>
           )}
         </Container>
+
+        <ShareThis />
       </div>
     </Layout>
   );

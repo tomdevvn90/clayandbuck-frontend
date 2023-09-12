@@ -3,11 +3,14 @@ import Container from "../../components/container";
 import PostBody from "../../components/post/post-body";
 import Layout from "../../components/layout/layout";
 import PostTitle from "../../components/post/post-title";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { getTranscriptBySlug } from "../../lib/graphql-api";
 import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
 import { SITE_URL, TWITTER_OG_IMAGE_URL } from "../../lib/constants";
 import { useEffect } from "react";
+
+const ShareThis = dynamic(() => import("../../components/share-this"), { ssr: false });
 
 export default function TranscriptTemplate({ post, headerMenu, footerMenu }) {
   const router = useRouter();
@@ -54,6 +57,8 @@ export default function TranscriptTemplate({ post, headerMenu, footerMenu }) {
             </>
           )}
         </Container>
+
+        <ShareThis />
       </div>
     </Layout>
   );

@@ -15,9 +15,8 @@ import { SITE_URL } from "../../lib/constants";
 import { getCookie } from "cookies-next";
 import { useEffect } from "react";
 
-const Sidebar = dynamic(() => import("../../components/sidebar"), {
-  ssr: false,
-});
+const ShareThis = dynamic(() => import("../../components/share-this"), { ssr: false });
+const Sidebar = dynamic(() => import("../../components/sidebar"), { ssr: false });
 
 export default function Post({ post, headerMenu, footerMenu, posts }) {
   const router = useRouter();
@@ -93,6 +92,8 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
             </>
           )}
         </Container>
+
+        <ShareThis />
       </div>
     </Layout>
   );
