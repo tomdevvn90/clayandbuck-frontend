@@ -1,15 +1,17 @@
 import SubscribeInfo from "./parts/subscribe-info";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { createUser } from "../../lib/normal-api";
 import { setCookieLoginInfo } from "../../utils/global-functions";
 import { useRouter } from "next/router";
+import { GlobalsContext } from "../../contexts/GlobalsContext";
 
 const CancelPopup = dynamic(() => import("./parts/cancel-popup"), {
   ssr: false,
 });
 
 export default function VerifyEmail({ gift, emailToken }) {
+  const GlobalsCtx = useContext(GlobalsContext);
   const router = useRouter();
 
   const [showCancelPopup, setShowCancelPopup] = useState(false);
@@ -79,6 +81,7 @@ export default function VerifyEmail({ gift, emailToken }) {
         userInfo.userCancelledSubs,
         userInfo.userPrivacyOptout
       );
+      GlobalsCtx.setIsLoggedIn(true);
 
       if (isSignUpGift == "1") {
         router.push("/cnb-give-the-gift");
