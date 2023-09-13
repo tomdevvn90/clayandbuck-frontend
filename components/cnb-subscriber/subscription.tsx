@@ -1,5 +1,6 @@
 import SubscribeInfo from "./parts/subscribe-info";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import {
   cnbCheckZipCodeMatchStateForCA,
@@ -8,7 +9,6 @@ import {
   setACookieF,
 } from "../../utils/global-functions";
 import { CardElement, useRecurly } from "@recurly/react-recurly";
-import dynamic from "next/dynamic";
 import { cnbRenderCountryStates } from "../../utils/html-render-functions";
 import { createSubscription } from "../../lib/normal-api";
 import { getCookie } from "cookies-next";
@@ -192,7 +192,7 @@ export default function Subscription({ gift, plansInfoRes }) {
         }
 
         const createSubsRes = await createSubscription(accessToken.toString(), recurlyToken, crPlan, crCompany);
-        console.log(createSubsRes);
+        // console.log(createSubsRes);
 
         if (createSubsRes.success) {
           setACookieF("STYXKEY_USER_SUBSCRIBED", "subscribed");

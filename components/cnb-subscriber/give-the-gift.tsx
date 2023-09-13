@@ -1,15 +1,14 @@
 import SubscribeInfo from "./parts/subscribe-info";
+import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import {
   cnbCheckZipCodeMatchStateForCA,
   cnbGetPlanIntervalText,
   cnbGetStateByZipCodeForUS,
-  setACookieF,
 } from "../../utils/global-functions";
 import { CardElement, useRecurly } from "@recurly/react-recurly";
-import dynamic from "next/dynamic";
 import { cnbRenderCountryStates } from "../../utils/html-render-functions";
-import Link from "next/link";
 import { createGiftSubscription, createSubscription } from "../../lib/normal-api";
 import { getCookie } from "cookies-next";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
@@ -227,6 +226,7 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
         if (!executeRecaptcha) {
           console.log("Execute recaptcha not yet available");
           setReviewErrorMessages(`Something went wrong. Please try again!`);
+          setIsLoading(false);
           return false;
         }
 
@@ -240,7 +240,7 @@ export default function GiveTheGift({ gift, plansInfoRes }) {
             crRecipientEmail,
             crRecipientName
           );
-          console.log(createGiftSubsRes);
+          // console.log(createGiftSubsRes);
 
           if (createGiftSubsRes.success) {
             setShowSuccessStep("");
