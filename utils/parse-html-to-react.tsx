@@ -50,7 +50,12 @@ export const ParseHtmlToReact = (htmlContent, includeImg = false) => {
       },
       processNode: (node, children, index) => {
         return (
-          <Script key={index} src={node.attribs.src} className={node.attribs.class} strategy="beforeInteractive">
+          <Script
+            key={index}
+            src={`${node.attribs.src}?t=${Date.now()}`}
+            className={node.attribs.class}
+            strategy="beforeInteractive"
+          >
             {children[0]}
           </Script>
         );
