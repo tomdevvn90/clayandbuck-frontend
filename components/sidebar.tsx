@@ -1,4 +1,6 @@
 import useSWR from "swr";
+import MedrecTopAds from "./ads/medrec-top-ads";
+import MedrecBottomAds from "./ads/medrec-bottom-ads";
 import { WP_REST_API_URL, fetcher } from "../lib/constants";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { TwitterTimelineEmbed } from "react-twitter-embed";
@@ -13,23 +15,33 @@ export default function Sidebar() {
     <div className="main-sidebar">
       {Array.isArray(data) && (
         <div className="sidebar-wrap">
+          {/* Load Top Sidebar Ads */}
+          <div>
+            <section className="widget widget_text">
+              <MedrecTopAds />
+            </section>
+          </div>
+
           {data.map((sb, index) => (
             // <div key={index} dangerouslySetInnerHTML={{ __html: sb.rendered }}></div>
-            <div key={index}>{ParseHtmlToReact(sb.rendered)}</div>
+            <div key={index}>{ParseHtmlToReact(sb.rendered, true)}</div>
           ))}
 
           <div>
             <section className="widget widget_text">
-              <div className="textwidget">
-                <div>
-                  <TwitterTimelineEmbed
-                    tweetLimit={5}
-                    sourceType="profile"
-                    screenName="clayandbuck"
-                    options={{ height: 600 }}
-                  />
-                </div>
-              </div>
+              <TwitterTimelineEmbed
+                tweetLimit={5}
+                sourceType="profile"
+                screenName="clayandbuck"
+                options={{ height: 600 }}
+              />
+            </section>
+          </div>
+
+          {/* Load Bottom Sidebar Ads */}
+          <div>
+            <section className="widget widget_text">
+              <MedrecBottomAds />
             </section>
           </div>
         </div>
