@@ -1,89 +1,94 @@
 .site-footer {
-    background: #171717;
-    padding: 12px 0 80px;
-    margin: auto;
-    text-align: center;
+  background: #171717;
+  padding: 12px 0 66px;
+  margin: auto;
+  text-align: center;
 
-    .social-ss {
-        margin-top: 25px;
+  .social-ss {
+    margin-top: 25px;
 
-        .social-lst a {
-            margin-left: 15px;
+    .social-lst a {
+      margin-left: 15px;
 
-            svg, img {
-                width: 24px;
-                height: 24px;
-                transition: ease .25s all;
-            }
-            &.youtube svg {
-                width: 32px;
-            }
-            &.gettr svg {
-                background: #fff;
-            }
-            &.gab svg {
-                width: 40px;
-            }
-            &.parler svg {
-                width: 28px;
-                height: 28px;
-            }
-            &:hover svg, &:hover img {
-                transform: scale(1.4);
-            }
-            @media screen and (max-width:600px) {
-                margin-top: 8px;
-                display: inline-block;
-            }
+      svg,
+      img {
+        width: 24px;
+        height: 24px;
+        transition: ease 0.25s all;
+      }
+      &.youtube svg {
+        width: 32px;
+      }
+      &.gettr svg {
+        background: #fff;
+      }
+      &.gab svg {
+        width: 40px;
+      }
+      &.parler svg {
+        width: 28px;
+        height: 28px;
+      }
+      &:hover svg,
+      &:hover img {
+        transform: scale(1.4);
+      }
+      @media screen and (max-width: 600px) {
+        margin-top: 8px;
+        display: inline-block;
+      }
+    }
+  }
+  .copy-right-ss {
+    margin-top: 25px;
+    margin-bottom: 0;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .bottom-menu-ss {
+    ul {
+      margin: 15px 0;
+      padding: 0;
+
+      li {
+        display: inline-block;
+        line-height: 35px;
+        position: relative;
+
+        &.active a {
+          color: #fff;
         }
-    }
-    .copy-right-ss {
-        margin-top: 25px;
-        margin-bottom: 0;
-        color: #fff;
-        font-size: 16px;
-        line-height: 1.5;
-    }
-    .bottom-menu-ss {
-        ul {
-            margin: 15px 0;
-            padding: 0;
-
-            li {
-                display: inline-block;
-                line-height: 35px;
-                position: relative;
-                
-                &.active a { color: #fff; }
-                a {
-                    display: flex;
-                    align-items: center;
-                    border-right: 1px solid #ccc;
-                    padding-left: 14px;
-                    padding-right: 14px;
-                    line-height: 20px;
-                    font-size: 16px;
-                    color: #989898;
-                    font-weight: 500;
-                    text-align: center;
-                    // margin: 6px 0;
-                    img {
-                        margin-left: 8px;
-                    }
-                    &:hover, &:active {
-                        color: #fff;
-                        text-decoration: none;
-                        cursor: pointer;
-                    }
-                }
-                &:first-child a {
-                    padding-left: 0;
-                }
-                &:last-child a {
-                    border: 0;
-                    padding-right: 0;
-                }
-            }
+        a {
+          display: flex;
+          align-items: center;
+          border-right: 1px solid #ccc;
+          padding-left: 14px;
+          padding-right: 14px;
+          line-height: 20px;
+          font-size: 16px;
+          color: #989898;
+          font-weight: 500;
+          text-align: center;
+          // margin: 6px 0;
+          img {
+            margin-left: 8px;
+          }
+          &:hover,
+          &:active {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+          }
         }
+        &:first-child a {
+          padding-left: 0;
+        }
+        &:last-child a {
+          border: 0;
+          padding-right: 0;
+        }
+      }
     }
+  }
 }

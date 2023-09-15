@@ -1,5 +1,4 @@
 import Head from "next/head";
-import ErrorPage from "next/error";
 import Container from "../components/container";
 import Layout from "../components/layout/layout";
 import OneTrustContent from "../components/onetrust-privacy-notice/onetrust-content";
@@ -7,12 +6,16 @@ import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
+import { useEffect } from "react";
 
 export default function CaliforniaPrivacyRightsPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
   const router = useRouter();
   if (!router.isFallback && !page?.slug) {
-    return <ErrorPage statusCode={404} />;
+    useEffect(() => {
+      router.push("/404");
+    }, []);
+    return;
   }
 
   const { headerMenu, footerMenu } = pageData;

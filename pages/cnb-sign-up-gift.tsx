@@ -1,5 +1,4 @@
 import Head from "next/head";
-import ErrorPage from "next/error";
 import Container from "../components/container";
 import Layout from "../components/layout/layout";
 import SignUp from "../components/cnb-subscriber/sign-up";
@@ -8,12 +7,16 @@ import { useRouter } from "next/router";
 import { CNB_RECAPTCHA_KEY, SITE_URL } from "../lib/constants";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
+import { useEffect } from "react";
 
 export default function SignUpGiftPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
   const router = useRouter();
   if (!router.isFallback && !page?.slug) {
-    return <ErrorPage statusCode={404} />;
+    useEffect(() => {
+      router.push("/404");
+    }, []);
+    return;
   }
 
   const { headerMenu, footerMenu } = pageData;

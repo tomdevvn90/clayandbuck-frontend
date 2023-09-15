@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import ErrorPage from "next/error";
 import Head from "next/head";
 import Container from "../components/container";
 import Layout from "../components/layout/layout";

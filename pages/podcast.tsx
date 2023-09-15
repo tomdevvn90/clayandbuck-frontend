@@ -1,5 +1,4 @@
 import Head from "next/head";
-import ErrorPage from "next/error";
 import Container from "../components/container";
 import Layout from "../components/layout/layout";
 import dynamic from "next/dynamic";
@@ -8,6 +7,7 @@ import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
 import { getCookie } from "cookies-next";
+import { useEffect } from "react";
 
 const Podcast = dynamic(() => import("../components/cnb-podcast"), {
   ssr: false,
@@ -20,7 +20,10 @@ export default function VipPodcastPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
   const router = useRouter();
   if (!router.isFallback && !page?.slug) {
-    return <ErrorPage statusCode={404} />;
+    useEffect(() => {
+      router.push("/404");
+    }, []);
+    return;
   }
 
   const { headerMenu, footerMenu } = pageData;

@@ -18,7 +18,7 @@ export default function ShareThis() {
         show_mobile: true, // show/hide the buttons on mobile (true, false)
         show_toggle: true, // show/hide the toggle buttons (true, false)
         size: 40, // the size of each button (INTEGER)
-        top: 300, // offset in pixels from the top of the page
+        top: 200, // offset in pixels from the top of the page
 
         // OPTIONAL PARAMETERS
         // url: "https://www.sharethis.com", // (defaults to current url)

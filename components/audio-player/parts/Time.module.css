@@ -1,5 +1,5 @@
 .time {
-  color: #AAAFB3;
+  color: #aaafb3;
   display: block;
   float: left;
   margin: 0;
@@ -8,12 +8,12 @@
 }
 .cr_time {
   position: absolute;
-  top: 10px;
+  top: 3px;
   left: 0;
 }
 .duration {
   position: absolute;
-  top: 10px;
+  top: 3px;
   right: 0;
 }
 
@@ -22,7 +22,8 @@
     font-size: 13px;
     font-weight: 500;
   }
-  .duration, .cr_time {
+  .duration,
+  .cr_time {
     top: 6px;
   }
 }

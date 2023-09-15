@@ -1,17 +1,20 @@
 import Head from "next/head";
-import ErrorPage from "next/error";
 import Layout from "../components/layout/layout";
 import Newsletter from "../components/newsletter/newsletter";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
+import { useEffect } from "react";
 
 export default function NewsletterPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
   const router = useRouter();
   if (!router.isFallback && !page?.slug) {
-    return <ErrorPage statusCode={404} />;
+    useEffect(() => {
+      router.push("/404");
+    }, []);
+    return;
   }
 
   const { headerMenu, footerMenu } = pageData;

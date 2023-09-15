@@ -4,7 +4,7 @@
   width: 100%;
   max-width: 160px;
   color: #fff;
-  min-height: 60px;
+  /* min-height: 60px; */
   display: flex;
   align-items: center;
   padding-right: 24px;

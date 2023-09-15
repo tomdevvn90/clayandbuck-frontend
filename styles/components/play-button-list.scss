@@ -1,62 +1,70 @@
 .play_btn_list {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 0 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 48px;
 
+  a {
+    margin: 0 8px;
+    letter-spacing: 0;
+    border: 1px solid;
+    font-weight: 500;
+    background: linear-gradient(to right, rgba(180, 144, 44, 1) 0%, rgba(235, 211, 96, 1) 100%);
+    box-shadow: 0px 6px 23px 0px rgba(0, 0, 0, 0.65);
+    font-size: 15px;
+    line-height: 22px;
+    color: #000000;
+    text-align: center;
+    min-width: 100px;
+    border-radius: 0;
+    max-width: 350px;
+    padding: 10px 16px;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+      box-shadow 0.15s ease-in-out;
+
+    > svg {
+      margin-right: 8px;
+    }
+    &:hover {
+      border: 1px solid #f8da49;
+      background: #000;
+      color: #f8da49;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    margin: 0 0 40px;
     a {
-        margin: 0 8px;
-        letter-spacing: 0;
-        border: 1px solid;
-        font-weight: 500;
-        background: linear-gradient(to right, rgba(180,144,44,1) 0%,rgba(235,211,96,1) 100%);
-        box-shadow: 0px 6px 23px 0px rgba(0, 0, 0, 0.65);
-        font-size: 15px;
-        line-height: 22px;
-        color: #000000;
-        text-align: center;
-        min-width: 100px;
-        border-radius: 0;
-        max-width: 350px;
-        padding: 10px 16px;
-        text-decoration: none;
-        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-        
-        > svg {
-            margin-right: 8px;
-        }
-        &:hover {
-            border: 1px solid #f8da49;
-            background: #000;
-            color: #f8da49;
-        }
-    }
-    @media screen and (max-width: 767px) {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: 10px;
-        margin: 0 0 40px;
-        a {
-            text-align: center;
-            width: 100%;
-            min-height: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
-            margin: 0;
+      text-align: center;
+      width: 100%;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      margin: 0;
 
-            span {
-                font-size: 15px;
-                line-height: 20px;
-                display: block;
-                margin-top: 6px;
-            }
-            > svg {
-                height: 1.8em;
-                margin: 0;
-            }
-        }
+      span {
+        font-size: 15px;
+        line-height: 20px;
+        display: block;
+        margin-top: 6px;
+      }
+      > svg {
+        height: 1.8em;
+        margin: 0;
+      }
     }
+  }
+  @media screen and (max-width: 420px) {
+    grid-gap: 8px;
+    margin: 0 0 32px;
+    a span {
+      font-size: 14px;
+    }
+  }
 }

@@ -40,6 +40,14 @@ body main {
   .page-content {
     color: #fff;
 
+    &.no-head-foot {
+      // padding-bottom: 66px;
+
+      + .cnb-podcasts-player {
+        display: none !important;
+      }
+    }
+
     .main-wrap {
       background-image: url(../public/images/container-bg.png);
       background-repeat: no-repeat;
@@ -628,6 +636,7 @@ body main .page-content .main-wrap.email-the-show {
     }
     img {
       display: block;
+      margin: 0 auto;
     }
   }
   .form-ss {

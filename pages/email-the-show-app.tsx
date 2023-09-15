@@ -1,15 +1,20 @@
 import Head from "next/head";
 import Container from "../components/container";
-import Layout from "../components/layout/layout";
-import SignUp from "../components/cnb-subscriber/sign-up";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import EmailTheShowImg from "../public/images/email-the-show-app.jpg";
+import LayoutNoHeadFoot from "../components/layout/layout-no-headfoot";
 import { getPageData } from "../lib/graphql-api";
 import { useRouter } from "next/router";
-import { CNB_RECAPTCHA_KEY, SITE_URL } from "../lib/constants";
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
+import { SITE_URL } from "../lib/constants";
 import { useEffect } from "react";
 
-export default function SignUpPage({ pageData }) {
+const EmailTheShow = dynamic(() => import("../components/email-the-show"), {
+  ssr: false,
+});
+
+export default function EmailTheShowAppPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
   const router = useRouter();
   if (!router.isFallback && !page?.slug) {
@@ -19,14 +24,13 @@ export default function SignUpPage({ pageData }) {
     return;
   }
 
-  const { headerMenu, footerMenu } = pageData;
   const { seo } = page;
   const fullHead = ParseHtmlToReact(seo.fullHead);
   const cleanPath = router.asPath.split("#")[0].split("?")[0];
   const canonicalUrl = `${SITE_URL}` + (router.asPath === "/" ? "" : cleanPath);
 
   return (
-    <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
+    <LayoutNoHeadFoot>
       <Head>
         {fullHead}
         <link rel="canonical" href={canonicalUrl} />
@@ -38,28 +42,22 @@ export default function SignUpPage({ pageData }) {
         <meta name="twitter:image:width" content="1200" />
         <meta name="twitter:image:height" content="640" />
       </Head>
-      <div className="main-wrap page sign-up-flow">
+      <div className="main-wrap page white-background email-the-show">
+        <section className="hero-ss">
+          <Image src={EmailTheShowImg} width={1450} height={396} priority={true} alt="Exclusive Member Email" />
+        </section>
+
         <Container>
-          <GoogleReCaptchaProvider
-            reCaptchaKey={CNB_RECAPTCHA_KEY}
-            scriptProps={{
-              async: false,
-              defer: true,
-              appendTo: "body",
-              nonce: undefined,
-            }}
-          >
-            <SignUp gift={false} plansInfo={JSON.parse(page.plansInfo)} />
-          </GoogleReCaptchaProvider>
+          <EmailTheShow />
         </Container>
       </div>
-    </Layout>
+    </LayoutNoHeadFoot>
   );
 }
 
 /** Server-side Rendering (SSR) */
 export async function getServerSideProps() {
-  const pageData = await getPageData("/cnb-sign-up");
+  const pageData = await getPageData("/email-the-show-app");
 
   return {
     props: { pageData },
