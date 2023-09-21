@@ -226,3 +226,31 @@ export async function createGiftSubscription(
 export async function searchByKeyword(keyword: string, crPage: number) {
   return await fetchAPINormal(`wp/v2/search?search=${keyword}&page=${crPage}&_embed`);
 }
+
+/**
+ * Get Home Quotes for Rss
+ */
+export async function getHomeQuotes() {
+  return await fetchAPINormal("wp/v2/rss-home-quotes");
+}
+
+/**
+ * Get Mobile Posts for Rss
+ */
+export async function getMobilePosts(postCount: number, crPage: number) {
+  return await fetchAPINormal(`wp/v2/rss-mobile-posts?postCount=${postCount}&crPage=${crPage}`);
+}
+
+/**
+ * Get New Posts for Rss
+ */
+export async function getNewPosts(postCount: number, crPage: number) {
+  return await fetchAPINormal(`wp/v2/rss-new-posts?postCount=${postCount}&crPage=${crPage}`);
+}
+
+/**
+ * Get Posts for Rss
+ */
+export async function getRSSPosts(postCount: number, crPage: number) {
+  return await fetchAPINormal(`wp/v2/rss-posts?postCount=${postCount}&crPage=${crPage}`);
+}
