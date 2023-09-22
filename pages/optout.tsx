@@ -1,4 +1,4 @@
-export default function Optout() {}
+export default function OptoutPage() {}
 
 export async function getServerSideProps() {
   const content = null;

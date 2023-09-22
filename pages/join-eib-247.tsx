@@ -1,4 +1,4 @@
-export default function JoinEib245() {}
+export default function JoinEib245Page() {}
 
 export async function getServerSideProps() {
   const content = null;
