@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import { getPageData } from "../lib/graphql-api";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
+import { GetStaticProps } from "next";
 
 const Sidebar = dynamic(() => import("../components/sidebar"), {
   ssr: false,
@@ -50,18 +51,20 @@ export default function Index({ pageData }) {
   );
 }
 
-/** Server-side Rendering (SSR) */
-export async function getServerSideProps() {
+/** Static Site Generation (SSG) */
+export const getStaticProps: GetStaticProps = async () => {
   const pageData = await getPageData("/");
+
   return {
     props: { pageData },
+    revalidate: 10,
   };
-}
-/** Static Site Generation (SSG) */
-// export const getStaticProps: GetStaticProps = async () => {
-//      const pageData = await getPageData("/");
-//      return {
-//         props: pageData,
-//         revalidate: 10,
-//      }
+};
+
+// /** Server-side Rendering (SSR) */
+// export async function getServerSideProps() {
+//   const pageData = await getPageData("/");
+//   return {
+//     props: { pageData },
+//   };
 // }

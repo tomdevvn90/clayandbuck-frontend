@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { SITE_URL } from "../lib/constants";
 import { useEffect } from "react";
+import { GetStaticProps } from "next";
 
 export default function NewsletterPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
@@ -43,11 +44,21 @@ export default function NewsletterPage({ pageData }) {
   );
 }
 
-/** Server-side Rendering (SSR) */
-export async function getServerSideProps() {
+/** Static Site Generation (SSG) */
+export const getStaticProps: GetStaticProps = async () => {
   const pageData = await getPageData("/clay-and-buck-in-a-hurry");
 
   return {
     props: { pageData },
+    revalidate: 10,
   };
-}
+};
+
+// /** Server-side Rendering (SSR) */
+// export async function getServerSideProps() {
+//   const pageData = await getPageData("/clay-and-buck-in-a-hurry");
+
+//   return {
+//     props: { pageData },
+//   };
+// }

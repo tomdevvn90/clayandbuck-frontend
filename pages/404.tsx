@@ -58,6 +58,7 @@ export default function FourZeroFourPage(allMenu) {
   );
 }
 
+/** Static Site Generation (SSG) */
 export const getStaticProps: GetStaticProps = async () => {
   const allMenu = await getAllMenu();
   return {

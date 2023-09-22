@@ -58,7 +58,7 @@ export default function LoginForm({ className, showForgotForm, showHintForm }) {
 
       setIsLoading(false);
       GlobalCtx.setIsLoggedIn(true);
-      // setTimeout(handleCloseModal, 1500);
+      GlobalCtx.setOpenLoginModal(false);
     } else {
       if (loginData.error_message) {
         setErrorMessages(loginData.error_message);

@@ -8,6 +8,7 @@ import { CNB_RECAPTCHA_KEY, SITE_URL } from "../lib/constants";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { ParseHtmlToReact } from "../utils/parse-html-to-react";
 import { useEffect } from "react";
+import { GetStaticProps } from "next";
 
 export default function SignUpGiftPage({ pageData }) {
   const page = pageData?.pageBy ?? {};
@@ -57,11 +58,21 @@ export default function SignUpGiftPage({ pageData }) {
   );
 }
 
-/** Server-side Rendering (SSR) */
-export async function getServerSideProps() {
+/** Static Site Generation (SSG) */
+export const getStaticProps: GetStaticProps = async () => {
   const pageData = await getPageData("/cnb-sign-up-gift");
 
   return {
     props: { pageData },
+    revalidate: 10,
   };
-}
+};
+
+// /** Server-side Rendering (SSR) */
+// export async function getServerSideProps() {
+//   const pageData = await getPageData("/cnb-sign-up-gift");
+
+//   return {
+//     props: { pageData },
+//   };
+// }
