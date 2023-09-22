@@ -6,7 +6,7 @@ export async function getServerSideProps() {
   if (!content) {
     return {
       redirect: {
-        permanent: false,
+        permanent: true,
         destination: "/your-california-privacy-rights",
       },
     };
