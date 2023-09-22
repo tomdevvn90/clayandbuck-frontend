@@ -1,10 +1,10 @@
-export default function Optout() {}
+export default function JoinEib245() {}
 
 export async function getStaticProps() {
   return {
     redirect: {
       permanent: false,
-      destination: "/your-california-privacy-rights",
+      destination: "/cnb-sign-up",
     },
   };
 }
