@@ -40,7 +40,7 @@ export default function SocialChannels({ lessItems }) {
           ></path>
         </svg>
       </a>
-      {!lessItems && (
+      {/* {!lessItems && (
         <a href="https://gettr.com/user/clayandbuckshow" target="_blank" className="social-item gettr">
           <svg width="20" height="20" viewBox="582.815 50.107 1334.369 2399.786" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -71,8 +71,8 @@ export default function SocialChannels({ lessItems }) {
             </g>
           </svg>
         </a>
-      )}
-      {!lessItems && (
+      )} */}
+      {/* {!lessItems && (
         <a href="https://parler.com/ClayandBuck" target="_blank" className="social-item parler">
           <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="-15 -25 130 150">
             <g fill="#FFFFFF">
@@ -81,7 +81,7 @@ export default function SocialChannels({ lessItems }) {
             </g>
           </svg>
         </a>
-      )}
+      )} */}
       {!lessItems && (
         <a href="https://rumble.com/c/ClayandBuck" target="_blank" className="social-item rumble">
           <svg
@@ -111,7 +111,7 @@ export default function SocialChannels({ lessItems }) {
           </svg>
         </a>
       )}
-      {!lessItems && (
+      {/* {!lessItems && (
         <a href="https://odysee.com/@ClayandBuck:a" target="_blank" className="social-item odysee">
           <svg width="20" height="20" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -120,7 +120,7 @@ export default function SocialChannels({ lessItems }) {
             ></path>
           </svg>
         </a>
-      )}
+      )} */}
       {!lessItems && (
         <a href="https://truthsocial.com/@ClayAndBuck" target="_blank" className="social-item truthsocial">
           <Image src={true_icon} width={24} height={24} alt="" />
