@@ -14,8 +14,9 @@ import { ParseHtmlToReact } from "../../utils/parse-html-to-react";
 import { SITE_URL } from "../../lib/constants";
 import { getCookie } from "cookies-next";
 import { useEffect } from "react";
-import { useScript } from "usehooks-ts";
+// import { useScript } from "usehooks-ts";
 
+const ShareThis = dynamic(() => import("../../components/share-this"), { ssr: false });
 const Sidebar = dynamic(() => import("../../components/sidebar"), { ssr: false });
 
 export default function Post({ post, headerMenu, footerMenu, posts }) {
@@ -45,9 +46,9 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
   };
   const noRequireSubs = !userEmailCk || !userPassCk || !userSubsCk || userCanSubsCk ? false : true;
 
-  const status = useScript(
-    "https://platform-api.sharethis.com/js/sharethis.js#property=60ec51cfbaf861001984cc38&product=inline-share-buttons"
-  );
+  // const status = useScript(
+  //   "https://platform-api.sharethis.com/js/sharethis.js#property=60ec51cfbaf861001984cc38&product=inline-share-buttons"
+  // );
 
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
@@ -96,6 +97,8 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
             </>
           )}
         </Container>
+
+        <ShareThis />
       </div>
     </Layout>
   );
