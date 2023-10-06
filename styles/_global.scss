@@ -461,6 +461,10 @@ body {
   }
 }
 
+body .st-sticky-share-buttons.hide {
+  display: none !important;
+}
+
 /* Posts and pages
 --------------------------------------------- */
 .contact_eib_link {
