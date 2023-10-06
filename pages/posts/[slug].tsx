@@ -46,8 +46,25 @@ export default function Post({ post, headerMenu, footerMenu, posts }) {
   const noRequireSubs = !userEmailCk || !userPassCk || !userSubsCk || userCanSubsCk ? false : true;
 
   const status = useScript(
-    `https://platform-api.sharethis.com/js/sharethis.js#property=60ec51cfbaf861001984cc38&product=inline-share-buttons?t=${Date.now()}`
+    `https://platform-api.sharethis.com/js/sharethis.js#property=60ec51cfbaf861001984cc38&product=inline-share-buttons?t=${Date.now()}`,
+    { removeOnUnmount: true }
   );
+  useEffect(() => {
+    return () => {
+      const shareEl = document.querySelectorAll(".st-sticky-share-buttons");
+      shareEl.forEach((el) => {
+        el.remove();
+      });
+      (window as any).__sharethis__ = null;
+      const allScripts = document.getElementsByTagName("script");
+      for (let i = 0; i < allScripts.length; i++) {
+        const element = allScripts[i];
+        const sharethisDomains = ["count-server.sharethis.com", "buttons-config.sharethis.com"];
+        const isSharethisDomain = sharethisDomains.some((domain) => element.src.includes(domain));
+        if (isSharethisDomain) element.remove();
+      }
+    };
+  }, []);
 
   return (
     <Layout headerMenu={headerMenu} footerMenu={footerMenu}>
