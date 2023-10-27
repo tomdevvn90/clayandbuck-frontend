@@ -19,7 +19,7 @@ module.exports = {
       "i.iheart.com",
       "gvimage.zype.com",
       "gvthumbnail.zype.com",
-      "inspired-by-rush.dev1.bwmmedia.com",
+      "cnb-react-backend.dev1.bwmmedia.com",
     ],
   },
   sassOptions: {
